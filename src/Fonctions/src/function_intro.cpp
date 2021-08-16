@@ -23,4 +23,6 @@ void print_coucou(){
 
 int main(){
     print_coucou();
+    
+    return EXIT_SUCCESS;
 }

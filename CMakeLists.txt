@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 2.8)
-project(CppCourseTemplate)
+project(ApprentissageProgrammationCpp)
+
+include ( CTest )
+enable_testing ()
 
 # This CMake file will add doc target for convenient documentation generation.
 #
@@ -57,7 +60,7 @@ if(DOXYGEN_FOUND)
     #     OPTIONAL)
 endif()
 
-
+add_subdirectory(src)
 
 #TODO uncomment this if used as a standalone project and you want to use install target
 # set default install path

@@ -1,5 +1,9 @@
 # Use: `doxygen -g test.txt` to generate all possible settings for this file
 
+## MARKDOWN_SUPPORT = yes 
+TOC_INCLUDE_HEADINGS = 10
+LAYOUT_FILE = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/DoxygenLayout.xml
+
 # For modern doxygen style uncomment these three lines:
 #HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/customdoxygen.css
 # HTML_HEADER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/header.html
@@ -13,8 +17,7 @@ PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR@ \ 
                          @PROJECT_SOURCE_DIR@
-INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@  \
-                         @PROJECT_SOURCE_DIR@/src \
+INPUT                  = @PROJECT_SOURCE_DIR@/src \
                          @PROJECT_SOURCE_DIR@/readme.md \
                          @PROJECT_SOURCE_DIR@/src/CppBase/fonction.markdown 
 FILE_PATTERNS          = *.h \
