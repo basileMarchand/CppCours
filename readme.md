@@ -24,6 +24,7 @@ Pour construire le support de cours il vous faut CMake et doxygen.
 
 ```bash 
 mkdir build 
+cd build
 cmake .. 
 ```
 
