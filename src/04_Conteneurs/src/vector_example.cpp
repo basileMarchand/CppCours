@@ -27,21 +27,29 @@ int main(){
     std::vector<int> vIntInitList {1, 2, 3, 4, 5};
     /// [create_initializer_list]
 
+    {
+    /// [create_initializer_list_without_type]
+    std::vector vIntInitList {1, 2, 3, 4, 5};
+    /// [create_initializer_list_without_type]
+    }
+
     // 2. Acceder aux valeurs d'un std::vector 
 
+    {
     /// [access_bracket]
     std::vector<int> v {1,2,3,4,5};
     // Acces a l'élements 0 
     int v0 = v[0];
     /// [access_bracket]
-
+    
 
     /// [access_at]
     v0 = v.at(0);
     /// [access_at]
-
+    }
     // 3. Modifier les valeurs 
 
+    {
     /// [modify_bracket]
     std::vector<int> v {1,2,3,4,5};
     v[3] = 10;
@@ -50,7 +58,7 @@ int main(){
     /// [modify_at]
     v.at(3) = 10;
     /// [modify_at]
-
+    }
     // 4. Pourcourir les valeurs d'un std::vector 
 
     /// [parcour_old_school]

@@ -110,23 +110,55 @@ Cependant le tableau statique n'est pas la solution miracle car dans énormémen
 
 # Le tableau dynamique utile dans 99% des cas 
 
+Le second type de conteneur que l'on va être amené à utiliser est le tableau dynamique, celui ci comme son nom l'indique et contrairement au tableau statique n'a pas besoin d'être complètement déterminé au moment de la compilation. Il s'agit donc du conteneur passe-partout qui va nous servir dans la plupart des cas. 
+Ce tableau dynamique s'appelle le `std::vector`. Pour l'utiliser il ne faut pas oublier de faire l'include associé : 
+
 \snippet ./src/vector_example.cpp include_vector
+
+**Attention** : le nom de `vector` est très malheureux car le `std::vector` n'a rien à voir avec un vecteur au sens mathématique du terme. Il s'agit içi uniquement d'un paquet de valeurs de n'importe quel type et sans aucune propriétés mathématique associées. 
 
 ## Généralité sur le std::vector 
 
 ### Créer un vector 
 
+Pour créer un `std::vector` il n'est pas nécessaire de fournir à la compilation la taille de ce dernier, c'est tout l'intérêt de l'aspect dynamique de la chose, en revanche il faut bien évidemment spécifier le type des valeurs qui seront contenues dans ce `std::vector`. Pour cela la syntaxe, quelque peu similaire au `std::array` vu précédemment est la suivante : 
+
+```
+std::vector<type>
+```
+
+Par exemple pour déclarer un `std::vector` qui ne contiendra que des entiers il suffit de procéder de la manière suivante : 
+
 \snippet ./src/vector_example.cpp create
+
+En procédant ainsi le `std::vector` créé est de taille 0. Nous verrons par la suite comment modifier dynamiquement la taille du `std::vector`. Dans le cas où l'on souhaite créé un `std::vector` de taille initiale non nulle il suffit de founir un argument à la construction, la taille. 
+
+Par exemple pour créer le même vecteur d'entier mais de taille initiale 10 il suffit de procéder de la manière suivante : 
 
 \snippet ./src/vector_example.cpp create_sized
 
+Question que vous vous posez très certainement, quelles valeurs initiales ont été données à ce `std::vector` de taille 10 ? 
+Et bien par défaut, c'est-à-dire si vous ne spécifiez rien, la valeur initiale prise est l'élément nul du type contenu dans le `std::vector` donc ici `int(0)`.
+
+Néanmoins il est tout à fait possible de spécifier à la déclaration du `std::vector` une valeur initiale différente. Pour cela il suffit de fournir en plus de la taille un second argument qui est la valeur initiale. Par exemple pour créer un `std::vector` d'entier, de taille 10 et de valeur initiale 2 il suffit de procéder de la manière suivante : 
+
 \snippet ./src/vector_example.cpp create_sized_init
 
+Pour finir si on souhaite à l'initialisation fournir une liste de valeur c'est tout à fait possible en utilisant une `initializer-list`. Par exemple : 
+
 \snippet ./src/vector_example.cpp create_initializer_list
+
+Dans ce cas, la taille du `std::vector` est automatiquement déduite à partir de ce qui est fourni dans la liste d'initialisation. 
+
+**Pour information** : en utilisant un compilateur c++ récent vous pouvez vous passer de spécifier le type des éléments du `std::vector` lorsque vous utilisez une liste d'initialisation. Cela donne par exemple : 
+
+\snippet ./src/vector_example.cpp create_initializer_list_without_type
+
 
 ### Accéder aux éléments d'un vector 
 
 Pour accéder aux éléments d'un vector, **attention on rappel que les indices commencent à 0**, il suffit de procéder de la manière suivante : 
+
 \snippet ./src/vector_example.cpp access_bracket
 
 on peut également passer par la méthode *at* : 
@@ -151,9 +183,28 @@ Là encore la distinction entre [] et *at* se situe au niveau de la vérificatio
 
 ### Parcourir les valeurs d'un std::vector 
 
+Pour itérer sur les valeurs d'un `std::vector` plusieurs solutions s'offrent à vous. La première solution que je qualifierai de old-school est de créer une variable d'itération, à tout hasard `i` et d'accéder aux éléments du `std::vector` en utilisant ce `i`. Cela donne par exemple : 
+
 \snippet ./src/vector_example.cpp parcour_old_school
 
+Cette méthode était la seule possible avant la norme `c++11`. Depuis le `c++11` est apparu la notion d'itérateur et donc une syntaxe beaucoup plus sympathique à utiliser. D'ailleurs si vous avez suivi attentivement les cours de Python cette syntaxe old-school doit fortement vous faire penser à une syntaxe que l'on vous à interdit d'utiliser à savoir 
+
+```python 
+for i in range(len(data)):
+    ...
+```
+
+Non ça ne vous fait pas penser à ça ?  En Python pour itérer sur les valeurs d'un conteneur nous avons fortement insisté sur le fait que la syntaxe tolérée c'est : 
+
+```python 
+for x in data: 
+    ...
+```
+
+Et bien avec le c++11 nous avons une syntaxe similaire qui est la suivante : 
+
 \snippet ./src/vector_example.cpp parcour_post_cpp11
+
 
 
 ## Pourquoi le std::vector est si bien 
