@@ -90,6 +90,15 @@ division int/int, int/float
 ## En c++ "moderne" 
 
 
+# Astuce 
+
+
+
+```
+using Real = double;
+```
+
+
 # Définir des variables 
 
 ## Ne pas confondre déclaration et affectation 
