@@ -193,13 +193,13 @@ TODO : faire un dépôt avec une compil cmake et une doc bidon doxygen
 
 ## La fonction `main` 
 
-**Tout** programme écrit en ``C++`` a un point d'entrée. C'est à dire une section de code qui est la première à être exécutée. 
-
+**Tout** programme écrit en ``C++`` a un point d'entrée. C'est à dire une section de code qui est la première à être exécutée. C'est cette section qui va appeler toutes les autres. Par défaut ce point d'entrée est une fonction C++ qui s'appelle forcément `main`. Si dans un programme il n'y a pas de main alors il ne se passera rien. Par exemple pour faire un programme minimal qui ne fait qu'afficher un message on peut écrire le code c++ suivant : 
 
 \snippet ./src/pointEntree.cpp main
 
+Vous pouvez remarquer que la fonction retourne une valeur, içi 0. C'est une convention assez classique en informatique, qui est que si le déroulement d'un programme se déroule correctement alors ce dernier doit renvoyer 0 à l'environnement qui l'appelle, dans notre cas le terminal en bash. 
 
-Pour compiler notre programme nous allons utiliser le compilateur. La compilation se fait via le terminal de la manière suivante : 
+Une fois ce code écrit il faut le compiler pour en faire un programme exécutable. Pour réaliser cette étape de compilation  nous allons utiliser le compilateur. La compilation se fait via le terminal de la manière suivante : 
 
 ```bash 
 $ g++ pointEntree.cpp -o pointEntree.out 
