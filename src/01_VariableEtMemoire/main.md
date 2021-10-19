@@ -133,7 +133,7 @@ int_a / int_b=0
 f_a / f_b=0.333333
 ```
 
-Cela vous semble-t-il normal ou pas ? Et bien oui c'est normal pour C++. Car dans le standard il est écrit que la division de deux entiers est une division entière. Dit comme ça c'est logique en plus ! 
+Cela vous semble-t-il normal ou pas ? Et bien oui c'est normal pour `C++`. Car dans le standard il est écrit que la division de deux entiers est une division entière. Dit comme ça c'est logique en plus ! 
 
 Donc le choix du type va directement impacter le comportement de notre programme. 
 
@@ -147,7 +147,7 @@ f_a / int_b=0.333333
 int_a / f_b=0.333333
 ```
 
-Et donc là visiblement le C++ a choisi la division flottante. Mais pourquoi ? Tout simplement parce qu'en fait ce qu'il y a de caché derrière c'est le mécanisme de promotion de type. Le principe est le suivant le compilateur lorsqu'il arrive sur l'expression `f_a / int_b` par exemple regarde cette expression et se dit : "j'ai un int et un float est-ce que j'ai quelque part l'opération de division d'un float par un int ?". La réponse est non, il existe la division d'un `float` par un `float`, d'un `double` par un `double`, d'un `int` par un `int` mais pas de mélange des types. Donc face à cette difficulté le compilateur, très débrouillard ce garçon, se dit bon ok est-ce que je sais convertir l'un des deux arguments dans le type de l'autre ? Et là oui il sait même faire les deux convertir un `float` en `int` et un `int` en `float`. Alors là grande question quelle conversion choisir ? C'est là où apparait la promotion de type, le principe est simple face à ce dilemme le compilateur va choisir la conversion pour laquelle il est certain qu'il ne perdra aucune information. Et donc içi c'est la conversion de `int_b` en `float`.
+Et donc là visiblement le C++ a choisi la division flottante. Mais pourquoi ? Tout simplement parce qu'en fait, ce qu'il y a de caché derrière, c'est le mécanisme de promotion de type. Le principe est le suivant le compilateur lorsqu'il arrive sur l'expression `f_a / int_b`, par exemple, regarde cette expression et se dit : *"j'ai un `int` et un `float` est-ce que j'ai quelque part l'opération de division d'un float par un int ?"*. La réponse est non: il existe la division d'un `float` par un `float`, d'un `double` par un `double`, d'un `int` par un `int` mais pas de mélange des types. Face à cette difficulté, le compilateur, très débrouillard ce garçon, se dit bon ok est-ce que je sais convertir l'un des deux arguments dans le type de l'autre ? Et là oui il sait même faire les deux: convertir un `float` en `int` et un `int` en `float`. Alors là grande question *"quelle conversion choisir ?"* C'est là où apparaît la promotion de type, le principe est simple: face à ce dilemme le compilateur va choisir la conversion pour laquelle il est certain qu'il ne perdra aucune information. Et donc ici c'est la conversion de `int_b` en `float`.
 
 ***Minute papillon*** ça veut dire qu'on peut changer le type d'une variable ?  
 
@@ -163,7 +163,7 @@ On définit une variable de type `double` et ensuite on range la valeur de cette
 
 \snippet ./src/example_cast.cpp explicit
 
-Pour le moment l'intérêt est assez limité mais nous verrons dans la partie Programmation Orientée Objet qu'il y a en fait un réel intéret à cela. 
+Pour le moment l'intérêt est assez limité mais nous verrons dans la partie Programmation Orientée Objet qu'il y a en fait un réel intérêt à cela. 
 
 Après il peut y avoir quelques risques à faire du cast. Par exemple : 
 
@@ -178,9 +178,9 @@ sivalue: -32759
 
 # Les booléens 
 
-Le second grand type du c++, qui est peut-être le plus simple c'est les booléens, le type `bool`. Un booléen ne peut avoir que deux valeurs `true` ou `false`. 
+Le second grand type du `C++`, qui est aussi le plus simple c'est les booléens, le type `bool`. Un booléen ne peut avoir que deux valeurs `true` ou `false`. 
 
-Vient avec le type booléen bien évidemment les opérations d'algèbre booléenne, à savoir le `et`, le `ou` et la négation. C'est trois opérations sont symbolisées respectivement par `&&`, `||` et `!`. Cela donne par exemple : 
+Vient avec le type booléen, bien évidemment, les opérations d'algèbre booléenne, à savoir le `and`, le `or` et la négation `not`. Ces trois opérations sont symbolisées respectivement par `&&`, `||` et `!`. Cela donne par exemple : 
 
 \snippet ./src/example_bool.cpp all
 
@@ -193,25 +193,25 @@ faux: false
 vrai && faux:false
 vrai||faux: true
 ```
-Au passage les plus attentifs auront peut-être remarqué que pour les expressions avec les `&&` et `||` il a fallut mettre des parenthèses autour de l'expression. Ce n'est pas pour le style mais il s'agit d'une nécessité pour que le programme compile. Pourquoi ? A cause de la précédence des opérations. Si vous êtes currieux vous pouvez regarder le lien suivant et vous devriez comprendre [https://en.cppreference.com/w/cpp/language/operator_precedence](https://en.cppreference.com/w/cpp/language/operator_precedence). 
+Au passage, les plus attentifs auront peut-être remarqué que, pour les expressions avec les `&&` et `||`, il a fallu mettre des parenthèses autour de l'expression. Ce n'est pas pour le style mais il s'agit d'une nécessité pour que le programme compile. Pourquoi ? A cause de la précédence des opérateurs. Si vous êtes curieux, vous pouvez regarder le lien suivant et vous devriez comprendre [https://en.cppreference.com/w/cpp/language/operator_precedence](https://en.cppreference.com/w/cpp/language/operator_precedence). 
 
 # Les chaines de caractère 
 
-Pour finir nous allons voir comment définir des chaînes de caractères. Alors pour cela nous allons faire la distinction entre le C++ old-scholl et le C++ moderne. Car les deux ont des approches quelques peu différentes. Avec bien évidemment encore une fois un C++ moderne qui va grandement nous faciliter la vie. 
+Pour finir nous allons voir comment définir des chaînes de caractères. Alors pour cela nous allons faire la distinction entre le `C++` old-school et le `C++` moderne, car les deux ont des approches quelques peu différentes. Avec bien évidemment encore une fois un `C++`  moderne qui va grandement nous faciliter la vie. 
 
 ## Dans le monde d'avant 
 
-Dans le C++ du monde d'avant, je ne parle pas du monde avant Covid, les chaînes de caractères n'existaient tout simplement pas. En revanche il existait, et existe toujours d'ailleur, le type `char`. Le type `char` permet de représenter **un** caractère.
+Dans le `C++` du monde d'avant, je ne parle pas du monde avant Covid, les chaînes de caractères n'existaient tout simplement pas. En revanche il existait, et existe toujours d'ailleurs, le type `char`. Le type `char` permet de représenter **un** caractère.
 
 La définition d'un `char` se fait de la manière suivante : 
 
 \snippet ./src/example_string.cpp char 
 
-Les caractères pouvant être pris en charge avec le type `char` son assez limité puisqu'il s'agit uniquement des 127 caractères de la table ASCII [https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII](https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII)
+Les caractères pouvant être pris en charge avec le type `char` sont assez limités puisqu'il s'agit uniquement des 127 caractères de la table ASCII [https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII](https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII)
 
-Et alors toute la difficulté apparait lorsque l'on veut travailler avec des chaînes de caractère. En c++ pré-historique une chaine de caractère n'est rien de plus qu'un tableau de `char`... Rien de bien subtile me direz vous. 
+Toute la difficulté apparaît lorsque l'on veut travailler avec des chaînes de caractère. En `C++` pré-historique une chaîne de caractère n'est rien de plus qu'un tableau de `char`... Rien de bien subtile me direz vous. 
 
-D'ailleurs je vous ai dit dans le chapitre d'intro que la fonction `main` le fameux point d'entré de la fonction peut prendre des arguments d'entrée, il s'agit des arguments passés derrière le programme lors de l'appel de ce dernier. Et bien il s'agit d'un tableau de tableau de `char`. Cela se symbolise par `char**`. Par exemple nous pourrions faire la fonction main suivante : 
+D'ailleurs je vous ai dit, dans le chapitre d'intro, que la fonction `main` (le fameux point d'entrée des programmes) peut prendre des arguments d'entrée: il s'agit des arguments passés à la suite de l'appel du programme. Et bien il s'agit d'un tableau de tableau de `char`. Cela se symbolise par `char**`. Par exemple nous pourrions faire la fonction `main` suivante : 
 
 \snippet main_args.cpp all
 
@@ -226,7 +226,7 @@ $ ./a.out arg1 arg2
 
 ## En `C++` "moderne" 
 
-Dans le monde moderne, il existe un type permettant de gérer nativement et **simplement** des chaînes de caractères il s'agit du type `std::string`. La définition d'une string en C++ se fait en utilisant les guillemets. C'est bizarre, pourquoi le `std::` devant `string` ? Très bonne question !! Le `std::string` est un type un tout petit particulier dans le sens où il s'agit en réalité du premier type que l'on voit qui n'existait pas du tout dans le C. Ce type fait donc parti de la librairie standard c++ et nécessite donc un `include` associé. Pour utiliser des `std::string` il ne faut donc pas oublier de faire : 
+Dans le monde moderne, il existe un type permettant de gérer nativement et **simplement** des chaînes de caractères: il s'agit du type `std::string`. La définition d'une `string` en `C++` se fait en utilisant les guillemets. C'est bizarre, pourquoi le `std::` devant `string` ? Très bonne question ! Le `std::string` est un type un peu particulier dans le sens où il s'agit en réalité du premier type que l'on voit qui n'existait pas du tout dans le `C`. Ce type fait donc partie de la librairie standard `C++` et nécessite donc un `include` associé. Pour utiliser des `std::string` il ne faut donc pas oublier de faire : 
 
 \snippet ./src/example_string.cpp string_include 
 
@@ -234,13 +234,13 @@ Ensuite vous pouvez très facilement définir un `std::string` de la manière su
 
 \snippet ./src/example_string.cpp string 
 
-L'intérêt des `std::string` par rapport aux chaînes de caractère old-school est tou d'abord la simplicité d'utilisation et ensuite le fait qu'il existe plein d'opération sur les `std::string`. Par exemple, reprenons notre histoire que suivant les types en présence des opérateurs n'ont pas le même comportement. Et bien l'opérateur `+` a un comportement pour les `std::string` qui est la concaténation. Typiquement nous pouvons écrire : 
+L'intérêt des `std::string` par rapport aux chaînes de caractère old-school est tout d'abord la simplicité d'utilisation et ensuite, le fait qu'il existe plein d'opérations sur les `std::string`. Par exemple, reprenons le fait que, suivant les types en présence des opérateurs, ils n'ont pas le même comportement. Et bien l'opérateur `+` a un comportement pour les `std::string` qui est la concaténation. Typiquement nous pouvons écrire : 
 
 \snippet ./src/example_string.cpp string_sum 
 
-Et il existe plein d'opérations utiles de disponible instantanément, pour une liste exhaustive [ici](https://en.cppreference.com/w/cpp/string/basic_string). 
+Et il existe plein d'opérations utiles disponibles instantanément, pour une liste exhaustive [ici](https://en.cppreference.com/w/cpp/string/basic_string). 
 
-Parmis ces opérations, voici par exemple deux opérations très utiles ayant été ajoutées récemment (dans la norme C++20)
+Voici, par exemple, deux opérations très utiles ayant été ajoutées récemment (dans la norme C++20)
 
 \snippet ./src/example_string.cpp selection 
 
