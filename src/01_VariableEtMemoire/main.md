@@ -66,7 +66,8 @@ Tout d'abord pour définir les entiers on utilise le type `int` pour `integer`.
 
 Les entiers peuvent, en réalité, être de différents types. La liste des types possibles est: `char`, `short` (ou `short int`), `int`, `long` (ou `long int`) et `long long` (ou `long long int`). Tous peuvent être non-signés avec `unsigned` ou signés avec `signed`.
 
-\snippet ./src/example_int.cpp intégraux 
+\snippet ./src/example_int.cpp integraux 
+
 - Les entiers `int` sur 32 bits
 - Les entiers non signés `unsigned int` sur 32 bits  
 - Les entiers "courts" `short int` sur 16 bits
