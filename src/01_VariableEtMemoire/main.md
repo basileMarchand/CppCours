@@ -64,17 +64,55 @@ Les premiers types que nous allons voir sont les types numériques, qui permette
 
 Tout d'abord pour définir les entiers on utilise le type `int` pour integer. Les entiers peuvent en réalité être de différents types : 
 
-- Les entiers `int`
-- Les entiers non signés `unsigned int` 
+- Les entiers `int` sur 32 bits
+- Les entiers non signés `unsigned int` sur 32 bits  
+- Les entiers "courts" `short int` sur 16 bits
+
+Le nombre de bits sur lequel est stockée la valeur de l'entier va alors permettre de connaître l'étendue des valeurs possibles. Par exemple un entier signé sur 32 bits pourra avoir des valeurs entre -2 147 483 648 et +2 147 483 647. Tandis que le même entier mais non signé sur 32 bits pourra avoir des valeurs entre 0 et 4 294 967 295. 
+
+Il existe depuis le c++11 un moyen plus simple de savoir les valeurs minimal et maximal d'un type numérique il s'agit des fonctionnalités présentes dans `numeric_limits` par exemple pour afficher les valeurs min et max représentables par des entiers nous pouvons faire : 
+
+\snippet ./src/num_limits_int.cpp all
 
 
-
+Ce qui à l'exécution nous affichera le message suivant : 
+```
+short int: -32768 -> 32767
+int: -2147483648 -> 2147483647
+unsigned int: 0 -> 4294967295
+```
 
 ## Flottants 
 
 ### Représentation des nombres flottants 
 
+Le second type numérique disponible dans le c++ est celui qui va permettre de représenter des nombres flottants. Il faut noter que la représentation en mémoire des nombres flottants est un peu plus complexe que pour les entiers. En effet pour les entiers c'est simple on converti le nombre en base 2 et le tour est jouer. Pour les flottants on ne peut malheureusement pas faire ça. 
+
+Pour stocker en binaire un nombre flottant il existe une norme, la norme IEEE 754 [https://en.wikipedia.org/wiki/IEEE_754](https://en.wikipedia.org/wiki/IEEE_754). Cette dernière défini comment on représente sous forme binaire un nombre flottant. Et surtout elle précise comment la représentation se fait suivant l'espace mémoire que l'on souhaite allouer pour stocker une valeur flottante. 
+
+Car en effet on considère classiquement deux types de valeurs flottantes : 
+
+- Les `float` stockés sur 32 bits 
+- Les `double` stockés sur 64 bits
+
 ### Float ou double 
+
+Comment choisir entre `float` et `double` grande question. La rêgle est simple, ça dépend ... En réalité cela dépend de votre application et surtout de la précision que vous souhaitez sur vos valeurs numériques. Car avec des `float` la précision de 7 à 9 chiffres significatifs tandis qu'avec des `double` on est sur du 15~16 chiffres significatifs. 
+
+De manière générale aujourd'hui les ordinateurs ont suffisamment de mémoire vive pour que l'on ne se pose pas trop de question est que l'on utilise des `double` par défaut. 
+
+Considérons par exemple le cas tout simple où l'on veut faire la somme de 0.1 et de 0.2. Nous pouvons écrire le code suivant : 
+
+\snippet ./src/example_float.cpp all
+
+Le résultat que l'on obtient alors à l'exécution est le suivant : 
+
+```
+precision : 6
+a + b = 0.30000001
+precision : 15
+a + b = 0.30000000000000004
+```
 
 
 ## Le type un truc pas si anecdotique que ça 
