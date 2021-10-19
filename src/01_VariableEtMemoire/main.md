@@ -196,9 +196,52 @@ Au passage les plus attentifs auront peut-être remarqué que pour les expressio
 
 # Les chaines de caractère 
 
+Pour finir nous allons voir comment définir des chaînes de caractères. Alors pour cela nous allons faire la distinction entre le C++ old-scholl et le C++ moderne. Car les deux ont des approches quelques peu différentes. Avec bien évidemment encore une fois un C++ moderne qui va grandement nous faciliter la vie. 
+
 ## Dans le monde d'avant 
 
+Dans le C++ du monde d'avant, je ne parle pas du monde avant Covid, les chaînes de caractères n'existaient tout simplement pas. En revanche il existait, et existe toujours d'ailleur, le type `char`. Le type `char` permet de représenter **un** caractère.
+
+La définition d'un `char` se fait de la manière suivante : 
+
+\snippet ./src/example_string.cpp char 
+
+Les caractères pouvant être pris en charge avec le type `char` son assez limité puisqu'il s'agit uniquement des 127 caractères de la table ASCII [https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII](https://fr.wikibooks.org/wiki/Les_ASCII_de_0_%C3%A0_127/La_table_ASCII)
+
+Et alors toute la difficulté apparait lorsque l'on veut travailler avec des chaînes de caractère. En c++ pré-historique une chaine de caractère n'est rien de plus qu'un tableau de `char`... Rien de bien subtile me direz vous. 
+
+D'ailleurs je vous ai dit dans le chapitre d'intro que la fonction `main` le fameux point d'entré de la fonction peut prendre des arguments d'entrée, il s'agit des arguments passés derrière le programme lors de l'appel de ce dernier. Et bien il s'agit d'un tableau de tableau de `char`. Cela se symbolise par `char**`. Par exemple nous pourrions faire la fonction main suivante : 
+
+\snippet main_args.cpp all
+
+La compilation `g++ main.cpp` et l'exécution donneraient alors : 
+
+```
+$ ./a.out arg1 arg2
+0: ./a.out
+1: arg1
+2: arg2
+```
+
 ## En `C++` "moderne" 
+
+Dans le monde moderne, il existe un type permettant de gérer nativement et **simplement** des chaînes de caractères il s'agit du type `std::string`. La définition d'une string en C++ se fait en utilisant les guillemets. C'est bizarre, pourquoi le `std::` devant `string` ? Très bonne question !! Le `std::string` est un type un tout petit particulier dans le sens où il s'agit en réalité du premier type que l'on voit qui n'existait pas du tout dans le C. Ce type fait donc parti de la librairie standard c++ et nécessite donc un `include` associé. Pour utiliser des `std::string` il ne faut donc pas oublier de faire : 
+
+\snippet ./src/example_string.cpp string_include 
+
+Ensuite vous pouvez très facilement définir un `std::string` de la manière suivante : 
+
+\snippet ./src/example_string.cpp string 
+
+L'intérêt des `std::string` par rapport aux chaînes de caractère old-school est tou d'abord la simplicité d'utilisation et ensuite le fait qu'il existe plein d'opération sur les `std::string`. Par exemple, reprenons notre histoire que suivant les types en présence des opérateurs n'ont pas le même comportement. Et bien l'opérateur `+` a un comportement pour les `std::string` qui est la concaténation. Typiquement nous pouvons écrire : 
+
+\snippet ./src/example_string.cpp string_sum 
+
+Et il existe plein d'opérations utiles de disponible instantanément, pour une liste exhaustive [ici](https://en.cppreference.com/w/cpp/string/basic_string). 
+
+Parmis ces opérations, voici par exemple deux opérations très utiles ayant été ajoutées récemment (dans la norme C++20)
+
+\snippet ./src/example_string.cpp selection 
 
 
 # Astuce 
