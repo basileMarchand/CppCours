@@ -3,9 +3,9 @@
 int main(){
 
     /// [integraux]
-    int un_entier;
-    unsigned char un_car;
-    long long un_long_long;
+    int un_int;
+    unsigned int un_uint;
+    short int un_sint;
     /// [integraux]
 
     return 0;

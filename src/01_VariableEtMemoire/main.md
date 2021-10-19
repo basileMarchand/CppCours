@@ -64,11 +64,9 @@ Les premiers types que nous allons voir sont les types numériques, qui permette
 
 Tout d'abord pour définir les entiers on utilise le type `int` pour `integer`.
 
-Les entiers peuvent, en réalité, être de différents types. La liste des types possibles est: `char`, `short` (ou `short int`), `int`, `long` (ou `long int`) et `long long` (ou `long long int`). Tous peuvent être non-signés avec `unsigned` ou signés avec `signed`.
-
 \snippet ./src/example_int.cpp integraux 
 
-- Les entiers `int` sur 32 bits
+- Les entiers `int` (en général) sur 32 bits
 - Les entiers non signés `unsigned int` sur 32 bits  
 - Les entiers "courts" `short int` sur 16 bits
 
@@ -78,7 +76,6 @@ Il existe depuis le `C++11` un moyen plus simple de savoir les valeurs minimales
 
 \snippet ./src/num_limits_int.cpp all
 
-La taille de la mémoire, pour stocker ces différents types intégraux, diffère suivant les ordinateurs et les compilateurs. La norme du langage nous dit simplement que, dans la liste `char`, `short`, `int`, `long` et `long long`, chaque type fournit au moins autant de stockage (de bits) que les types qui le précèdent dans la liste.
 
 Ce qui à l'exécution nous affichera le message suivant : 
 ```
@@ -86,6 +83,10 @@ short int: -32768 -> 32767
 int: -2147483648 -> 2147483647
 unsigned int: 0 -> 4294967295
 ```
+
+Les entiers peuvent, en réalité, être de différents types. La liste des types possibles est: `char`, `short` (ou short int), `int`, `long` (ou long int) et `long long` (ou long long int). Tous peuvent être non-signés avec `unsigned` ou signés avec `signed`.
+
+La taille de la mémoire, pour stocker ces différents types intégraux, diffère suivant les ordinateurs et les compilateurs. La norme du langage nous dit simplement que, dans la liste `char`, `short`, `int`, `long` et `long long`, chaque type fournit au moins autant de stockage (de bits) que les types qui le précèdent dans la liste.
 
 ## Flottants 
 
@@ -147,7 +148,7 @@ f_a / int_b=0.333333
 int_a / f_b=0.333333
 ```
 
-Et donc là visiblement le C++ a choisi la division flottante. Mais pourquoi ? Tout simplement parce qu'en fait, ce qu'il y a de caché derrière, c'est le mécanisme de promotion de type. Le principe est le suivant le compilateur lorsqu'il arrive sur l'expression `f_a / int_b`, par exemple, regarde cette expression et se dit : *"j'ai un `int` et un `float` est-ce que j'ai quelque part l'opération de division d'un float par un int ?"*. La réponse est non: il existe la division d'un `float` par un `float`, d'un `double` par un `double`, d'un `int` par un `int` mais pas de mélange des types. Face à cette difficulté, le compilateur, très débrouillard ce garçon, se dit bon ok est-ce que je sais convertir l'un des deux arguments dans le type de l'autre ? Et là oui il sait même faire les deux: convertir un `float` en `int` et un `int` en `float`. Alors là grande question *"quelle conversion choisir ?"* C'est là où apparaît la promotion de type, le principe est simple: face à ce dilemme le compilateur va choisir la conversion pour laquelle il est certain qu'il ne perdra aucune information. Et donc ici c'est la conversion de `int_b` en `float`.
+Et donc là visiblement le C++ a choisi la division flottante. Mais pourquoi ? Tout simplement parce qu'en fait, ce qu'il y a de caché derrière, c'est le mécanisme de promotion de type. Le principe est le suivant le compilateur lorsqu'il arrive sur l'expression `f_a / int_b`, par exemple, regarde cette expression et se dit : "j'ai un `int` et un `float` est-ce que j'ai quelque part l'opération de division d'un float par un int ?". La réponse est non: il existe la division d'un `float` par un `float`, d'un `double` par un `double`, d'un `int` par un `int` mais pas de mélange des types. Face à cette difficulté, le compilateur, très débrouillard ce garçon, se dit bon ok est-ce que je sais convertir l'un des deux arguments dans le type de l'autre ? Et là oui il sait même faire les deux: convertir un `float` en `int` et un `int` en `float`. Alors là grande question "quelle conversion choisir ?" C'est là où apparaît la promotion de type, le principe est simple: face à ce dilemme le compilateur va choisir la conversion pour laquelle il est certain qu'il ne perdra aucune information. Et donc ici c'est la conversion de `int_b` en `float`.
 
 ***Minute papillon*** ça veut dire qu'on peut changer le type d'une variable ?  
 
@@ -367,7 +368,7 @@ while(some_int == 100)
 }
 ```
 
-Si dans le bloc d'instruction on ne touche pas à la valeur de `some_int`, il est très probable que le compilateur fasse une optimisation un peu brutale du genre remplacer le `some_int==100` par un `true` ce qui accélérerait l'exécution. Or il se peut que l'on ait *designé* le code de telle sorte qu'il y a bien un élément quelque part qui change la valeur de la variable `some_int` mais le compilateur ne s'en rend pas compte. Dans ce cas le code généré par le compilateur n'est pas conforme à ce que l'on attend. La solution pour résoudre ce problème est alors de dire au compilateur de ne pas chercher à faire des optimisations trop aggressives concernant cette variable. Pour cela il suffit de la déclarer comme `volatile` ce qui donnerait alors : 
+Si dans le bloc d'instruction on ne touche pas à la valeur de `some_int`, il est très probable que le compilateur fasse une optimisation un peu brutale du genre remplacer le `some_int==100` par un `true` ce qui accélérerait l'exécution. Or il se peut que l'on ait *designé* le code de telle sorte qu'il y a bien un élément quelque part qui change la valeur de la variable `some_int` mais le compilateur ne s'en rend pas compte. Dans ce cas le code généré par le compilateur n'est pas conforme à ce que l'on attend. La solution pour résoudre ce problème est alors de dire au compilateur de ne pas chercher à faire des optimisations trop agressives concernant cette variable. Pour cela il suffit de la déclarer comme `volatile` ce qui donnerait alors : 
 
 ```
 volatile int some_int = 100;
