@@ -117,11 +117,78 @@ a + b = 0.30000000000000004
 
 ## Le type un truc pas si anecdotique que ça 
 
-division int/int, int/float 
+Alors nous l'avons dit en introduction de cette partie la notion de type est importante car c'est elle qui va permettre de gérer la mémoire et ainsi faciliter la vie du compilateur. Il y a cependant un autre aspect tout aussi important, voir plus, des types qui est que le type d'une variable va définir son comportement. Autrement dit certaines opérations en présence d'un type vont faire quelque chose tandis qu'en présence d'un autre type feront autre choses. Et c'est d'autant plus flagrant sur les opérations mathématiques. 
 
+Par exemple que va afficher le code suivant selon vous : 
+
+\snippet ./src/operation_type.cpp nomix 
+
+```
+int_a / int_b=0
+f_a / f_b=0.333333
+```
+
+Cela vous semble-t-il normal ou pas ? Et bien oui c'est normal pour C++. Car dans le standard il est écrit que la division de deux entiers est une division entière. Dit comme ça c'est logique en plus ! 
+
+Donc le choix du type va directement impacter le comportement de notre programme. 
+
+Vu que vous êtes curieux vous vous demandez certainement mais qu'est ce qui se passe si je fais la division entre un entier et un flottant ? Vous avez raison de vous poser cette question ! Le meilleur moyen de savoir c'est de tester : 
+
+\snippet ./src/operation_type.cpp mix 
+
+A l'exécution ce code nous donne le résultat suivant : 
+```
+f_a / int_b=0.333333
+int_a / f_b=0.333333
+```
+
+Et donc là visiblement le C++ a choisi la division flottante. Mais pourquoi ? Tout simplement parce qu'en fait ce qu'il y a de caché derrière c'est le mécanisme de promotion de type. Le principe est le suivant le compilateur lorsqu'il arrive sur l'expression `f_a / int_b` par exemple regarde cette expression et se dit : "j'ai un int et un float est-ce que j'ai quelque part l'opération de division d'un float par un int ?". La réponse est non, il existe la division d'un `float` par un `float`, d'un `double` par un `double`, d'un `int` par un `int` mais pas de mélange des types. Donc face à cette difficulté le compilateur, très débrouillard ce garçon, se dit bon ok est-ce que je sais convertir l'un des deux arguments dans le type de l'autre ? Et là oui il sait même faire les deux convertir un `float` en `int` et un `int` en `float`. Alors là grande question quelle conversion choisir ? C'est là où apparait la promotion de type, le principe est simple face à ce dilemme le compilateur va choisir la conversion pour laquelle il est certain qu'il ne perdra aucune information. Et donc içi c'est la conversion de `int_b` en `float`.
+
+***Minute papillon*** ça veut dire qu'on peut changer le type d'une variable ?  
+
+## Caster des variables 
+
+Alors on ne peut pas exactement changer le type d'une variable. En revanche on peut créer une copie du contenu d'une variable dans un nouveau type. 
+
+Par exemple considérons le code suivant : 
+
+\snippet ./src/example_cast.cpp implicit 
+
+On définit une variable de type `double` et ensuite on range la valeur de cette variable dans une variable de type `int`. Implicitement on fait une conversion. Dans ce cas c'est le compilateur qui fait le travail pour nous. Mais nous pourrions très bien l'expliciter en utilisant la fonction `static_cast<type>(variable)`. Cela donnera dans ce cas : 
+
+\snippet ./src/example_cast.cpp explicit
+
+Pour le moment l'intérêt est assez limité mais nous verrons dans la partie Programmation Orientée Objet qu'il y a en fait un réel intéret à cela. 
+
+Après il peut y avoir quelques risques à faire du cast. Par exemple : 
+
+\snippet ./src/example_cast.cpp static_overflow 
+
+Ce code va fonctionner en revanche le résultat que l'on obtient est le suivant : 
+
+```
+value: 32777
+sivalue: -32759
+```
 
 # Les booléens 
 
+Le second grand type du c++, qui est peut-être le plus simple c'est les booléens, le type `bool`. Un booléen ne peut avoir que deux valeurs `true` ou `false`. 
+
+Vient avec le type booléen bien évidemment les opérations d'algèbre booléenne, à savoir le `et`, le `ou` et la négation. C'est trois opérations sont symbolisées respectivement par `&&`, `||` et `!`. Cela donne par exemple : 
+
+\snippet ./src/example_bool.cpp all
+
+Ce qui à l'exécution nous affiche les résultats suivants : 
+```
+vrai: true
+faux: false
+!vrai: false
+!faux:true
+vrai && faux:false
+vrai||faux: true
+```
+Au passage les plus attentifs auront peut-être remarqué que pour les expressions avec les `&&` et `||` il a fallut mettre des parenthèses autour de l'expression. Ce n'est pas pour le style mais il s'agit d'une nécessité pour que le programme compile. Pourquoi ? A cause de la précédence des opérations. Si vous êtes currieux vous pouvez regarder le lien suivant et vous devriez comprendre [https://en.cppreference.com/w/cpp/language/operator_precedence](https://en.cppreference.com/w/cpp/language/operator_precedence). 
 
 # Les chaines de caractère 
 
