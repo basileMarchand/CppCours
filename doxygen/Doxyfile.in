@@ -5,9 +5,9 @@ TOC_INCLUDE_HEADINGS = 10
 LAYOUT_FILE = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/DoxygenLayout.xml
 
 # For modern doxygen style uncomment these three lines:
-#HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/customdoxygen.css
-# HTML_HEADER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/header.html
-# HTML_FOOTER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/footer.html
+HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/custom.css
+HTML_HEADER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/header.html
+HTML_FOOTER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/footer.html
 
 # not interested build output
 QUIET                  = NO
@@ -65,7 +65,7 @@ HTML_COLORSTYLE_SAT    = 40
 HTML_COLORSTYLE_GAMMA  = 80
 
 # max size 200x55px
-PROJECT_LOGO           =
+PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/logo_mpt.png
 
 
 
@@ -81,7 +81,7 @@ REFERENCED_BY_RELATION = YES
 REFERENCES_RELATION    = YES
 
 # This is nice to have - callgraphs of functions
-HAVE_DOT               = YES
+HAVE_DOT               = NO
 CALL_GRAPH             = YES
 CALLER_GRAPH           = YES
 
@@ -126,7 +126,7 @@ JAVADOC_AUTOBRIEF      = YES
 BUILTIN_STL_SUPPORT = YES
 
 # Do we want source code browser? YES! Do we want strip comments? NO
-SOURCE_BROWSER         = YES
+SOURCE_BROWSER         = NO
 STRIP_CODE_COMMENTS    = NO
 
 # Side panel
