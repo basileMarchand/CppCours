@@ -186,7 +186,9 @@ Avoir un compilateur et un éditeur c'est le minimum syndical. Pour la suite du 
 
 ## Vérifier que tout fonctionne 
 
-TODO : faire un dépôt avec une compil cmake et une doc bidon doxygen 
+Pour vérifier que votre installation fonctionne nous vous avons préparé un dépôt git contenant un programme de test. Vous pouvez trouver le dépôt à l'adresse suivante [https://github.com/ue12-p21/cpp-test-install](https://github.com/ue12-p21/cpp-test-install)
+
+Ce dépôt contient un programme qui va permettre de vérifier que le compilateur que vous avez installé fonctionne et surtout qu'il supporte les normes récentes du c++. 
 
 
 # Le point d'entré d'un programme ``C++``

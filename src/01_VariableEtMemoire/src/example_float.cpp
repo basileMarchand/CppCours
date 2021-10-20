@@ -10,6 +10,7 @@ int main(){
     float b {0.2};
 
     auto precision = std::numeric_limits<float>::digits10;
+    // nombre de décimales supporté sans perte
     std::cout << "precision : " << precision << std::endl;
     std::cout << std::setprecision(precision+2) << "a + b = " << a + b << std::endl;
     }
