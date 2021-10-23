@@ -140,7 +140,7 @@
   }
   
   div.contents {
-    width: 980px;
+    width: 90%;
     padding: 40px;
     margin-top: -1px;
     margin-left: auto;
@@ -157,7 +157,7 @@
   
   div.header
   {
-    width: 980px;
+    width: 90%;
     padding: 10px;
     margin-top: 10px;
     margin-left: auto;
@@ -181,17 +181,11 @@
       list-style-type: none;
   }
   
-  .ui-resizable .ui-resizable-handle {
-  }
-  
   .ui-resizable-e {
     background: none;
     background-color: #E6E6E6;
   }
-  
-  .ui-resizable-handle {
-  }
-  
+    
   div.fragment {
     padding: 16px;
     background-color: #f3f3f3;
@@ -299,6 +293,7 @@
     /* webkit specific markup */
     -webkit-box-shadow: none;
     -webkit-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
   }
   
   .memdoc {
