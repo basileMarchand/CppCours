@@ -101,12 +101,18 @@ Non ? Vous ne trouvez toujours pas ? Et bien c'est simple, le principe du `if co
 
 Je viens de vous le dire moins on fait de branchement au runtime meilleur est la performance. Mais parfois je le reconnais pas le choix il faut conserver des instructions `if` y compris dans des sections critiques en terme de performance. Néanmoins depuis la norme C++20 il existe un moyen d'aider le compilateur a optimiser ces branchements y compris s'ils sont indéterminés à la compilation. Cela se fait en faisant des paris. Dis autrement nous allons indiquer au compilateur quel branche va probablement être la plus utilisées ou bien laquelle sera probablement la moins utilisée. Cette indication se fait en ajoutant les attributs `[[likely]]` et `[[unlikely]]` aux blocs d'instruction. 
 
-TODO : add exemple 
+Considérons par exemple une variable générée aléatoirement via le code suivant : 
 
+\snippet ./src/example_if_likely.cpp random
 
+Dans ce cas si on doit écrire un test sur cette variable, nous savons qu'il y a 99.7% de chance que la valeur générée soit dans plus ou moins trois sigma autour de la moyenne. Nous pourrions donc donner cette information au compilateur de la manière suivante : 
 
+\snippet ./src/example_if_likely.cpp if
+
+Après attention avec les `likely`, `unlikely` car si vous donnez la mauvaise information vous allez pénaliser votre code ! 
 
 ## Switch 
+
 
 
 # Instructions d'itération
