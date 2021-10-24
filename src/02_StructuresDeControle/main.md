@@ -113,13 +113,169 @@ Après attention avec les `likely`, `unlikely` car si vous donnez la mauvaise in
 
 ## Switch 
 
+La seconde instruction conditionnelle disponible en C++ est le `switch`. Alors le `switch` en soit n'est pas indispensable car ce qu'il fait est déjà couvert par le bloc `if` que l'on a vu juste avant. Il existe d'ailleurs des langages dans lesquels la structure de contrôle `switch` n'existe pas, c'était le cas de Python jusqu'à la version 3.10. Le `switch` va permettre de faciliter l'écriture de toute une série de test sur une variable donnée. 
 
+La syntaxe du bloc `switch` est la suivante : 
+
+\snippet ./src/example_switch.cpp syntax 
+
+Chaque `case` va correspondre a une égalité stricte par rapport à la variable de test. Par conséquent le bloc d'instruction `switch` ne permet de travailler qu'avec des entiers. C'est donc quelque peu limité mais il peut y avoir certains cas où le switch est plus naturelle que le `if`. 
+
+Vous avez certainement remarqué les instructions `break` à la fin de chaque `case`. Il ne faut surtout pas les oubliers car le switch est un peu idiot et il test toute les conditions y compris s'il est déjà rentré dans un `case` précédent. Du coup si vous ne mettez aucun `break` et que vous avez un `default` et bien il passera **toujours** par le `default` à la fin. D'où la nécessité des `break` ! 
 
 # Instructions d'itération
 
+Nous allons à présent voir le second  type de structure de contrôle que l'on a à disposition pour faire des beaux programmes C++. Il s'agit bien évidemment des boucles. Et c++ comme beaucoup d'autre langage dispose de deux types de boucles : 
+
+- les boucles `for` : qui vont permettre de répéter une série d'instruction **N** fois avec **N** une valeur connue avant de commencer les itérations. 
+- les boucles `while` : qui vont permettre de répéter une série d'instruction **N** mais où **N** n'est pas une valeur connue avant de commencer les itérations. En revanche nous connaissons un critère d'arrêt nous disant à quel condition stopper les itérations. 
+
 ## Boucle while 
 
+La boucle `while` fait intervenir la notion de critère d'arrêt. C'est assez explicite vu le nom puisque `while` se traduit litéralement par `tant que`, ok mais tant que quoi ? Le critère c'est à vous de le spécifier justement. La syntaxe de la boucle while est la suivante : 
+
+```
+while( condition ){
+    // série d'instruction 
+}
+```
+
+On voit donc apparaître la fameuse condition. Comme pour les bloc d'instruction `if` la `condition` peut-être une variable booléenne, une expression d'algèbre booléen, un appel de fonction, ... La seule rêgle est qu'il faut que l'évaluation de `condition` donne un booléen. Considérons par exemple le boût de code suivant qui va compter tout simplement afficher des nombres : 
+
+\snippet ./src/example_while.cpp while_base
+
+Il y a une chose très importante à retenir dans cet exemple ! Vous avez surement remarqué que ma condition de continuation du `while` porte sur la variable `counter` et donc pour le que les itérations s'arrêtent il faut impérativement que la valeur de `counter` soit modifiée par le bloc d'instruction dans le `while`. Sinon et bien on part dans une boucle infinie et la seule chose qui l'arretera sera d'appuyer sur `Ctrl+c` pour stopper le programme. 
+
+Donc lorsque l'on écrit une boucle `while` il faut prendre 5 minutes pour réfléchir à la question : "ma condition a-t-elle une chance de devenir fausse à un moment ?` La difficulté c'est qu'il n'est pas toujours possible de prévoir cela... Prenons par exemple un algorithme de résolution d'une équation non-linéaire, la méthode de Newton. Rien ne nous garrantie que la méthode va converger un jour, cela dépend de notre problème. Pour ces cas où on ne peut pas garantir l'arrêt de la boucle while on ajoute généralement un garde fou qui porte sur le nombre d'itération en fixant un nombre d'itération maximum. 
+
+**Remarque**: pour information il existe une seconde syntaxe de la boucle `while` qui est la suivante : 
+
+```
+do{
+    // bloc d'instruction 
+} while( condition );
+```
+
+Quel intérêt ? Et bien avec cette second syntaxe le `bloc d'instruction` sera toujours exécuté au moins une fois y compris dans le cas où la `condition` est fausse avant même que l'on arrive au `while`. Dans certains cas un peu particulier ça peut servir ! 
+
+\snippet example_while.cpp do_while
+
+Le code précédent qui en toute logique ne devrait rien faire car la condition est toujours fausse affichera quand même une fois le message `dans le while`. 
+
+
 ## Boucle for 
+
+### Les bases
+
+La seconde structure de contrôle qui permet d'itérer est la boucle `for` qui elle est dédiée plutôt aux problèmes où l'on connait d'avance le nombre d'itération à réaliser. 
+
+La syntaxe de la boucle `for` est un petit peu plus complexe que celle du `while`, la voici : 
+
+```
+for( initialisation; condition; incrémentation){
+    // bloc d'instruction 
+}
+```
+
+Plutôt que des grandes phrases regardons un exemple concret tout de suite : 
+
+\snippet ./src/example_for.cpp base 
+
+Dans cet exemple on voit donc apparaître : 
+
+1. On créé une variable `counter`
+2. Dans la boucle `for`
+    1. On initialise `counter` à `0`
+    2. On définit le critère de continuation comme étant `counter<0`
+    3. On définit comment `counter` évolue d'une itération à l'autre 
+
+
+Là vous pourriez me faire la remarque que l'initialisation dans le `for` de `counter` ne sert à rien puisque j'avais fait les choses proprement en initialisant ma variable `counter` dès sa déclaration. Et bien oui vous avez raison et d'ailleur nous pourrions très bien écrire le code suivant : 
+
+\snippet ./src/example_for.cpp no_init
+
+D'ailleur soit dit en passant dans la déclaration de la boucle `for` nous pourrions ne rien mettre entre parenthèse, si ce n'est `;;`. Nous pourrions donc faire : 
+
+```
+for(;;){
+
+
+}
+```
+Qu'obtiendrions nous à votre avis ? Et bien tout simple une boucle infinie l'équivalent d'un `while(true)`... un boucle infinie. 
+
+
+### Un peu plus sympa 
+
+Alors un truc très pénible des boucles `for` du C historique est qu'il est nécessaire de définir dans le scope supérieur la variable qui va nous servir a itérer. Ce n'est pas forcément agréable car on se retrouve alors rapidement avec un scope polué par des `int i`, `int j`, ... et on ne sait plus qui sert à quoi ! 
+
+Bien évidemment avec le C++ c'est plus sympa car on peut déclarer les variables d'itération directement au moment de l'initialisation de la boucle `for`. Cela donne par exempe :  
+
+\snippet ./src/example_for.cpp decl_in_for
+
+### Encore plus sympa le c++11
+
+Depuis la norme C++11 il a été introduit une autre forme pour les boucles `for`, on parle de `range-based for`. La syntaxe est la suivante : 
+
+```
+for( declaration : range-expression){
+    // bloc d'instruction
+}
+```
+
+Cette syntaxe peut en fait très facilement se comparer à ce que l'on trouve dans le langage Python avec le mot clé `in`. Pour le moment nous ne nous attarderons pas sur cette syntaxe car vous ne savez pas encore créer ce qu'il faut pour le `range-expression` ni ce que cela implique. En revanche on peut quand même faire un exemple de base car les `std::string`, étant un peu particulières, font le boulot. Par exemple voici le code pour itérer sur tous les caractères d'une string ! 
+
+\snippet ./src/example_for_auto.cpp for_auto
+
+A l'exécution cela donne : 
+```
+H
+e
+l
+l
+o
+ 
+W
+o
+r
+l
+d
+```
+
+
+
+## Trafiquer un peu les boucles 
+
+Pour finir sur les boucles nous allons voir deux instructions particulières qui permettent d'altérer l'exécution d'une boucle `while` ou d'une boucle `for`. Il s'agit de : 
+
+- `break` : qui va permettre d'interrompre prématurrément les itérations d'une boucle
+- `continue`: qui va permettre de passer directement à l'itération suivante sans même finir le corps de la boucle. 
+
+Par exemple pour le mot clé `continue`
+
+\snippet ./src/example_break_continue.cpp continue
+
+```
+i = 0
+i = 1
+i = 2
+i = 4
+i = 5
+i = 6
+i = 7
+i = 8
+i = 9
+```
+
+Tandis que si dans le même exemple on remplace le mot clé `continue` par `break` on obtient un comportement tout à fait différent : 
+
+\snippet ./src/example_break_continue.cpp break
+
+```
+i = 0
+i = 1
+i = 2
+```
 
 # Gestion des exceptions 
 
