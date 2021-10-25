@@ -279,9 +279,136 @@ i = 2
 
 # Gestion des exceptions 
 
+Pour finir cette partie sur les structures de contrôle nous allons voir comment le C++ nous permet de gérer via le mécanisme des exceptions les erreurs. Et oui il y a des erreurs !! Alors on peut classer les erreurs en deux catégories : 
+
+- Les erreurs de programmation : là le c++ ne peut pas grand chose pour nous à vous de faire attention à ce que vous faites. 
+- Les erreurs utilisateurs : vous avez fait un programme avec un but et un périmètre bien précis et l'utilisateur sort quelque peu de ce périmètre. L'exemple le plus simple est si vous demandez à un utilisateur de fournir une valeur numérique et que vous utilisez cette valeur comme dénominateur d'une division. Et bien si l'utilisateur rentre un `0` pas de bol il va y avoir un problème. 
+
+C'est donc pour les erreurs utilisateurs que le c++ nous met à disposition le mécanisme d'exception. Car comme tout le monde le sait, le problème est souvent entre la chaise et le clavier ! 
+
 ## La notion d'exception 
+
+Le principe de la gestion d'exception est le suivant. Dans certaines parties critiques de notre code nous allons déclarer des zones où nous allons **essayer** de réaliser les instructions tout en sachant que dans cette zone il peut y avoir un problème. Lors de l'exécution de cette zone critique si un problème survient nous allons "jeter un bouteille à la mer", ce que l'on appel une exception, qui va contenir les informations au sujet de l'erreur. Enfin si l'on souhaite gérer cette erreur nous pouvons l'attraper et ainsi proposer une action correctrice. 
+
+Cette notion d'exception est très importante car c'est elle qui va permettre de de ne pas avoir un programme qui crash à chaque fois que l'utilisateur fait quelque chose d'interdit. Pour le moment vous vous dites que ce n'est pas grave, au pire l'utilisateur relance. C'est une vision mais qui ne plait pas trop dans la vraie vie. Car dite vous bien que si le programme en question est un gros code avec une interface graphique, c'est quand même dommage que tout se ferme et tout soit perdu à cause d'une mauvaise action. Je suis sur que vous êtes d'accord car ça a déjà du vous arriver. Et donc le fait de lancer une exception permettra de l'attraper et par exemple afficher une fenêtre de pop-up dans le programme expliquant à l'utilisateur son erreur ! Et ça c'est plus sympa ! 
+
+
+## Lancer une exception 
+
+Pour lancer notre bouteille à la mer, notre exception, il faut utiliser le mot clé `throw` qui va nous permettre de lever une exception. Mais concrètement une exception c'est quoi ? Et bien en fait le mot-clé nous permet de jeter un peu n'importe quoi à la mer (je sais c'est pas sympa pour la planète). 
+
+Par exemple : 
+
+\snippet ./src/example_throw.cpp throw_int
+
+L'exécution de cette instruction, sans aucun gestion derrière nous donne donc la sortie suivante dans le terminal : 
+```
+terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+```
+
+C'est un peu sommaire. Alors après nous pourrions très bien récupérer au niveau de la gestion des exceptions le code `42` et ainsi exécuter l'action correctrice appropriée. C'est le système des codes d'erreur où il faut lire la doc pour savoir à quoi l'erreur 42 correspondrait. 
+
+Mais le C++ nous met à disposition un truc un peu plus sympa que juste des codes d'erreurs pour lever des exceptions. En effet dans la librairie `<stdexcept>` il y a de pré-défini tout un ensemble de catégories d'exceptions. 
+
+- `std::logic_error`
+- `std::invalid_argument`
+- `std::domain_error`
+- `std::length_error` 
+- `std::out_of_range`
+- `std::runtime_error`
+- `std::range_error`
+- `std::overflow_error`
+- `std::underflow_error` 
+
+L'intérêt de ces types d'exceptions, oui il s'agit de type au même titre que les `int` par exemple est qu'ils vont accepter un message d'erreur qui sera certainement plus explicit pour l'utilisateur final. 
+
+Par exemple : 
+
+\snippet ./src/example_throw_except.cpp include
+
+\snippet ./src/example_throw_except.cpp all 
+
+L'exécution de cette portion de code, toujours dans le cas où l'on ne gère pas les exceptions, donnera donc le résultat suivant à l'exécution. 
+
+```
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  Oups... il ne fallait pas faire ça!
+Aborted (core dumped)
+```
+
+La grande question maintenant ! Quand est-ce qu'on doit envoyer une exception ? Et bien là c'est à vous de gérer et surtout le plus difficile à vous d'essayer de prévoir toutes les mauvaises manipulations pouvant être faites par l'utilisateur. 
+
+Par exemple dans le morceau de code suivant : 
+
+\snippet ./src/example_except.cpp example1
+
+Qu'est ce qui pourrait mal tourner là dedans ? Et bien par exemple : 
+
+```
+valeur de a: 10
+valeur de b: 0
+Floating point exception (core dumped)
+```
+
+Du coup il faut anticiper cela de la manière suivante par exemple : 
+
+\snippet ./src/example_except.cpp example2
+
+Ce qui pour l'exécution problématique donnerait le résultat suivant : 
+```
+valeur de a: 10
+valeur de b: 0
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  Invalid value for b. Requires b != 0
+Aborted (core dumped)
+```
+
+Ca ne change pas énormément vous allez me dire. Alors si le changement est notable dans le sens où maintenant nous sommes capable d'attraper ailleurs dans notre programme cette erreur et de réaliser une contre-mesure adéquat plutôt que laisser le programme se planter lamentablement. 
 
 ## Essai - erreur 
 
+Maintenant que l'on sait jeter la bouteille à la mer lorsque l'on constate un problème, une erreur d'utilisation, nous allons voir comment on rattrape la bouteille. Car oui c'est bien de lever une exception, c'est encore mieux de la gérer. Pour cela il faut écrire dans les instructions qui sont susceptibles de lever une exceptions dans un bloc de code déclarer comme ***critique***. Dans ce cas à l'exécution il y aura donc une phase d'essai-erreur. Le code "douteux" est exécuter, si ça passe tant mieux sinon on exécute un code de remplacement. 
+
+Ce mécanisme d'essai erreur se fait à l'aide des mots clés `try` et `catch`. On comprend assez bien le sens je pense. La syntaxe de ces instructions est la suivante 
+
+```
+try{
+
+    // du code qui peut potentiellement lever des exceptions 
+}
+catch( type variable){
+    // du code qui fait autre chose si dans le bloc try une exception a été levée
+}
+```
+
+Vous voyez apparaître le fait que l'instruction `catch` attend un déclaration de la forme `type variable`. Pourquoi ? Et bien c'est lié au fait que l'on a plusieurs types d'exception comme je vous l'ai dit il y a peu. Du coup suivant le type d'exception on peut faire un `catch` spécifique. 
+
+Par exemple considérons le code suivant : 
+
+\snippet ./src/example_except_type.cpp base 
+
+Plusieurs choses peuvent mal se passer içi. Pour les prévenir nous pourrions écrire quelque chose du genre : 
+
+\snippet ./src/example_except_type.cpp base2 
+
+Dans ce cas suivant le problème on ne lève pas le même type d'exception. Et donc à la gestion des exceptions on peut catégoriser les erreur de la manière suivante : 
+
+```
+try{
+
+
+}
+catch(std::invalid_argument e){
+
+}
+catch(std::runtime_error e){
+
+}
+```
+
+Pour finir, si dans la gestion des exceptions vous souhaitez récupérer le message d'erreur vous pouvez simplement utiliser `.what()` qui vous renvoie la chaine de caractère associée. Par exemple : 
+
+\snippet ./src/example_exception.cpp base 
 
 
