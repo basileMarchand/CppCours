@@ -11,7 +11,7 @@ Dans ce chapitre nous allons nous focaliser sur les conteneurs. Précédemment n
 
 ## Un conteneur : une variable contenant d'autres variables 
 
-Un conteneur peut-être vu comme une variable contenant d'autre variables. Autrement dit le conteneur va nous permettre avec un identifiant unique de référencer un ensemble de valeurs. Ces valeurs sont ordonnées au sein du conteneur en suivant une logique propre au conteneur. 
+Un conteneur peut-être vu comme une variable contenant d'autres variables. Autrement dit le conteneur va nous permettre, avec un identifiant unique, de référencer un ensemble de valeurs. Ces valeurs sont ordonnées au sein du conteneur en suivant une logique propre à celui-ci. 
 
 
 ## Conteneur statique vs dynamique 
@@ -24,21 +24,18 @@ Les conteneurs se distinguent entre eux selon deux points :
 
 # Le tableau statique
 
-Le premier conteneur possible est le tableau statique ou `array`, i.e. un tableau dont la taille est fixe et idéalement connue à la compilation. 
-
+Le premier conteneur possible est le tableau statique ou `array` i.e. un tableau dont la taille est fixe et idéalement connue à la compilation. 
 
 
 ## Version historique 
 
 \snippet ./src/c_array_example.cpp create
 
-
 \snippet ./src/c_array_example.cpp create_constexpr
 
 Sous-réserve que la fonction `getSize` soit de type `constexpr` c'est à dire que son résultat peut-être évalué à la compilation. Par exemple : 
 
 \snippet ./src/c_array_example.cpp getSize
-
 
 Pour accéder aux valeurs d'un tableau statique on utilise l'opérateur `[i]` avec `i` l'indice de l'élément que l'on veut. Cet opérateur s'utilise pour les accès en lecture : 
 
@@ -91,7 +88,7 @@ Où encore la possibilité d'échanger le contenu de deux `array` avec la métho
 
 ## Pourquoi et quand utiliser un tableau statique 
 
-Les tableaux statiques semblent quelque peu limités de par le fait que leur taille est fixe et qu'il faut que cette dernière soit connue à la compilation. C'est vrai mais en fait dans de nombreux cas nous voulons des tableaux respectant ces deux critères. En effet, dans des tas de programmes, nous avons besoin de petits tableaux écrits *en dur* dans le code et, lorsque c'est le cas, il ne faut surtout pas se priver d'utiliser des `std::array`. 
+Les tableaux statiques semblent quelque peu limités de par le fait que leur taille est fixe et qu'il faut que cette dernière soit connue à la compilation. C'est vrai mais en fait, dans de nombreux cas, nous voulons des tableaux respectant ces deux critères. En effet, dans des tas de programmes, nous avons besoin de petits tableaux écrits *en dur* dans le code et, lorsque c'est le cas, il ne faut surtout pas se priver d'utiliser des `std::array`. 
 
 Pourquoi ? 
 
@@ -139,7 +136,7 @@ Pour créer le même vecteur d'entiers, mais de taille initiale 10, il suffit de
 Question que vous vous posez très certainement: Quelles valeurs initiales ont été données à ce `std::vector` de taille 10 ? 
 Et bien par défaut, c'est-à-dire si vous ne spécifiez rien, la valeur initiale prise est l'élément `nul` du type contenu dans le `std::vector` donc ici `int(0)`.
 
-Néanmoins, il est possible de spécifier à la déclaration du `std::vector` une valeur initiale. Pour cela il suffit de fournir, en plus de la taille, un second argument qui est la valeur initiale.
+Néanmoins, il est possible de spécifier, à la déclaration du `std::vector`, une valeur initiale. Pour cela il suffit de fournir, en plus de la taille, un second argument qui est la valeur initiale.
 
 Pour créer un `std::vector` d'entiers, de taille 10 et de valeur initiale 2 il suffit de procéder de la manière suivante : 
 
@@ -188,7 +185,7 @@ Pour itérer sur les valeurs d'un `std::vector`, plusieurs solutions s'offrent �
 
 \snippet ./src/vector_example.cpp parcour_old_school
 
-Cette méthode était la seule possible avant la norme `c++11`. Mais depuis le `C++11` est apparu la notion d'itérateur et donc une syntaxe beaucoup plus sympathique à utiliser. D'ailleurs, si vous avez suivi attentivement les cours de Python, cette syntaxe old-school doit fortement vous faire penser à une syntaxe que l'on vous à interdit d'utiliser à savoir :
+Cette méthode était la seule possible avant la norme `C++11`. Mais depuis le `C++11` est apparu la notion d'itérateur et donc une syntaxe beaucoup plus sympathique à utiliser. D'ailleurs, si vous avez suivi attentivement les cours de Python, cette syntaxe old-school doit fortement vous faire penser à une syntaxe que l'on vous à interdit d'utiliser à savoir :
 
 ```python 
 for i in range(len(data)):
