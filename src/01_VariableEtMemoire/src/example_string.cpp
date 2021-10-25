@@ -16,14 +16,15 @@ int main(){
     std::string debut = "Hello tout le monde";
     std::string fin = "vous allez bien ?";
 
-    std::string phrase = debut + ", " + fin; // Hello tout le monde, vous allez bien ? 
+    std::string phrase1 = debut + ", " + fin; // Hello tout le monde, vous allez bien ? 
     /// [string_sum]
 
     /// [selection]
 
-    std::string phrase = "Hello tout le monde";
-    bool start = phrase.starts_with("Hel"); // start = true;
-    bool end = phrase.ends_with("!");       // end = false;
+    std::string phrase2 = "Hello tout le monde";
+    bool start = phrase2.starts_with("Hel"); // start = true;
+    bool end = phrase2.ends_with("!");       // end = false;
+    
     /// [selection]
 
 

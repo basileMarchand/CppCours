@@ -5,9 +5,9 @@
 int main(int argc, char** argv){
     if( argc != 3 ){
         std::cerr << "Wrong input arguments " << std::endl;
-        std::cout << "usage : " << std::endl; 
-        std::cout << "  ./programme.out fichier.csv nbLineToTreat" << std::endl; 
-        return EXIT_FAILURE;
+        std::cerr << "usage : " << std::endl; 
+        std::cerr << "  ./programme.out fichier.csv nbLineToTreat" << std::endl; 
+        return EXIT_FAILURE; // (pour afficher la valeurs dans un terminal shell faire: echo $?
     }
 
     const std::string fileName = argv[1];
