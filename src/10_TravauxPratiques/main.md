@@ -1,11 +1,16 @@
-# TP La calculatrice en notation polonaise inversée
 
-On vous conseille dans un premier temps de ne lire que la section **Objectif de l'exercice** et de réfléchir soigneusement à la réalisation du code **chacun de votre côté**. Ayez confiance en vous ! 
-N'adoptez surtout pas "*pour aller plus vite*" les idées des autres. Ces TPs sont là pour vous laisser imaginer les choses à faire, pour vous tromper, poser des questions à vos enseignants et recommencer... mais pas pour coder la solution de votre voisin (vous resteriez alors dans un rôle de simple *exécutant* qui vous empêchera de progressez). 
+Travaux pratiques    {#TPSection}
+=================
 
-Ceux qui sont vraiment bloqués, peuvent lire la section  **Quelques conseils pour bien débuter**.
+On vous conseille dans un premier temps de ne lire que la section **Objectif de l'exercice** et de réfléchir soigneusement à la réalisation du code **chacun de votre côté**. N'adoptez surtout pas "*pour aller plus vite*" les idées des autres, vous devez imaginer par vous même les choses à faire, vous pouvez vous tromper et poser des questions à vos enseignants, et recommencer... mais si vous codez la solution de votre voisin, vous vous mettriez dans un simple rôle d'*exécutant* qui vous empêchera de progressez.
+
+Ceux qui sont vraiment bloqués, peuvent ensuite lire la section  **Quelques conseils pour bien débuter**.
 
 Vous pouvez tous lire la section **Quelques remarques**.
+
+[TOC]
+
+# TP sur la calculatrice en notation polonaise inversée 
 
 ## Objectif de l'exercice
 
@@ -56,5 +61,5 @@ Que se passe-t-il quand votre programme va rencontrer l'entrée `3 5 x` ?
    * il rencontre `3` (il ne sait rien calculer, il doit le garder)
    * il rencontre `5` (il ne sait rien calculer, il doit le garder)
    * il rencontre `x` (il sait que c'est la multiplication binaire dont il possède déjà les deux opérandes; il sait aussi qu'il n'aura plus besoin des deux opérandes mais du résultat du calcul ici `15`)
-   * ah ben ... y a plus rien après: l'expression est terminée, le résultat doit être affiché `15`
+   * il n'y a plus rien après, l'expression est terminée, le résultat doit être affiché `15`
 
