@@ -42,10 +42,6 @@ Du coup la question que l'on peut se poser et que vous vous posez j'en suis cert
 
 Dans ce cas on définit la variable `variableGlobale` en dehors de la fonction `main` il s'agit donc d'une variable globale. En revanche ce n'est pas recommandée car cela crée des variables qui occupent de l'espace mémoire tout au long du programme et en plus cela nuit à la lisibilité du code. Donc on peut définir des variables globales mais on évite tant que faire ce peut.
 
-## La pile d'exécution 
-
-TODO 
-
 # Instructions conditionnelles
 
 Maintenant que vous en savez un peu plus sur la notion de bloc d'exécution et de scope d'une variable nous allons pouvoir entrer dans le vif du sujet de cette partie à savoir les structures de contrôle. Et pour commencer nous allons nous intéresser à celles qui vont nous permettre de faire varier le comportement de notre programme suivant certains critères. On parle de branchements.
