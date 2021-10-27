@@ -4,6 +4,9 @@ project(ApprentissageProgrammationCpp)
 # Compiler options 
 include(${PROJECT_SOURCE_DIR}/cmake/setup_compiler.cmake)
 
+include(${PROJECT_SOURCE_DIR}/cmake/test_macro.cmake)
+
+
 include ( CTest )
 enable_testing ()
 
