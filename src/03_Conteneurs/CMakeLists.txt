@@ -1,0 +1,3 @@
+
+AutoAddTests( ./src )
+
