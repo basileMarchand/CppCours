@@ -351,7 +351,7 @@ Floating point exception (core dumped)
 
 Du coup il faut anticiper cela de la manière suivante par exemple : 
 
-\snippet ./src/example_except.cpp example2
+\snippet ./src/example_except_norun.cpp example2
 
 Ce qui pour l'exécution problématique donnerait le résultat suivant : 
 ```
