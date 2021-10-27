@@ -1,3 +1,5 @@
+#include <iostream>
+
 /// [include]
 #include <array> 
 /// [include]
@@ -6,19 +8,22 @@
 int main(){
     // 1. Create array 
 
+    {
     /// [create]
     std::array<double, 10> arr;
     /// [create]
-
+    }
+    {
     /// [create_initializer_list]
     std::array<int, 10> arr {1,2,3,4,5,6,7,8,9,10};
     /// [create_initializer_list]
-
+    }
+    {
     /// [create_and_fill]
     std::array<double, 4> arrDouble; 
     arrDouble.fill(1.5);
     /// [create_and_fill]
-
+    }
     {
     /// [size]
     std::array<double, 7> arrDouble; 
