@@ -2,7 +2,7 @@
 Travaux pratiques    {#TPSection}
 =================
 
-On vous conseille dans un premier temps de ne lire que la section **Objectif de l'exercice** et de réfléchir soigneusement à la réalisation du code **chacun de votre côté**. N'adoptez surtout pas "*pour aller plus vite*" les idées des autres, vous devez imaginer par vous même les choses à faire, vous pouvez vous tromper et poser des questions à vos enseignants, et recommencer... mais si vous codez la solution de votre voisin, vous vous mettriez dans un simple rôle d'*exécutant* qui vous empêchera de progressez.
+On vous conseille dans un premier temps de ne lire que la section **Objectif de l'exercice** et de réfléchir soigneusement à la réalisation du code **chacun de votre côté**. N'adoptez surtout pas *pour aller plus vite* les idées des autres, vous devez imaginer par vous même les choses à faire, vous pouvez vous tromper et poser des questions à vos enseignants, et recommencer... mais si vous codez la solution de votre voisin, vous vous mettriez dans un simple rôle d'*exécutant* qui vous empêchera de progressez.
 
 Ceux qui sont vraiment bloqués, peuvent ensuite lire la section  **Quelques conseils pour bien débuter**.
 
@@ -46,7 +46,7 @@ ainsi `2*-2` sera `2 2 ! *`
 
 1. Comme vous ne savez pas encore gérer les exceptions, dans un premier temps vous pouvez considérer que les expressions (données en argument au programme) sont bien formées. Mais nous vous invitons à réfléchir et à repérer, dans votre code, les potentiels problèmes.
 
-## *attention spoiler* Quelques conseils pour  débuter
+## (attention spoiler) Quelques conseils pour  débuter
 
 1. Ne programmez pas tout d'un coup mais petit à petit en veillant à ce que votre code compile à chaque étape.  
 Par exemple, une première version, peut être un exécutable qui prend les arguments sur la ligne de commande et les affiche.
