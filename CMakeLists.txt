@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.8)
 project(ApprentissageProgrammationCpp)
 
+# Compiler options 
+include(${PROJECT_SOURCE_DIR}/cmake/setup_compiler.cmake)
+
 include ( CTest )
 enable_testing ()
 

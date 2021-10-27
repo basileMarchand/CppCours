@@ -4,7 +4,7 @@
 int main(int argc, char** argv){
     if( argc != 2 ){
         std::cerr << "Wrong input arguments " << std::endl;
-        std::cout << "usage : " << std::end; 
+        std::cout << "usage : " << std::endl; 
         std::cout << "  ./programme.out fichier.csv" << std::endl; 
         return EXIT_FAILURE;
     }
