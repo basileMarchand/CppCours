@@ -68,7 +68,7 @@ Les éléments `une_condition` et `une_autre_condition` peuvent être : (i) des 
 
 Par exemple considérons l'exemple concret suivant : 
 
-\snippet ./src/example_if.cpp all
+\snippet ./src/example_if_norun.cpp all
 
 Bien évidemment la syntaxe de l'instruction `if` est bien plus souple que cela. Nous pouvons avoir les cas suivants : 
 - Un `if` sans `else if` et sans `else`
@@ -339,7 +339,7 @@ La grande question maintenant : Quand est-ce qu'on doit envoyer une exception ? 
 
 Par exemple dans le morceau de code suivant : 
 
-\snippet ./src/example_except.cpp example1
+\snippet ./src/example_except_norun.cpp example1
 
 Qu'est ce qui pourrait mal tourner là dedans ? Et bien par exemple : 
 
@@ -384,11 +384,11 @@ Vous voyez apparaître le fait que l'instruction `catch` attend une déclaration
 
 Par exemple considérons le code suivant : 
 
-\snippet ./src/example_except_type.cpp base 
+\snippet ./src/example_except_type_norun.cpp base 
 
 Plusieurs choses peuvent mal se passer ici. Pour les prévenir nous pourrions écrire quelque chose du genre : 
 
-\snippet ./src/example_except_type.cpp base2 
+\snippet ./src/example_except_type_norun.cpp base2 
 
 Dans ce cas, suivant le problème, on ne lève pas le même type d'exception. Et donc, à la gestion des exceptions, on peut catégoriser les erreur de la manière suivante : 
 
@@ -407,6 +407,6 @@ catch(std::runtime_error e){
 
 Pour finir, si dans la gestion des exceptions vous souhaitez récupérer le message d'erreur, vous pouvez simplement utiliser `.what()` qui vous renvoie la chaîne de caractères associée. Par exemple : 
 
-\snippet ./src/example_exception.cpp base 
+\snippet ./src/example_exception_norun.cpp base 
 
 

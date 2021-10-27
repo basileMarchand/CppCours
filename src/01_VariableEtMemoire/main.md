@@ -215,7 +215,7 @@ Toute la difficulté apparaît lorsque l'on veut travailler avec des chaînes de
 
 D'ailleurs je vous ai dit, dans le chapitre d'intro, que la fonction `main` (le fameux point d'entrée des programmes) peut prendre des arguments d'entrée: il s'agit des arguments passés à la suite de l'appel du programme. Et bien il s'agit d'un tableau de tableau de `char`. Cela se symbolise par `char**`. Par exemple nous pourrions faire la fonction `main` suivante : 
 
-\snippet main_args.cpp all
+\snippet main_argv.cpp all
 
 La compilation `g++ main.cpp` et l'exécution donneraient alors : 
 

@@ -55,3 +55,7 @@ AddCXXFlag("Wextra" TRUE)
 AddCXXFlag("Wpedantic" TRUE)
 AddCXXFlag("Wfatal-errors" TRUE)
 
+## In a real project never add these compilation flags 
+AddCXXFlag("Wno-unused-variable" TRUE)
+AddCXXFlag("Wno-unused-but-set-variable" TRUE)
+
