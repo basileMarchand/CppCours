@@ -1,36 +1,55 @@
 
-Les conteneurs en c++    {#conteneurSection}
-=====================
+Les structures de données en c++    {#structuresDeDonnees}
+================================
 
 [TOC]
 
 
 # Introduction 
 
-Dans ce chapitre nous allons nous focaliser sur les conteneurs. Précédemment nous avons vu comment faire des variables en utilisant des types de bases relativement simples mais, dans de nombreux de cas, c'est loin d'être suffisant. En effet, dans la plupart des applications, on ne fait pas un programme pour traiter une valeur mais pour traiter un ensemble de valeurs. D'où les conteneurs. 
+Dans ce chapitre nous allons aborder un aspect essentiel de la programmation les structures de données. Jusqu'à maintenant nous avons vu comment déclarer des variables, c'est bien pour commencer mais c'est loin d'être suffisant. La plupart du temps un programme informatique ne sert qu'à une chose, traiter des gros paquets de données. La grande question qui apparait alors est comment représenter ces données dans notre programme ? Il semble évident que faire une variable pour chaque donnée n'est pas la bonne approche, sauf si vous ne savez plus quoi faire de vos soirées mais j'en doute ! C'est là que les structures de données viennent à notre secour ! Le principe est simple on va faire une variable qui contenir notre gros paquet de données, c'est pour cela que l'on parle aussi de conteneur. 
 
-## Un conteneur : une variable contenant d'autres variables 
+Wait ! wait !! Pourquoi des structures de données ? Un gros paquet c'est un gros paquet il n'y a pas 20 000 manières de le ranger non ? **Que nenni** !! Il existe différent types de conteneurs car selon les données que l'on manipule, les algorithmes que l'on met en place, il faudra utiliser une structure de données plutôt qu'une autre. 
 
-Un conteneur peut-être vu comme une variable contenant d'autres variables. Autrement dit le conteneur va nous permettre, avec un identifiant unique, de référencer un ensemble de valeurs. Ces valeurs sont ordonnées au sein du conteneur en suivant une logique propre à celui-ci. 
-
-
-## Conteneur statique vs dynamique 
-
-Les conteneurs se distinguent entre eux selon deux points : 
-
-1. La logique interne au conteneur, i.e. comment les valeurs sont ordonnées dans le conteneur 
-2. Le fait que la taille du conteneur soit statique ou dynamique 
+Il existe plein de structures de données, nous verrons même plus loin dans le cours que l'on peut créer ses propres structures de données. Mais pour le moment nous allons déjà faire un tour d'horizon des structures de données disponible nativement dans le C++. 
 
 
-# Le tableau statique
+# Les tableaux 
 
-Le premier conteneur possible est le tableau statique ou `array` i.e. un tableau dont la taille est fixe et idéalement connue à la compilation. 
+## Le conteneur indispensable 
+
+Les tableaux sont des conteneurs homogènes, ils ne contiendront donc que des données du même type. On aura donc des tableaux de `int`, des tableaux de `double`, ... mais pas de mélange des genres. Il faut faire attention dans le vocabulaire à ne pas mélanger tableau et liste. Car nous le verrons plus loins il existe également une structure de données liste. **La** particularité des tableaux réside dans la représentation en mémoire. En effet un tableau est stocké de manière contigue en mémoire ! C'est à dire que si par exemple je veux faire un tableau de 10 `double` et bien en mémoire mon tableau sera stocké sur un segment de la ram de taille 10\*64 bits. Et cet aspect stockage contigu en mémoire va s'avérer être une particularité essentiel des tableaux car elle permet un certain nombre d'optimisation. 
 
 
-## Version historique 
+D'ailleurs pour la petite histoire, dans le monde d'avant ici le monde du **C**, l'allocation d'un tableau se faisait en demandant explicitement un morceau de la RAM pouvant contenir 10 fois le nombre de bits nécessaire à stocker un double. La commande était la suivant : 
+```
+malloc( 10*sizeof(double));
+```
+Je vous rassures c'est la seule et unique fois où vous verrez un `malloc` dans ce cours car le C++ permet désormais des syntaxe beaucoup plus sympatique, de mon point de vue. 
+
+
+Depuis le début je dis **les** tableaux car il existe en réalité deux types de tableau, les tableaux statiques et les tableaux dynamiques. La distinction entre les deux repose principalement sur le fait de savoir s'il est possible ou non de changer à l'exécution la taille du tableau.  
+
+
+## Le tableau statique
+
+Le premier conteneur possible est le tableau statique ou `array` i.e. un tableau dont la taille est fixe et connue à la compilation. Alors comme pour beaucoup de chose en C++ il existe deux manières de faire des tableaux statiques. La version old-school et la version post C++11. Etant donné que vous risquez très probablement de tomber sur un bout de code qui utilise la version old-school nous allons en parler mais je vous conseille fortement d'utiliser la version moderne pour tous les codes que vous écririez vous même. 
+
+
+### Version historique 
+
+La définition d'un tableau statique en C++ du monde d'avant se fait en utilisant la syntaxe générique suivante : 
+
+```
+type nomVariable[taille_tableau];
+```
+
+Par exemple pour créer une tableau de 10 entiers nous pouvons faire : 
 
 \snippet ./src/c_array_example.cpp create
 
+
+Nous pouvons également faire : 
 \snippet ./src/c_array_example.cpp create_constexpr
 
 Sous-réserve que la fonction `getSize` soit de type `constexpr` c'est à dire que son résultat peut-être évalué à la compilation. Par exemple : 
@@ -45,13 +64,27 @@ Mais également pour les accès en écriture.
 
 \snippet ./src/c_array_example.cpp acces_write 
 
-## Version moderne 
+Depuis le C++11 il est également possible de fournir à la construction du tableau une liste d'initialization. Nous pouvons alors distinguer trois cas de figures.
+
+Pour commencer nous voulons créer un tableau de 5 entiers valant 1, 2, 3, 4, 5.. Nous pouvons alors procéder de la manière suivante : 
+\snippet ./src/c_array_example.cpp list_init_1
+Vous voyez que la taille n'est pas spécifiée ici elle est déduite par le compilateur en regardant la taille de la liste d'initialization. Du coup que ce passe-t-il si on met une taille et une liste d'initialization et surtout si les deux tailles ne collent pas. Par exemple : 
+
+\snippet ./src/c_array_example.cpp list_init_2
+
+Dans ce cas le tableau sera alors `[1,2,3,4,5,0,0,0,0,0]` et oui le tableau prendra les valeurs de la liste d'initialisation et mettra des zéros ensuites. 
+
+Et enfin si on fournit une liste d'initialisation vide ? Et bien là c'est magique car automatiquement le tableau sera mis à zéro pour chaque éléments alors que sans la liste d'initialisation les valeurs sont non déterministes ! 
+
+\snippet ./src/c_array_example.cpp list_init_3
+
+
+
+### Version moderne 
 
 Depuis la norme `c++11` il existe, dans la librairie standard, une alternative au tableau à la `C` historique. Il s'agit du conteneur `std::array`. Le `std::array` encapsule un tableau à la `C` en offrant un certain nombre de fonctions utilitaires en simplifiant l'usage. Pour utiliser les `std::array` il ne faut pas oublier de faire le bon include ;) 
 
 \snippet ./src/std_array_example.cpp include 
-
-
 
 La déclaration d'un `std::array` se fait en utilisant la syntaxe suivante, qui peut sembler particulière, mais qui s'expliquera lorsqu'on verra les templates :
 
@@ -86,13 +119,13 @@ Où encore la possibilité d'échanger le contenu de deux `array` avec la métho
 \snippet ./src/std_array_example.cpp swap
 
 
-## Pourquoi et quand utiliser un tableau statique 
+### Pourquoi et quand utiliser un tableau statique 
 
 Les tableaux statiques semblent quelque peu limités de par le fait que leur taille est fixe et qu'il faut que cette dernière soit connue à la compilation. C'est vrai mais en fait, dans de nombreux cas, nous voulons des tableaux respectant ces deux critères. En effet, dans des tas de programmes, nous avons besoin de petits tableaux écrits *en dur* dans le code et, lorsque c'est le cas, il ne faut surtout pas se priver d'utiliser des `std::array`. 
 
 Pourquoi ? 
 
-Et bien parce que le fait d'avoir un tableau dont la taille est connue à la compilation va permettre au compilateur de faire tout un tas d'optimisation pour vous et donc vous aurez au final un code bien plus performant.
+Et bien parce que le fait d'avoir un tableau dont la taille est connue à la compilation va permettre au compilateur de faire tout un tas d'optimisation pour vous et donc vous aurez au final un code bien plus performant. Dans l'extrait ci-dessous on fait deux fonctions ; (i) la première crée un tableau statique de 5 éléments ; (ii) la seconde crée un tableau dynamique (teaser de la partie suivante). En observant l'onglet de droite on peut alors voir que le code assembleur généré par le compilateur est minimaliste dans le cas du tableau statique tandis que pour le tableau dynamique il y a beaucoup plus d'instructions liées au fait que le tableau dynamique va nécessiter des opérations de gestion de la mémoire supplémentaires. 
 
 
 \htmlonly 
@@ -101,21 +134,21 @@ Et bien parce que le fait d'avoir un tableau dont la taille est connue à la com
 
 \endhtmlonly 
 
-Cependant, le tableau statique n'est pas la solution miracle car, dans énormément de cas, on ne peut pas déterminer à l'avance la taille des tableaux, cette taille n'est connue qu'à l'exécution. 
+Cependant, le tableau statique n'est pas la solution miracle car dans énormément de cas on ne peut pas déterminer à l'avance la taille des tableaux, cette taille n'est connue qu'à l'exécution. Il est donc nécessaire d'avoir sous la main un tableau plus souple d'usage.  
 
 
-# Le tableau dynamique utile dans 99% des cas 
+## Le tableau dynamique utile dans 99% des cas 
 
-Le second type de conteneur que l'on va être amenés à utiliser est le tableau dynamique, celui ci comme son nom l'indique, et contrairement au tableau statique, n'a pas besoin d'être complètement déterminé au moment de la compilation. Il s'agit donc du conteneur passe-partout qui va nous servir dans la plupart des cas. 
-Ce tableau dynamique s'appelle le `std::vector`. Pour l'utiliser il ne faut pas oublier de faire l'include associé : 
+Le second type de tableau que l'on va être amené à utiliser est le tableau dynamique, celui ci comme son nom l'indique, et contrairement au tableau statique, n'a pas besoin d'être complètement déterminé au moment de la compilation. Il s'agit donc du conteneur passe-partout qui va nous servir dans la plupart des cas. De plus l'autre intérêt majeur par rapport au tableau statique est que l'on va pouvoir à l'exécution changer la taille du tableau, réduire ou agrandir. 
+En C++ ce tableau dynamique s'appelle le `std::vector`. Pour l'utiliser il ne faut pas oublier de faire l'include associé : 
 
 \snippet ./src/vector_example.cpp include_vector
 
-**Attention** : le nom de `vector` est très malheureux car le `std::vector` n'a rien à voir avec un vecteur au sens mathématique du terme. Il s'agit ici uniquement d'un paquet de valeurs de n'importe quel type et sans aucune propriété mathématique associée. 
+**Attention** : le nom de `vector` est très malheureux car le `std::vector` n'a rien à voir avec un vecteur au sens mathématique du terme. Il s'agit ici uniquement d'un paquet de valeurs de n'importe quel type et sans aucune propriété mathématique associée.
 
-## Généralité sur le std::vector 
+### Généralité sur le std::vector 
 
-### Créer un vector 
+#### Créer un vector 
 
 Pour créer un `std::vector` il n'est pas nécessaire de fournir à la compilation la taille de ce dernier, c'est tout l'intérêt de l'aspect dynamique de la chose, en revanche il faut bien évidemment spécifier le type des valeurs qui seront contenues dans ce `std::vector`. Pour cela la syntaxe, quelque peu similaire au `std::array` vu précédemment, est la suivante : 
 
@@ -153,7 +186,7 @@ Dans ce cas, la taille du `std::vector` est automatiquement déduite de la liste
 \snippet ./src/vector_example.cpp create_initializer_list_without_type
 
 
-### Accéder aux éléments d'un vector 
+#### Accéder aux éléments d'un vector 
 
 Pour accéder aux éléments d'un vector, **attention on rappelle que les indices en `C++` commencent à 0**, il suffit de procéder de la manière suivante : 
 
@@ -167,7 +200,7 @@ Quelle est la différence entre les deux méthodes ? A première vue aucune... E
 
 **Remarque :** il est possible avec `GCC` de forcer, pour l'opérateur `[]`, la vérification des bornes. Il suffit de spécifier l'option de compilation suivante **-D_GLIBCXX_DEBUG**. 
 
-### Modifier des valeurs
+#### Modifier des valeurs
 
 Pour modifier des valeurs dans un `std::vector`, la démarche est très proche de ce que l'on vient de voir pour accéder aux valeurs. Il suffit de mettre **= quelque chose** est ça fonctionne !! 
 
@@ -179,7 +212,7 @@ ou bien en utilisant le `at`
 
 Là encore la distinction entre `[]` et `at` se situe au niveau de la vérification ou non de la validité de l'indice fourni.
 
-### Parcourir les valeurs d'un std::vector 
+#### Parcourir les valeurs d'un std::vector 
 
 Pour itérer sur les valeurs d'un `std::vector`, plusieurs solutions s'offrent à vous. La première solution, que je qualifierai de old-school, est de créer une variable d'itération, à tout hasard `i` et d'accéder aux éléments du `std::vector` en utilisant ce `i`. Cela donne par exemple : 
 
@@ -199,18 +232,85 @@ for x in data:
     ...
 \endcode
 
-Et bien avec le `C++11` nous avons une syntaxe similaire qui est la suivante : 
+Et bien maintenant nous pouvons faire quelque chose de similaire avec le C++11. Et vous le savez déjà en réalité ! Il suffit d'utiliser la syntaxe `for( type x: iterable){}` du c++11. Par exemple nous pouvons faire : 
 
 \snippet ./src/vector_example.cpp parcour_post_cpp11
 
 
+Et c'est quand même vachement plus sympa comme syntaxe non ? 
 
-## Pourquoi le std::vector est si bien 
+### Pourquoi le std::vector est si bien 
 
-Maintenant la question est: Pourquoi le std::vector répond-il à 99% des besoins ? Majoritairement parce qu'il est redimensionnable ! 
+Maintenant la question est: Pourquoi le std::vector répond-il à 99% des besoins ? Majoritairement parce qu'il est redimensionnable ! Nous allons pouvoir changer à l'exécution la taille de notre conteneur. Pour cela plusieurs approches sont possibles, qui dépendent de la finalité souhaitée. 
+
+#### Ajouter/supprimer des éléments  
+
+Tout d'abord nous pouvons dans un `std::vector` ajouter/supprimer des éléments à la fin. Pour cela il existe deux méthodes respectivement `push_back` et `pop_back`. 
+
+Par exemple pour ajouter des valeurs à la fin : 
+
+\snippet ./src/vector_example.cpp push_back
+
+Ensuite si l'on veut retirer la dernière valeure nous pouvons utiliser `pop_back` : 
+
+\snippet ./src/vector_example.cpp pop_back
 
 
-# Le conteneur associatif : std::map et std::unordered_map 
+Par contre attention le `pop_back` ne renvoit rien. Donc si vous voulez récupérer la dernière valeur **et** la supprimer du `std::vector` il faut le faire en deux étapes : 
+
+\snippet ./src/vector_example.cpp back_pop_back
+
+Question que vous vous posez peut-être : peut-on ajouter des éléments ailleurs qu'à la fin ? La réponse est oui mais ce n'est pas recommandé car en terme de performance le `std::vector` n'est pas fait pour ça. Par exemple nous pouvons insérer un élément à n'importe quel endroit d'un `std::vector` en utilisant `insert`. 
+
+\snippet ./src/vector_example.cpp back_pop_back
+
+La syntaxe est un peu particulière car pour insérer il faut dire où on souhaite mettre la valeur à partir du début du conteneur. D'où l'apparion de ce `vd.begin()`. Nous verrons à la fin de ce chapitre qu'en fait caché derrière ce `begin()` il y a la notion d'itérateur. 
+
+#### Changer la taille 
+
+Nous venons de voir qu'ajouter/retirer des éléments d'un `std::vector` modifie implicitement sa taille. Mais ce n'est pas le seul moyen. Il existe en effet la méthode `resize` qui ve permettre de réduire ou faire grandir notre `std::vector`. 
+
+\snippet ./src/vector_example.cpp resize
+
+L'exécution donnerait alors 
+
+```
+1,2,3,4,5,0,0,0,0,0,
+```
+
+Vous voyez donc que le vector a grandi de 5 cases et qu'il a été mis comme valeur par défaut l'élément nul du type considéré içi des `int` donc `0`. En revanche le truc sympa c'est que nos 5 premières valeurs non pas changées. 
+
+De la même manière si maintenant on donne une taille plus petite : 
+
+\snippet ./src/vector_example.cpp resize2
+
+L'exécution donnerait alors 
+
+```
+1,2,3,
+```
+
+#### Ce qui se cache derrière tout ça
+
+Du coup le `std::vector` est super souple d'utilisation car on peut le trafiquer dans tous les sens. Mais peut-être que vous vous demandez alors comment il fait pour rester performant car je vous rappel que le principe des tableaux est que le stockage en mémoire est contigu !! Or le fait de pouvoir changer la taille dynamiquement, notamment ajouter des éléments à la fin, laisse sous-entendre qu'il faut que la mémoire à la fin du vector soit disponible et pas déjà utilisées par d'autres variables. Et bien en fait le `std::vector` est très malin et en plus il vous ment !! 
+
+En effet le `std::vector` a un mécanisme interne de réservation de mémoire. Dans les faits il y a distinction entre la taille d'un vector, que l'on obtient par `size()`, et sa capacité (sa taille maximale sans avoir besoin de redemander tout un bloc mémoire), que l'on obtient avec `capacity()`. 
+
+Considérons l'exemple suivant. Pour commencer on créé un `std::vector` d'entier de taille nulle.
+
+\snippet ./src/vector_example.cpp part1
+
+On ajoute trois valeurs supplémentaires et on regarde la taille et la capacité : 
+
+\snippet ./src/vector_example.cpp part2
+
+On constate donc que la capacité est maintenant supérieure à la taille du vector. Cela veut dire que l'on peut ajouter une valeur supplémentaire sans que le `std::vector` n'ait besoin de bouger en mémoire. Que se passe-t-il si on est plus gourmant et que l'on ajoute deux valeurs ? 
+
+\snippet ./src/vector_example.cpp part3
+
+Et bien la `capacity` a changée. Cela veut dire que le `std::vector` en interne a du bouger dans la mémoire et au passage il se dit qu'on a l'air gourmant donc il a demandé une capacité plus grande ! Dans cet exemple on constate que la capacité a été multipliée par 2 mais ce n'est pas forcément la rêgle générale. Dans la norme c++ il n'y a pas de rêgle donc ca dépend de l'implémentation, donc du compilateur ! 
+
+# Les conteneurs associatifs  
 
 ## Principe 
 
@@ -219,11 +319,21 @@ Maintenant la question est: Pourquoi le std::vector répond-il à 99% des besoin
 
 ## Utilisation  
 
+# Un conteneur hétérogène ! 
 
-# Et plein d'autres 
+## C'est bizarre non ? 
+
+## Le tuple 
 
 
-# Les itérateurs 
+# Encore d'autres structures 
+
+## Liste chaînée 
+
+## Pile et File 
+
+
+# Les itérateurs : merci le C++11 (encore) 
 
 ## Principe 
 
