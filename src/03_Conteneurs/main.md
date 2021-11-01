@@ -78,6 +78,9 @@ Et enfin si on fournit une liste d'initialisation vide ? Et bien là c'est magiq
 
 \snippet ./src/c_array_example.cpp list_init_3
 
+Alors l'un des gros point noir des tableaux statiques old-school, en tout cas le truc bloquant de mon point de vue, est que cet idiot ne connait pas sa taille ! C'est à dire que dans tous les vieux code en C on se trimballe un `int` en plus du tableau qui est la taille ! Il existe en réalité une manière de retrouver la taille d'un tableau C mais ça manque un peu d'élégance : 
+
+\snippet ./src/c_array_example.cpp array_size
 
 
 ### Version moderne 
@@ -310,14 +313,154 @@ On constate donc que la capacité est maintenant supérieure à la taille du vec
 
 Et bien la `capacity` a changée. Cela veut dire que le `std::vector` en interne a du bouger dans la mémoire et au passage il se dit qu'on a l'air gourmant donc il a demandé une capacité plus grande ! Dans cet exemple on constate que la capacité a été multipliée par 2 mais ce n'est pas forcément la rêgle générale. Dans la norme c++ il n'y a pas de rêgle donc ca dépend de l'implémentation, donc du compilateur ! 
 
+Il est important de noter que du coup il est possible de spécifier la capacité plutôt que la taille à un `std::vector`. L'intérêt est alors qu'au moment de la création du `std::vector` nous pouvons demander a réserver un certain espace mémoire et ensuite lorsqu'on remplira le `std::vector` à coup de `push_back` par exemple il n'y aura aucune réallocation nécessaire, tant que l'on reste dans la limite de ce que nous avons réservé. Cette réservation se fait simplement à l'aide de la méthode `reserve` : 
+
+\snippet ./src/vector_example.cpp vector_reserve
+
+Enfin une fois que l'on a rempli notre `std::vector` et que l'on sait que l'on ne va plus ajouter d'éléments dans ce dernier nous pouvons simplement libérer la mémoire excédentaire de notre reservation en utilisant la méthode `shrink_to_fit` qui vient réduire la capacité du `std::vector` à sa taille. 
+
+\snippet ./src/vector_example.cpp vector_shrink
+
+
+## Mise en pratique ! 
+
+
 # Les conteneurs associatifs  
 
 ## Principe 
 
+A présent nous allons nous intéresser à une autre structure de données, très différente des tableaux, il s'agit des conteneurs associatifs. La problématique est la suivante : imaginons que je doives traiters un ensemble de données indexées sans aucune hierarchies ni continuités. Les tableaux ne semble pas pertinent dans ce cas. C'est pour cela que la conteneurs associatifs existent. Le principe de ces conteneurs va être de manipuler des paire de clé, valeur. A chaque valeur sera associée une clé unique qui permettra de retrouver très rapidement dans le conteneur la valeur correspondante. Par conséquent il n'y aura plus du tout de notion d'ordre au sein du conteneur. 
+
+Il existe dans le standard C++ deux versions différentes de ces conteneurs associatifs : 
+
+- `std::map`
+- `std::unordered_map` 
+
+La distinction entre les deux est en fait une histoire d'implémentation de la plomberie interne. 
+
+Pour celles et ceux qui n'auraient pas fait le rapprochement, les conteneurs associatifs c'est exactement ce que vous appelez un dictionnaire en Python ;) 
 
 ## Différence entre map et unordered_map 
 
+La distinction entre `std::map` et `std::unordered_map` se fait sur l'implémentation interne du rangement du conteneur. En effet les conteneurs associatifs fonctionnent sur un système de clés, il faut donc que les clés soient bien rangée si on veut pouvoir accéder rapidement à un élément du conteneur. Pour cela il existe dans le standard C++ les deux styles suivant : 
+
+- L'utilisation d'un Red Black Tree, c'est ce qui est utilisé dans les `std::map` 
+- L'utilisation d'une table de hash, c'est ce qui est utilisé dans les `std::unordered_map`
+
+La différence entre ces deux approches est une question de complexité algorithmique des opérations courantes 
+
+
+|Opération  | `std::map`   | `std::unordered_map`|
+|-----------|--------------|---------------------|
+| Recherche |  O(log n) | O(1) -> O(n)      | 
+| Insertion |  O(\log n)+Rééquilibrage | O(1) -> O(n)      |
+| Suppression |  O(\log n)+Rééquilibrage | O(1) -> O(n)     |
+
+Donc sur le papier la `std::unordered_map` est l'idéal sauf dans le cas où ça se passe mal évidemment ;). 
+
+\htmlonly 
+
+<iframe width="100%" height="800px" src="https://quick-bench.com/q/cGkNnha0FgAIc7uRy-u1C7C6m2U"> </iframe>
+\endhtmlonly 
+
 ## Utilisation  
+
+Pour utiliser un `std::map` ou un `std::unordered_map` il faut bien évidemment commencer par faire le bon include ! 
+
+\snippet ./src/map_example.cpp include 
+
+**Remarque :** dans toute la suite les snippets ne porteront que sur les `std::map` mais l'intégralité de ce qui sera montré est transposable en l'état aux `std::unordered_map`. 
+
+La création d'une `map` se fait avec la syntaxe suivante : 
+
+```
+std::map<type_clé, type_valeur> nomDeLaMap;
+```
+
+On retrouvre une syntaxe similaire à ce qu'on a vu avec les `std::array` et `std::vector` à la petite différence qu'il faut renseigner deux types ! Et oui deux car les clés et les valeurs associées ne sont pas forcément du même type, c'est même quasiment jamais le cas. Il faut donc dire que les clés seront d'un certain type tandis que les valeurs seront d'un autre type. 
+
+Par exemple pour créer une `map` qui à des chaînes de caractères va associer des entiers il nous suffit de procéder de la manière suivante : 
+
+\snippet ./src/map_example.cpp decl 
+
+Bien évidemment depuis le C++11 il est possible à la déclaration d'un `std::map` de l'initialiser en utilisant une liste d'initalisation comme illustré ci-dessous : 
+
+\snippet ./src/map_example.cpp initializer_list 
+
+Une fois que l'on a une map nous pouvons accéder aux éléments stockés via leurs clés. Pour cela on utilise alors l'opérateur crochet `[]`. Par exemple : 
+
+\snippet ./src/map_example.cpp access_read
+
+Comme pour les `std::vector` il existe en complément de l'opérateur `[]` une méthode `at` qui dans le cas d'une `map` va vérifier que la clé demandée existe bel et bien. Car si elle n'existe pas, l'opérateur `[]` ne va rien nous dire et on risque d'avoir des surprises. Si par exemple on demande l'age de `michelle` qui n'est pas une clé du dictionnaire et bien nous allons quand même avoir une valeur en retour, qui correspondra en réalité à l'élément nul des `int` dans notre cas, donc 0. 
+
+\snippet ./src/map_example.cpp access_read_no_check
+
+Avec la méthode `.at` si la clé n'existe pas, une exception de type `std::out_of_range` sera levée. Exception que vous êtes à même de traiter car vu dans le chapitre précédent ;) 
+
+\snippet ./src/map_example.cpp access_read_check
+
+Du coup ce qui pourrait être sympa ce serait de vérifier si une clé existe ou pas dans une `map` non ? Et bien c'est possible évidemment. Cela se fait via la méthode `find`. 
+
+\snippet ./src/map_example.cpp find
+
+La syntaxe est un peu particulière car elle fait intervenir la notion d'itérateur que l'on a pas encore vu en détail. Disons juste que pour le moment vous pouvez le comprendre comme "est-ce que find a trouvé quelque chose avant d'arriver à la fin du conteneur". 
+
+La norme c++20 a introduit la méthode `contains` beaucoup plus explicite et simple à utiliser pour ce cas. 
+
+\snippet ./src/map_example.cpp contains
+
+Bon et maintenant si on veut ajouter un nouveau couple clé/valeur dans notre map. Et bien c'est très simple. Vous pouvez tout d'abord passer par l'opérateur `[]` en ajoutant derrière un `=` et une valeur du bon type. Par exemple pour ajouter mon age il suffirait de faire : 
+
+\snippet ./src/map_example.cpp add
+
+Alors là où il y a un petit risque c'est qu'en faisant ça et bien s'il y a déjà une clé `basile` dans la map l'opération précédente ne va rien dire mais elle va écraser l'ancienne valeure. Suivant les applications il peut s'agir du comportement souhaité ou pas ... Par exemple je peux faire l'opération suivant et cela va m'affecter l'age de 31 ans avec quelques jours d'avance ! 
+
+\snippet ./src/map_example.cpp overwrite
+
+Si on veut contrôler plus finement le comportement de notre map lors de l'insertion d'une valeur et ainsi empécher l'écrasement d'une ancienne valeur nous pouvons utiliser la méthode `insert`. 
+
+\snippet ./src/map_example.cpp insert
+
+Vous voyez que la méthode `insert` nous renvoie une valeur. Par soucis de simplicité j'ai utilisé le type `auto`. En réalité le type de ce qui nous est renvoyé est `std::pair<std::conditional<false, std::map<std::string, int>::const_iterator, std::_Rb_tree_iterator<std::pair<const std::string, int>>>::type, bool>` un peu long non `auto` c'est pas mal du coup ! Concrètement on récupère un `std::pair`, on va en parler un peu plus en détail juste après, qui contient deux choses : (i) un itérateur, on ne va pas s'attarder dessus pour le moment ; (ii) un booléen qui vaudra `true` si la valeur a été insérée (donc si la clé n'existait pas déjà) et `false` sinon (donc rien ne sera fait car la clé existe déjà et la valeur associée ne sera pas modifiée). 
+
+\snippet ./src/map_example.cpp insert_details
+
+La norme C++17 a introduit la méthode `insert_or_assign` qui comme son nom l'indique va insérer ou affecter la valeur si la clé existe déjà. C'est comme l'opérateur `[]` sauf qu'içi on sera capable de déterminer a posteriori si c'est une insertion ou une affectation qui vient d'être réalisée. 
+
+\snippet ./src/map_example.cpp insert_or_assign 
+
+
+Pour finir revenons sur notre histoire de `std::pair`. Un `std::pair` est un doublet clé valeur. Très grossièrment on peut donc dire d'une map est un ensemble de `pair`. Pour le moment nous avons manipulé les `std::map` sans trop se soucier de ces `std::pair` mais il y a un moment ou nous allons devoir nous en préoccuper c'est lorsque l'on va vouloir itérer sur une map. Depuis le c++11 en utilisant la syntaxe `for( auto p: conteneur)` nous pouvons itérer sur les éléments d'un `std::map` de la manière suivante : 
+
+\snippet ./src/map_example.cpp loop_auto
+
+La grande question qui se pose alors est c'est quoi `p`. Et bien `p` c'est notre fameux `std::pair`. Dans notre cas plus précisément c'est un `std::pair<std::string, int>`. Il s'agit donc du type contenant le couple nom/age. Pour accéder aux valeurs stockées on utilise les attribut `first` et `second`. Par exemple : 
+
+\snippet ./src/map_example.cpp loop_auto_details
+
+Alors juste pour se simplifier la vie, la norme c++17 a introduit un concept assez sympatique qui est le `structured binding`. Le principe est de pouvoir "éclater" une structure de données en plusieurs variables distinctes. Par exemple dans Python vous pouvez facilement faire : 
+
+```
+>>> p = ("toto", 10)
+>>> a,b = p
+>>> a
+'toto'
+>>> b
+10
+>>> 
+```
+
+Et bien le `structured binding` c'est faire la même chose en c++ ! (C++ is the new Python). Donc si on reprend notre boucle sur le `std::map` nous pouvons alors écrire en C++17 : 
+
+\snippet ./src/map_example.cpp loop_auto_17
+
+Pour les plus curieux, si vous vous voulez voir ce que le compilateur écrit à votre place vous pouvez faire un tour sur le site [cppinsights.io](cppinsights.io). Par exemple dans le cas de notre boucle for précédente le vrai code généré par le compilateur avant la phase de traduction en assembleur est le suivant : 
+
+\htmlonly
+<iframe width="100%" height="400px" src="https://cppinsights.io/s/35be28b8"></iframe>
+\endhtmlonly
+
+Je pense qu'on sera tous d'accord pour dire merci le compilateur et le c++ moderne ;) 
 
 # Un conteneur hétérogène ! 
 

@@ -149,6 +149,31 @@ int main(){
 
     }
 
+    {
+    //! [vector_reserve]
+    std::vector<int> vInt {};
+    vInt.reserve(100);
+    
+    auto size     = vInt.size();      // 0
+    auto capacity = vInt.capacity();  // 100
+    //! [vector_reserve]
+    std::cout << "[reserve] size : " << size << std::endl;
+    std::cout << "[reserve] capacity : " << capacity << std::endl;
+
+
+    //! [vector_shrink]
+    for(int i=0; i<4; i++){
+        vInt.push_back(i);
+    }
+    vInt.shrink_to_fit();
+    size     = vInt.size();      // 4
+    capacity = vInt.capacity();  // 4
+    //! [vector_shrink]
+    std::cout << "[reserve] size : " << size << std::endl;
+    std::cout << "[reserve] capacity : " << capacity << std::endl;
+
+    }
+
 
     return EXIT_SUCCESS;
 }

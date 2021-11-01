@@ -57,5 +57,14 @@ int main(){
     //! [list_init_3] 
     }
 
+ {
+    //! [array_size]
+    int tableauInt[10] {1,2,3,4,5};
+    int sz = sizeof(tableauInt) / sizeof(tableauInt[0]);
+    //! [array_size] 
+    std::cout << sz << std::endl;
+    }
+
+
     return EXIT_SUCCESS;
 }
