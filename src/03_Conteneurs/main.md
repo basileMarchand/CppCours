@@ -318,6 +318,8 @@ Enfin une fois que l'on a rempli notre `std::vector` et que l'on sait que l'on n
 
 ## Mise en pratique ! 
 
+A présent que vous savez faire un peu plus de choses nous pouvons commencer à faire des programme un peu plus évolués que juste afficher des message ! Je vous invite donc à faire l'exercice sur la [notation polonaise inversée](@ref TPpolonaiseInversee) 
+
 
 # Les conteneurs associatifs  
 

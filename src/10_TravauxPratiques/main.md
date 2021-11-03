@@ -10,7 +10,7 @@ Vous pouvez tous lire la section **Quelques remarques**.
 
 [TOC]
 
-# TP sur la calculatrice en notation polonaise inversée 
+# TP sur la calculatrice en notation polonaise inversée {#TPpolonaiseInversee}
 
 ## Objectif de l'exercice
 
