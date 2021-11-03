@@ -74,9 +74,105 @@ int main(){
         std::cout << m << " ";
     }
     /// [parcour_post_cpp11]
+    std::cout << std::endl;
+
+    // 5. Ajouter/supprimer des valeurs 
+
+    {
+        //! [push_back]
+        std::vector<int> vInt {1,2,3,4,5};
+        vInt.push_back(6);  // vInt = {1,2,3,4,5,6};
+        vInt.push_back(7);  // vInt = {1,2,3,4,5,6,7};
+        auto sz = std::size(vInt); // sz = 7 
+        //! [push_back]
+    
+        //! [pop_back]
+        vInt.pop_back();
+        //! [pop_back]
+
+        //! [back_pop_back]
+        auto last = vInt.back();
+        vInt.pop_back();
+        //! [back_pop_back]
+    
+    }
+
+    {
+        //! [insert]
+        std::vector<double> vd {1.0, 2.0, 3.0, 4.0};
+        vd.insert( vd.begin()+2, 2.5);
+        //! [insert]
+    }
+
+    {
+        //! [resize]
+        std::vector<int> vInt {1,2,3,4,5};
+        vInt.resize(10);
+        for( auto x: vInt){
+            std::cout << x << ",";
+        }
+        //! [resize]
+
+    }
+    std::cout << std::endl;
+    {
+        //! [resize2]
+        std::vector<int> vInt {1,2,3,4,5};
+        vInt.resize(3);
+        for( auto x: vInt){
+            std::cout << x << ",";
+        }
+        //! [resize2]
+
+    }
+    std::cout << std::endl;
+    {
+        //! [part1]
+        std::vector<int> vInt;
+        //! [part1]
+
+        //! [part2]
+        vInt.push_back(1);
+        vInt.push_back(2);
+        vInt.push_back(3);
+        auto size = vInt.size();         // 3
+        auto capacity = vInt.capacity(); // 4
+        //! [part2]
+        std::cout << "capa = " << capacity << std::endl;
+        //! [part3]
+        vInt.push_back(4);
+        vInt.push_back(5);
+        size = vInt.size();           // 5
+        capacity = vInt.capacity();   // 8
+        //! [part3]
+        std::cout << "capa = " << capacity << std::endl;
+
+    }
+
+    {
+    //! [vector_reserve]
+    std::vector<int> vInt {};
+    vInt.reserve(100);
+    
+    auto size     = vInt.size();      // 0
+    auto capacity = vInt.capacity();  // 100
+    //! [vector_reserve]
+    std::cout << "[reserve] size : " << size << std::endl;
+    std::cout << "[reserve] capacity : " << capacity << std::endl;
 
 
+    //! [vector_shrink]
+    for(int i=0; i<4; i++){
+        vInt.push_back(i);
+    }
+    vInt.shrink_to_fit();
+    size     = vInt.size();      // 4
+    capacity = vInt.capacity();  // 4
+    //! [vector_shrink]
+    std::cout << "[reserve] size : " << size << std::endl;
+    std::cout << "[reserve] capacity : " << capacity << std::endl;
 
+    }
 
 
     return EXIT_SUCCESS;

@@ -10,7 +10,7 @@ Apprentissage de la programmation C++     {#mainpage}
 * [Introduction sur le C++](@ref introSection)
 * [Déclaration de variable et quelques mots sur la mémoire](@ref variableSection)
 * [Structures de contrôle](@ref controlSection)
-* [Conteneurs en C++](@ref conteneurSection)
+* [Conteneurs en C++](@ref structuresDeDonnees)
 * [Définition de fonctions](@ref fonctionSection) 
 * [Programmation fonctionnelle en C++](@ref functionnalSection)
 * [Notion de pointeur](@ref pointeurSection)

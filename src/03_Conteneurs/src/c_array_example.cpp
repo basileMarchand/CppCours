@@ -39,6 +39,32 @@ int main(){
     tableauDouble[2] = 10.34;
     /// [acces_write]
 
+    {
+    //! [list_init_1]
+    int tableauInt[] {1,2,3,4,5};
+    //! [list_init_1] 
+    }
+
+    {
+    //! [list_init_2]
+    int tableauInt[10] {1,2,3,4,5};
+    //! [list_init_2] 
+    }
+
+    {
+    //! [list_init_3]
+    int tableauInt[10] {};
+    //! [list_init_3] 
+    }
+
+ {
+    //! [array_size]
+    int tableauInt[10] {1,2,3,4,5};
+    int sz = sizeof(tableauInt) / sizeof(tableauInt[0]);
+    //! [array_size] 
+    std::cout << sz << std::endl;
+    }
+
 
     return EXIT_SUCCESS;
 }
