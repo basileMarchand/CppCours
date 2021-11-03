@@ -9,6 +9,8 @@ HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/custom.css
 HTML_HEADER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/header.html
 HTML_FOOTER = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/footer.html
 
+HTML_EXTRA_FILES = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/cookieconsent.js \
+                  @CMAKE_CURRENT_SOURCE_DIR@/doxygen/cookieconsent.css
 # not interested build output
 QUIET                  = NO
 
