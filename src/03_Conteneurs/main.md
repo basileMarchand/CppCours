@@ -461,14 +461,144 @@ Je pense qu'on sera tous d'accord pour dire merci le compilateur et le `C++` mod
 
 ## C'est bizarre non ? 
 
+A présent nous allons voir un autre type de structure de données un peu particulier puisqu'il s'agit d'un conteneur hétérogène. Alors c'est un peu étrange non ? Car pour le moment, avec tout ce que nous avons vu du c++, l'idée d'hétérogénéïté et donc de mélange des genres en quelque sorte n'était pas vraiment dans l'esprit du langage. Même si, peut-être que certains d'entre vous l'aurons remarqué, lorsque que nous avons joué avec les `std::map` a un moment nous avons du manipulé des conteneurs hétérogènes, les `std::pair`, le doublet clé/valeur.  Et bien il existe une généralisation du `std::pair` pour des N-uplet et vous allez être content car le nom va vous rappeler ce que vous connaissez en Python puisqu'il s'agit du `std::tuple` ! 
+
 ## Le tuple 
+
+Nous avons donc en C++ un conteneur `std::tuple` et qui va donc nous permettre de stocker en ensemble de valeurs de types différents. D'ailleurs c'est le `std::tuple` qui va nous permettre plus tard de faire des fonctions qui pourront renvoyer plusieurs variables en sortie ! Pour information le `std::tuple` est apparu avec le c++11, avant la norme C++11 faire des conteneurs hérérogènes c'était un peu plus compliqué ! 
+
+Pour commencer à faire des `std::tuple` comme toujours il faut faire l'include qui va bien : 
+\snippet ./src/tuple_example.cpp include
+
+Une fois notre include fait nous allons pouvoir créer nos tuple. Pour cela la syntaxe va être de la forme 
+
+```
+std::tuple<TypeElem1, TypeElem2, ...., TypeElemN > nomDuTuple
+```
+
+Vous voyez donc que la syntaxe ressemble quand même beaucoup à celle que l'on a utilisée jusqu'à maintenant pour définir des `std::array`, `std::vector`, ... à la distinction prêt que le nombre d'argument entre `<>` peut dans le cas du tuple être variable. Derrière cela se cache en réalité la notion de template variadic mais nous verrons ça quand vous serez plus grand ! 
+
+Par exemple si je veux définir un tuple contenant trois valeurs : (i) un entier ; (ii) un double ; (iii) un booléen, je peux procéder de la manière suivante : 
+
+\snippet ./src/tuple_example.cpp declaration 
+
+Une autre alternative un peu plus sympatique a écrire est d'utiliser la fonction `std::make_tuple` qui va manger l'ensemble des valeurs que vous voulez dans le tuple et vous construire le `tuple` et avec un petit `auto` bien placé c'est rapide et plus sympa à lire ;) 
+
+\snippet ./src/tuple_example.cpp declaration2
+
+Maintenant que l'on a défini notre `std::tuple` se pose la question de comment on récupère une valeur du `std::tuple`. J'avoue là c'est un peu moins sympa... Le premier réflexe que vous avez certainement est de vous dire, bah ça se fait avec les crochets `[indice]` ! Et bien non perdu ! En effet pour les `std::tuple` il n'existe pas d'opérateur `[]`, ce n'est pas pour embeter les gens que ça n'a pas était fait, c'est volontaire car le `std::tuple` étant hétérogène cela entraine quelques subtilitées. Donc pour accéder aux éléments d'un `std::tuple` il faut utiliser la fonction `std::get`. Cette fonction s'utilise en spécifiant entre `<>` l'indice de l'élément auquel on souhaite accéder. Par exemple pour récupérer le premier élément : 
+
+\snippet ./src/tuple_example.cpp get_idx
+
+Il est également possible d'utiliser `std::get` en spécifiant un `type` plutôt qu'un indice. Alors cependant **attention** cette syntaxe ne fonctionnera que si et seulement si le tuple ne contient qu'un seul et unique élément du type spécifié. 
+
+\snippet ./src/tuple_example.cpp get_type
+
+Souvent plutôt que de récupérer une valeur particulière d'un `std::tuple` ce qui nous intéresse c'est d'exploser le tuple. Pour cela il existe la fonction `std::tie` qui va permettre de "unpacker" notre tuple. Pour utiliser le `std::tie` il faut tout d'abord déclarer les variables qui vont recevoir les valeurs du `std::tuple` par exemple : 
+
+\snippet ./src/tuple_example.cpp tie
+
+Dans le cas où on ne veut pas toutes les valeurs du tuple il est possible de demander à en ignorer certaines en utilisant le `std::ignore` qui va tout simplement ne rien faire :
+
+\snippet ./src/tuple_example.cpp tie_ignore
+
+Il faut avouer que le `std::tie` est un peu lourd et pas très sympatique à lire. C'est pour cela qu'il a été introduit dans la norme c++17 le `structured binding` qui en utilisant le mot clé `auto` nous permet de déclarer et faire un `std::tie` en une seule instruction. Par exemple : 
+
+\snippet ./src/tuple_example.cpp unpack
+
+Et bien évidemment il est possible dans le structured binding d'utiliser le `std::ignore` pour ignorer certains éléments du `std::tuple`. 
+
+\snippet ./src/tuple_example.cpp unpack_ignore
 
 # Encore d'autres structures 
 
-## Liste chaînée 
+Il existe encore plusieurs structures de données à votre disposition dans le c++ selon vos besoins. Nous allons en balayer encore quelques unes rapidement. Si vous recherchez plus d'informations sur le sujet je vous encourage fortement à faire un tour sur [https://en.cppreference.com/w/cpp/container](https://en.cppreference.com/w/cpp/container). 
+
+## Listes chaînées 
+
+Il existe dans C++ la notion de liste chaînée, simplement ou doublement chaînée. Il s'agit des conteneurs `std::forward_list` et `std::list`. Le principe d'une liste chaînée est le suivant : l'allocation mémoire, c'est-à-dire la zone mémoire servant à stocker les valeurs n'est pas contigüe. En revanche chaque élément de la liste connait l'adresse mémoire de l'élément suivant et également de l'élément précédent dans le cas de la liste doublement chaînée.
+
+L'intérêt d'une liste chaînée est que l'insertion d'une valeur se fait en temps constant, la mémoire n'étant pas contigue il suffit de prendre une case mémoire n'importe où dans la RAM, de dire à la valeur précédente que la nouvelle valeur est à l'adresse X et de dire à la nouvelle valeur que la suivante est à l'adresse Y. De la même manière la suppression d'un élément de la liste se fait très rapidement. Nous pourrions alors nous demander pourquoi ne pas toujours faire des listes ? 
+Et bien parce que le fait d'avoir une allocation mémoire discontinue est certe pratique pour supprimer/insérer rapidement des valeurs mais c'est au détriment de certaines autre fonctionnalités. Par exemple avec une liste on ne peut pas demander le `i-ème` élément ! Il faut partir du début et parcourir toute la liste pour atteindre la i-ème valeur ! 
+
+Comment choisir entre une liste simplement ou doublement chaînée ? Facile ça dépend d'une seule chose, est-ce que vous voulez toujours parcourir votre liste du début à la fin (dans ce cas on fait une liste simplement chaînée) ou bien voulez vous pouvoir également parcourir la liste à l'envers, de la fin vers le début, et dans ce cas c'est une liste doublement chaînée ! 
+
+En C++ la liste simplement chaînée est la `std::forward_list` tandis que la liste double chaînée est la `std::list`. Chacune a son include correspondant évidemment : 
+
+\snippet ./src/other_example.cpp include_list 
+
+La déclaration et l'inialisation d'une liste se fait alors avec une syntaxe très proche de ce qu'on a pu voir pour les `std::vector` 
+
+Ensuite à l'usage c'est exactement comme les `std::vector` à la différence prêt que vous ne pouvez pas accéder au `i-ème` élément en fait `myList[i]` ! 
 
 ## Pile et File 
 
+Pour finir notre tour d'horizons des structures de données c++, nous allons voir deux classiques du domaine les Files et les Piles. Il s'agit des deux structures qui sont respecivement qualifiées de First In First Out (FIFO) et Last In First Out (LIFO). 
+
+### La File 
+
+Le principe de la file est très simple, vous le vivez à chaque fois que vous allez faire les courses ! Le premier qui se met dans la queue pour la caisse sera le premier parti ! Ce type de structure de donnée est très utilisée pour tout ce qui est ordonnancement et traitement de tâches. La file en c++ se définit via le type `std::queue` qui a bien évidemment son include associé : 
+
+\snippet ./src/other_example.cpp include_queue 
+
+La déclaration d'une queue se fait en utilisant la syntaxe suivante : 
+
+```
+std::queue<type, conteneur> nomQueue
+```
+
+Vous voyez alors apparaître : (i) le paramètre `type` qui correspond au type des éléments à stocker dans la queue ; (ii) le paramètre `conteneur` qui correspond au type de conteneur que la queue utilise en interne. Car dans les faits la `std::queue` n'est qu'une surcouche reposant sur des conteneurs plus standards. Vous n'êtes pas obligé de spécifier le second paramètre `conteneur` par défaut le conteneur utilisé est un `std::deque` que l'on peut voir un peu comme un mix entre une `std::list` et un `std::vector`. Sauf cas particulier je vous conseille de ne pas vous prendre la tête et de laisser le paramètre par défaut, c'est ce que je vais faire dans la suite ;) 
+
+Pour créer une queue la syntaxe est donc la suivante : 
+
+\snippet ./src/other_example.cpp queue_decl
+
+Une fois notre queue créée nous pouvons facilement lui ajouter des valeurs à l'aide de l'instruction `push`
+
+\snippet ./src/other_example.cpp queue_push
+
+Et de la même manière nous pouvons récupérer les valeurs à l'aide l'instruction `front` et généralement une fois qu'on a récupéré la valeur on la retire de la queue à l'aide de `pop` : 
+
+\snippet ./src/other_example.cpp queue_front
+
+Si on synthétise, l'usage classique d'une queue est le suivant : 
+
+\snippet ./src/other_example.cpp queue_synthesis
+
+Ce qui à l'exécution nous donne : 
+
+```
+0, 1, 2, 3, 4,
+```
+
+### La Pile 
+
+La seconde structure ultra-classique est la pile. Le principe est que le premier élément ajouté à la pile sera le dernier à en sortir. C'est un peu comme le panier de linge sale, les trucs que vous mettez au fond sont généralement ceux que vous lavez tardivement si votre panier est trop grand ! La pile en C++ correspond au conteneur `std::stack`. Pour l'utiliser l'include associé est évidemment 
+
+\snippet ./src/other_example.cpp include_stack
+
+La déclaration d'une `std::stack` repose sur la même syntaxe que la `std::queue` à savoir : 
+
+```
+std::stack<type, conteneur> nom_stack;
+```
+
+Comme pour les `std::queue` on voit apparaitre le second paramètre `conteneur`, là encore ne vous prenez pas la tête laissez faire les autres et donc gardez la valeur par défaut. 
+
+En pratique la déclaration de la `std::stack` se fait donc de la manière suivante : 
+
+\snippet ./src/other_example.cpp stack_decl
+
+
+\snippet ./src/other_example.cpp stack_push
+
+\snippet ./src/other_example.cpp stack_top
+
+\snippet ./src/other_example.cpp stack_synthesis
+
+```
+4, 3, 2, 1, 0,
+```
 
 # Les itérateurs : merci le C++11 (encore) 
 
