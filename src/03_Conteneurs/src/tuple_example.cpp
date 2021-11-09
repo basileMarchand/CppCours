@@ -47,12 +47,6 @@ int main(){
     auto tup = std::make_tuple(1, 42.0, false);
     auto [e1, e2, e3] = tup;
     //! [unpack]
-
-    //! [unpack_ignore]
-    auto [e1, std::ignore, e2] = tup;
-    //! [unpack_ignore]
-
-
     }
 
 

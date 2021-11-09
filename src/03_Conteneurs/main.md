@@ -506,10 +506,6 @@ Il faut avouer que le `std::tie` est un peu lourd et pas très sympatique à lir
 
 \snippet ./src/tuple_example.cpp unpack
 
-Et bien évidemment il est possible dans le structured binding d'utiliser le `std::ignore` pour ignorer certains éléments du `std::tuple`. 
-
-\snippet ./src/tuple_example.cpp unpack_ignore
-
 # Encore d'autres structures 
 
 Il existe encore plusieurs structures de données à votre disposition dans le c++ selon vos besoins. Nous allons en balayer encore quelques unes rapidement. Si vous recherchez plus d'informations sur le sujet je vous encourage fortement à faire un tour sur [https://en.cppreference.com/w/cpp/container](https://en.cppreference.com/w/cpp/container). 
@@ -589,10 +585,15 @@ En pratique la déclaration de la `std::stack` se fait donc de la manière suiva
 
 \snippet ./src/other_example.cpp stack_decl
 
+L'ajout de valeur dans la pile se fait via la méthode `push` : 
 
 \snippet ./src/other_example.cpp stack_push
 
+Pour extraire une valeur de la pile il faut alors utiliser les fonctions `top` et `pop`. 
+
 \snippet ./src/other_example.cpp stack_top
+
+Ci-dessous une synthèse de l'usage classique d'une pile. 
 
 \snippet ./src/other_example.cpp stack_synthesis
 
@@ -604,6 +605,46 @@ En pratique la déclaration de la `std::stack` se fait donc de la manière suiva
 
 ## Principe 
 
+Pour finir notre tour d'horizon des conteneurs de la librairie standard C++ nous allons dire quelques mots sur un concept introduit par la norme C++11 les itérateurs. Il s'agit là d'une notion particulière qui était quasi absente du c++ avant la norme 2011. Alors ca peut sembler trivial mais le fait d'avoir un type sur lequel on peut itérer n'était pas du tout naturel avant. En effet si on revient un peu en arrière pour itérer sur les valeurs d'un `std::vector` par exemple dans la version old-school de la boucle `for` nous devions procéder de la manière suivante : 
+
+\snippet ./src/iterator_example.cpp old_loop 
+
+Mais, comme je l'ai déjà dit, le C++11 a introduit une nouvelle manière de faire les boucles en offrant la possibilité d'itérer directement sur les valeurs de la manière suivante : 
+
+\snippet ./src/iterator_example.cpp new_loop 
+
+Et bien cette magie est permise grâce aux itérateurs !! 
+
+Mais concrètement un itérateur c'est quoi ? Dans les grandes lignes un itérateur est un type particulier donc une variable que l'on va pouvoir manipuler et qui va "pointer" sur une case de notre conteneur. Tout l'intérêt est que l'on peut changer la case pointée par un itérateur en incrémentant/décrémentant ce dernier à l'aide des `++` et `--`. Nous allons donc récupérer un itérateur correspondant au début du conteneur et en incrémentant l'itérateur nous allons nous ballader à travers notre structure de données. Tout le génie de la mise en place des itérateurs dans le C++ est que tous les conteneurs proposent des itérateurs et tous fonctionnent exactement de la même manière d'un point de vue utilisateur. 
+
+Les conteneurs de la librairie standard C++ utilisent deux catégories d'itérateurs (suivant le type de conteneur) : 
+
+- Les itérateurs bi-directionnels : permettent de parcourir un conteneur dans un sens ou l'autre mais uniquement en faisant des pas unitaires. Par exemple c'est ce type d'itérateur qui est utilisé pour les `std::map` où les `std::list` donc pour les structures de données n'ayant pas une représentation mémoire contigüe. 
+- Les itérateurs à accès aléatoire : permettent de parcourir un conteneur de manière aléatoire, comprendre que l'on peut accéder directement au `j`-ème élément du conteneur sans parcourir les précédents. Cet itérateur est utilisé dans les `std::vector`, `std::array`. 
+
 ## Utilisation des itérateurs 
 
+En pratique lorsqu'on utilise la syntaxe new-school de la boucle `for` on utilise des itérateurs sans le savoir. En effet le code faisant la boucle suivante : 
 
+\snippet ./src/iterator_example.cpp new_loop 
+
+Est en réalité interprété par le compilateur de la manière suivante : 
+
+\snippet ./src/iterator_example.cpp iter 
+
+Plusieur choses à noter. Tout d'abord on voit apparaître le type `std::vector<int>::iterator`, il s'agit de l'itérateur spécifique pour les `std::vector<int>`. De manière générale pour tous les conteneurs pour créer un itérateur sur un conteneur la syntaxe est la suivante `container::iterator`. Ensuite dans la déclaration de la boucle `for` on voit que l'on initialise l'itérateur `it` avec la valeur retournée par la méthode `begin()`. Cette méthode `begin()` retourne en fait l'itérateur pointant vers la première case du conteneur. Ensuite le critère de continuation de la boucle `for` est la différence de l'itérateur avec le retour de la méthode `end()`. Cette méthode `end()` retourne un itérateur pointant vers la dernière case `+1` du conteneur (et oui ça pointe en dehors du conteneur...). Et enfin on incrémente les boucles en incrémentant l'itérateur via `it++` ce qui a pour conséquence de changer la case du conteneur vers laquelle pointe notre itérateur `it`. Enfin dans le corps de la boucle `for` pour accéder à la valeur courant de l'itérateur on utilise la syntaxe, un peu particulière, `*it`. Cette syntaxe peut vous sembler bizarre mais elle ne vient pas de nulle part, elle vient de ce que l'on a lorsqu'on manipule des pointeurs, pour le moment ça ne vous parle pas mais ça va venir ;) 
+
+Il existe en réalité quatre itérateurs différents pour chaque conteneur : 
+- `container::iterator` : l'itérateur classique permettant de parcourir un tableau du début à la fin et de modifier les valeurs au passage 
+- `container::const_iterator` : l'itérateur permettant de parcourir un conteneur du début à la fin mais ne permet pas de modifier les valeurs 
+- `container::reverse_iterator` : un itérateur permettant de parcourir un conteneur à l'envers et de modifier les valeurs 
+- `container::const_reverse_iterator` : un itérateur permettant de parcourir un conteneur à l'envers mais n'autorisant pas de modifier les valeurs
+
+
+\snippet ./src/iterator_example.cpp iter_modif
+
+
+\snippet ./src/iterator_example.cpp iter_const
+
+
+Pour le moment les itérateurs peuvent vous sembler abstraits surtout avec la boucle `for` new-school qui cache tout mais vous verrez que l'on va rapidement en avoir besoin dès que l'on veut utiliser les fonctions opérants sur des conteneurs définies dans la librairies `algorithm`. 
