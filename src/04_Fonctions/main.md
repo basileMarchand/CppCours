@@ -31,6 +31,11 @@ Son type de retour est vide (`void`) c'est à dire qu'elle ne renvoie pas d'info
 
 Vous pouvez transmettre des données, appelées les paramètres, à une fonction.
 
+
+## Surcharge de fonctions 
+
+## Passage par copie ou par référence ? 
+
 # Un mot sur les fonctions anonymes 
 
 ## Une fonction anonyme pour quoi faire ? 
@@ -62,7 +67,17 @@ Voyons un exemple:
 
 ### Compilation en une librairie et un executable 
 
+### Automatisons tout ça : CMake ! 
 
+# Une fonction qui marche pour tout type c'est possible ? 
+
+## La limitation du c++ 
+
+## La notion de template 
+
+## C++20 et les fonctions génériques 
+
+## Mettons quelques rêgles en place ! 
 
 
 
