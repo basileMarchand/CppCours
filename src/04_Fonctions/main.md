@@ -148,13 +148,22 @@ C'est pas mal non ? J'avoue que le fait de manipuler un `std::tuple` est un peu 
 Là je pense qu'on peut dire qu'on est content car c'est quand même vachement pratique et lisible surtout ! Donc maintenant n'hésitez plus si vos fonctions doivent renvoyer plusieurs choses qu'elles le fassent explicitemant plutôt que de faire un jeu de référence pas clair ! 
 
 
-
-
-
 ### Fonctions constexpr 
 
+Avec le C++11 est arrivé la notion de `constexpr` nous avons déjà parlé des variables `constexpr` pour rappel il s'agit des variables connues à la compilation. Mais nous pouvons également déclarer des fonctions comme `constexpr` c'est à dire que le résultat de l'évaluation de la fonction peut se calculer à la compilation. Le concept des fonctions constexpr a été initialement introduit dans le C++11 cependant il a été largement enrichi par les norme C++14 et C++17 en faisant quelque chose de vraiment exploitable désormais. Par exemple nous pouvons définir une fonction factorielle constexpr de la manière suivante : 
 
+\snippet ./src/constexpr_example.cpp factorial 
 
+Comment être sur que je ne vous baratine pas et que la fonction est vraiment calculée à la compilation ? Facile on va faire un tour sur [godbolt.org](godbolt.org) et on regarde le code assembleur généré ;) 
+
+\htmlonly 
+<iframe width="100%" height="300px" src="https://godbolt.org/e?readOnly=true&hideEditorToolbars=true#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:2,endLineNumber:13,positionColumn:2,positionLineNumber:13,selectionStartColumn:2,selectionStartLineNumber:13,startColumn:2,startLineNumber:13),source:'constexpr+int+factorial(const+int+n)%7B%0A++++if(n%3C1)%7B%0A++++++++return+1%3B%0A++++%7D%0A++++return+n*factorial(n-1)%3B%0A%7D%0A%0A%0Aint+main()%7B%0A%0A++++int+f10+%7Bfactorial(10)%7D%3B%0A++++return+f10%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g112,filters:(b:'0',binary:'1',commentOnly:'0',demangle:'0',directives:'0',execute:'0',intel:'0',libraryCode:'0',trim:'1'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'',selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1,tree:'1'),l:'5',n:'0',o:'x86-64+gcc+11.2+(C%2B%2B,+Editor+%231,+Compiler+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4"></iframe>
+\endhtmlonly 
+
+Et sinon qu'est ce qu'on est sensé voir ? Deux choses : 
+
+1. Vous pouvez remarquer que le code associé à la définition de la fonction `factorial` n'apparait pas dans l'onglet de droite. Cela veut tout simplement dire que la définition de la fonction n'est pas dans le code généré car le code n'en a pas besoin
+2. Vous remarquerez qu'à la ligne 4 du code assembleur il y a la valeur `3628800`. Alors ce n'est pas vraiment un hasard mais il s'agit de la valeur de factoriel 10... Et donc oui la valeur de `factorial(10)` est écrite en dur dans le code généré preuve que le résultat de la fonction a bien été calculé à la compilation et qu'à l'exécution il n'y a plus rien à faire ! 
 
 # Un mot sur les fonctions anonymes 
 
