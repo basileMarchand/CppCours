@@ -461,11 +461,11 @@ Je pense qu'on sera tous d'accord pour dire merci le compilateur et le `C++` mod
 
 ## C'est bizarre non ? 
 
-A présent nous allons voir un autre type de structure de données un peu particulier puisqu'il s'agit d'un conteneur hétérogène. Alors c'est un peu étrange non ? Car pour le moment, avec tout ce que nous avons vu du c++, l'idée d'hétérogénéïté et donc de mélange des genres en quelque sorte n'était pas vraiment dans l'esprit du langage. Même si, peut-être que certains d'entre vous l'aurons remarqué, lorsque que nous avons joué avec les `std::map` a un moment nous avons du manipulé des conteneurs hétérogènes, les `std::pair`, le doublet clé/valeur.  Et bien il existe une généralisation du `std::pair` pour des N-uplet et vous allez être content car le nom va vous rappeler ce que vous connaissez en Python puisqu'il s'agit du `std::tuple` ! 
+A présent nous allons voir un autre type de structure de données un peu particulier puisqu'il s'agit d'un conteneur hétérogène. Alors c'est un peu étrange non ? Car pour le moment, avec tout ce que nous avons vu du `C++,` l'idée d'hétérogénéïté et donc de mélange des genres en quelque sorte n'était pas vraiment dans l'esprit du langage. Même si, peut-être que certains d'entre vous l'aurons remarqué, lorsque que nous avons joué avec les `std::map` à un moment nous avons du manipuler des conteneurs hétérogènes, les `std::pair`, le doublet clé/valeur.  Et bien il existe une généralisation du `std::pair` pour des N-uplet et vous allez être contents car le nom va vous rappeler ce que vous connaissez en Python puisqu'il s'agit du `std::tuple` ! 
 
 ## Le tuple 
 
-Nous avons donc en C++ un conteneur `std::tuple` et qui va donc nous permettre de stocker en ensemble de valeurs de types différents. D'ailleurs c'est le `std::tuple` qui va nous permettre plus tard de faire des fonctions qui pourront renvoyer plusieurs variables en sortie ! Pour information le `std::tuple` est apparu avec le c++11, avant la norme C++11 faire des conteneurs hérérogènes c'était un peu plus compliqué ! 
+Nous avons donc en C++ un conteneur `std::tuple` et qui va donc nous permettre de stocker en ensemble de valeurs de types différents. D'ailleurs c'est le `std::tuple` qui va nous permettre plus tard de faire des fonctions qui pourront renvoyer plusieurs variables en sortie ! Pour information le `std::tuple` est apparu avec le `C++11`, avant la norme `C++11` faire des conteneurs hétérogènes c'était un peu plus compliqué ! 
 
 Pour commencer à faire des `std::tuple` comme toujours il faut faire l'include qui va bien : 
 \snippet ./src/tuple_example.cpp include
@@ -476,17 +476,17 @@ Une fois notre include fait nous allons pouvoir créer nos tuple. Pour cela la s
 std::tuple<TypeElem1, TypeElem2, ...., TypeElemN > nomDuTuple
 ```
 
-Vous voyez donc que la syntaxe ressemble quand même beaucoup à celle que l'on a utilisée jusqu'à maintenant pour définir des `std::array`, `std::vector`, ... à la distinction prêt que le nombre d'argument entre `<>` peut dans le cas du tuple être variable. Derrière cela se cache en réalité la notion de template variadic mais nous verrons ça quand vous serez plus grand ! 
+Vous voyez donc que la syntaxe ressemble quand même beaucoup à celle que l'on a utilisée jusqu'à maintenant pour définir des `std::array`, `std::vector`, ... à la distinction près que le nombre d'argument entre `<>` peut, dans le cas du tuple, être variable. Derrière cela se cache en réalité la notion de template variadic mais nous verrons ça quand vous serez plus grand ! 
 
 Par exemple si je veux définir un tuple contenant trois valeurs : (i) un entier ; (ii) un double ; (iii) un booléen, je peux procéder de la manière suivante : 
 
 \snippet ./src/tuple_example.cpp declaration 
 
-Une autre alternative un peu plus sympatique a écrire est d'utiliser la fonction `std::make_tuple` qui va manger l'ensemble des valeurs que vous voulez dans le tuple et vous construire le `tuple` et avec un petit `auto` bien placé c'est rapide et plus sympa à lire ;) 
+Une autre alternative un peu plus sympathique à écrire est d'utiliser la fonction `std::make_tuple` qui va manger l'ensemble des valeurs que vous voulez dans le tuple et vous construire le `tuple` et avec un petit `auto` bien placé c'est rapide et plus sympa à lire ;) 
 
 \snippet ./src/tuple_example.cpp declaration2
 
-Maintenant que l'on a défini notre `std::tuple` se pose la question de comment on récupère une valeur du `std::tuple`. J'avoue là c'est un peu moins sympa... Le premier réflexe que vous avez certainement est de vous dire, bah ça se fait avec les crochets `[indice]` ! Et bien non perdu ! En effet pour les `std::tuple` il n'existe pas d'opérateur `[]`, ce n'est pas pour embeter les gens que ça n'a pas était fait, c'est volontaire car le `std::tuple` étant hétérogène cela entraine quelques subtilitées. Donc pour accéder aux éléments d'un `std::tuple` il faut utiliser la fonction `std::get`. Cette fonction s'utilise en spécifiant entre `<>` l'indice de l'élément auquel on souhaite accéder. Par exemple pour récupérer le premier élément : 
+Maintenant que l'on a défini notre `std::tuple` se pose la question de *Comment on récupère une valeur du `std::tuple` ?* J'avoue là c'est un peu moins sympa... Le premier réflexe que vous avez certainement est de vous dire, bah ça se fait avec les crochets `[indice]` ! Et bien non perdu ! En effet pour les `std::tuple` il n'existe pas d'opérateur `[]`, ce n'est pas pour embêter les gens que ça n'a pas été fait, c'est volontaire car le `std::tuple` étant hétérogène cela entraîne quelques subtilités. Donc, pour accéder aux éléments d'un `std::tuple`, il faut utiliser la fonction `std::get`. Cette fonction s'utilise en spécifiant entre `<>` l'indice de l'élément auquel on souhaite accéder. Par exemple pour récupérer le premier élément : 
 
 \snippet ./src/tuple_example.cpp get_idx
 
@@ -494,7 +494,7 @@ Il est également possible d'utiliser `std::get` en spécifiant un `type` plutô
 
 \snippet ./src/tuple_example.cpp get_type
 
-Souvent plutôt que de récupérer une valeur particulière d'un `std::tuple` ce qui nous intéresse c'est d'exploser le tuple. Pour cela il existe la fonction `std::tie` qui va permettre de "unpacker" notre tuple. Pour utiliser le `std::tie` il faut tout d'abord déclarer les variables qui vont recevoir les valeurs du `std::tuple` par exemple : 
+Souvent, plutôt que de récupérer une valeur particulière d'un `std::tuple`, ce qui nous intéresse c'est d'exploser le tuple. Pour cela il existe la fonction `std::tie` qui va permettre de "unpacker" notre tuple. Pour utiliser le `std::tie` il faut tout d'abord déclarer les variables qui vont recevoir les valeurs du `std::tuple` par exemple : 
 
 \snippet ./src/tuple_example.cpp tie
 
@@ -502,38 +502,38 @@ Dans le cas où on ne veut pas toutes les valeurs du tuple il est possible de de
 
 \snippet ./src/tuple_example.cpp tie_ignore
 
-Il faut avouer que le `std::tie` est un peu lourd et pas très sympatique à lire. C'est pour cela qu'il a été introduit dans la norme c++17 le `structured binding` qui en utilisant le mot clé `auto` nous permet de déclarer et faire un `std::tie` en une seule instruction. Par exemple : 
+Il faut avouer que le `std::tie` est un peu lourd et pas très sympathique à lire. C'est pour cela qu'il a été introduit dans la norme `C++17` le `structured binding` qui, en utilisant le mot clé `auto`, nous permet de déclarer et faire un `std::tie` en une seule instruction. Par exemple : 
 
 \snippet ./src/tuple_example.cpp unpack
 
 # Encore d'autres structures 
 
-Il existe encore plusieurs structures de données à votre disposition dans le c++ selon vos besoins. Nous allons en balayer encore quelques unes rapidement. Si vous recherchez plus d'informations sur le sujet je vous encourage fortement à faire un tour sur [https://en.cppreference.com/w/cpp/container](https://en.cppreference.com/w/cpp/container). 
+Il existe encore plusieurs structures de données à votre disposition dans le `C++` selon vos besoins. Nous allons en balayer encore quelques unes rapidement. Si vous recherchez plus d'informations sur le sujet je vous encourage fortement à faire un tour sur [https://en.cppreference.com/w/cpp/container](https://en.cppreference.com/w/cpp/container). 
 
 ## Listes chaînées 
 
-Il existe dans C++ la notion de liste chaînée, simplement ou doublement chaînée. Il s'agit des conteneurs `std::forward_list` et `std::list`. Le principe d'une liste chaînée est le suivant : l'allocation mémoire, c'est-à-dire la zone mémoire servant à stocker les valeurs n'est pas contigüe. En revanche chaque élément de la liste connait l'adresse mémoire de l'élément suivant et également de l'élément précédent dans le cas de la liste doublement chaînée.
+Il existe dans C++ la notion de liste chaînée, simplement ou doublement chaînée. Il s'agit des conteneurs `std::forward_list` et `std::list`. Le principe d'une liste chaînée est le suivant : l'allocation mémoire, c'est-à-dire la zone mémoire servant à stocker les valeurs, n'est pas contiguë en mémoire. En revanche chaque élément de la liste connaît l'adresse mémoire de l'élément suivant et également de l'élément précédent dans le cas de la liste doublement chaînée.
 
-L'intérêt d'une liste chaînée est que l'insertion d'une valeur se fait en temps constant, la mémoire n'étant pas contigue il suffit de prendre une case mémoire n'importe où dans la RAM, de dire à la valeur précédente que la nouvelle valeur est à l'adresse X et de dire à la nouvelle valeur que la suivante est à l'adresse Y. De la même manière la suppression d'un élément de la liste se fait très rapidement. Nous pourrions alors nous demander pourquoi ne pas toujours faire des listes ? 
-Et bien parce que le fait d'avoir une allocation mémoire discontinue est certe pratique pour supprimer/insérer rapidement des valeurs mais c'est au détriment de certaines autre fonctionnalités. Par exemple avec une liste on ne peut pas demander le `i-ème` élément ! Il faut partir du début et parcourir toute la liste pour atteindre la i-ème valeur ! 
+L'intérêt d'une liste chaînée est que l'insertion d'une valeur se fait en temps constant, la mémoire n'étant pas contiguë, il suffit de prendre une case mémoire n'importe où dans la RAM, de dire à la valeur précédente que la nouvelle valeur est à l'adresse X et de dire à la nouvelle valeur que la suivante est à l'adresse Y. De la même manière la suppression d'un élément de la liste se fait très rapidement. Nous pourrions alors nous demander pourquoi ne pas toujours faire des listes ? 
+Et bien parce que le fait d'avoir une allocation mémoire discontinue est certes pratique pour supprimer/insérer rapidement des valeurs mais c'est au détriment de certaines autres fonctionnalités. Par exemple, avec une liste on ne peut pas demander le `i-ème` élément ! Il faut partir du début et parcourir toute la liste pour atteindre la i-ème valeur ! nous sommes donc dans une recherche (par indice) linéaire au lieu de constante.
 
 Comment choisir entre une liste simplement ou doublement chaînée ? Facile ça dépend d'une seule chose, est-ce que vous voulez toujours parcourir votre liste du début à la fin (dans ce cas on fait une liste simplement chaînée) ou bien voulez vous pouvoir également parcourir la liste à l'envers, de la fin vers le début, et dans ce cas c'est une liste doublement chaînée ! 
 
-En C++ la liste simplement chaînée est la `std::forward_list` tandis que la liste double chaînée est la `std::list`. Chacune a son include correspondant évidemment : 
+En `C++` la liste simplement chaînée est la `std::forward_list` tandis que la liste double chaînée est la `std::list`. Chacune a son include correspondant évidemment : 
 
 \snippet ./src/other_example.cpp include_list 
 
-La déclaration et l'inialisation d'une liste se fait alors avec une syntaxe très proche de ce qu'on a pu voir pour les `std::vector` 
+La déclaration et l'initialisation d'une liste se fait alors avec une syntaxe très proche de ce qu'on a pu voir pour les `std::vector` 
 
-Ensuite à l'usage c'est exactement comme les `std::vector` à la différence prêt que vous ne pouvez pas accéder au `i-ème` élément en fait `myList[i]` ! 
+Ensuite à l'usage c'est exactement comme les `std::vector` à la différence près que vous ne pouvez pas accéder au `i-ème` élément en fait `myList[i]` ! 
 
 ## Pile et File 
 
-Pour finir notre tour d'horizons des structures de données c++, nous allons voir deux classiques du domaine les Files et les Piles. Il s'agit des deux structures qui sont respecivement qualifiées de First In First Out (FIFO) et Last In First Out (LIFO). 
+Pour finir notre tour d'horizons des structures de données c++, nous allons voir deux classiques du domaine: les Files et les Piles. Il s'agit des deux structures qui sont respectivement qualifiées de First In First Out (FIFO) et Last In First Out (LIFO). 
 
 ### La File 
 
-Le principe de la file est très simple, vous le vivez à chaque fois que vous allez faire les courses ! Le premier qui se met dans la queue pour la caisse sera le premier parti ! Ce type de structure de donnée est très utilisée pour tout ce qui est ordonnancement et traitement de tâches. La file en c++ se définit via le type `std::queue` qui a bien évidemment son include associé : 
+Le principe de la file est très simple, vous le vivez à chaque fois que vous allez faire les courses ! Le premier qui se met dans la queue pour la caisse sera le premier parti ! Ce type de structure de donnée est très utilisé pour tout ce qui est ordonnancement et traitement de tâches. La file en `C++` se définit via le type `std::queue` qui a bien évidemment son include associé : 
 
 \snippet ./src/other_example.cpp include_queue 
 
@@ -543,7 +543,7 @@ La déclaration d'une queue se fait en utilisant la syntaxe suivante :
 std::queue<type, conteneur> nomQueue
 ```
 
-Vous voyez alors apparaître : (i) le paramètre `type` qui correspond au type des éléments à stocker dans la queue ; (ii) le paramètre `conteneur` qui correspond au type de conteneur que la queue utilise en interne. Car dans les faits la `std::queue` n'est qu'une surcouche reposant sur des conteneurs plus standards. Vous n'êtes pas obligé de spécifier le second paramètre `conteneur` par défaut le conteneur utilisé est un `std::deque` que l'on peut voir un peu comme un mix entre une `std::list` et un `std::vector`. Sauf cas particulier je vous conseille de ne pas vous prendre la tête et de laisser le paramètre par défaut, c'est ce que je vais faire dans la suite ;) 
+Vous voyez alors apparaître : (i) le paramètre `type` qui correspond au type des éléments à stocker dans la queue ; (ii) le paramètre `conteneur` qui correspond au type de conteneur que la queue utilise en interne. Car dans les faits la `std::queue` n'est qu'une surcouche reposant sur des conteneurs plus standards. Vous n'êtes pas obligés de spécifier le second paramètre `conteneur` par défaut le conteneur utilisé est un `std::deque` que l'on peut voir un peu comme un mix entre une `std::list` et un `std::vector`. Sauf cas particulier je vous conseille de ne pas vous prendre la tête et de laisser le paramètre par défaut, c'est ce que je vais faire dans la suite ;) 
 
 Pour créer une queue la syntaxe est donc la suivante : 
 
@@ -569,7 +569,7 @@ Ce qui à l'exécution nous donne :
 
 ### La Pile 
 
-La seconde structure ultra-classique est la pile. Le principe est que le premier élément ajouté à la pile sera le dernier à en sortir. C'est un peu comme le panier de linge sale, les trucs que vous mettez au fond sont généralement ceux que vous lavez tardivement si votre panier est trop grand ! La pile en C++ correspond au conteneur `std::stack`. Pour l'utiliser l'include associé est évidemment 
+La seconde structure ultra-classique est la pile. Le principe est que le premier élément ajouté à la pile sera le dernier à en sortir. C'est un peu comme le panier de linge sale, les trucs que vous mettez au fond sont généralement ceux que vous lavez tardivement si votre panier est trop grand ! La pile en `C++` correspond au conteneur `std::stack`. Pour l'utiliser l'include associé est évidemment 
 
 \snippet ./src/other_example.cpp include_stack
 
@@ -579,7 +579,7 @@ La déclaration d'une `std::stack` repose sur la même syntaxe que la `std::queu
 std::stack<type, conteneur> nom_stack;
 ```
 
-Comme pour les `std::queue` on voit apparaitre le second paramètre `conteneur`, là encore ne vous prenez pas la tête laissez faire les autres et donc gardez la valeur par défaut. 
+Comme pour les `std::queue` on voit apparaître le second paramètre `conteneur`, là encore ne vous prenez pas la tête laissez faire les autres et donc gardez la valeur par défaut. 
 
 En pratique la déclaration de la `std::stack` se fait donc de la manière suivante : 
 
@@ -605,21 +605,21 @@ Ci-dessous une synthèse de l'usage classique d'une pile.
 
 ## Principe 
 
-Pour finir notre tour d'horizon des conteneurs de la librairie standard C++ nous allons dire quelques mots sur un concept introduit par la norme C++11 les itérateurs. Il s'agit là d'une notion particulière qui était quasi absente du c++ avant la norme 2011. Alors ca peut sembler trivial mais le fait d'avoir un type sur lequel on peut itérer n'était pas du tout naturel avant. En effet si on revient un peu en arrière pour itérer sur les valeurs d'un `std::vector` par exemple dans la version old-school de la boucle `for` nous devions procéder de la manière suivante : 
+Pour finir notre tour d'horizon des conteneurs de la librairie standard `C++` nous allons dire quelques mots sur un concept introduit par la norme `C++11`: les itérateurs. Il s'agit là d'une notion particulière qui était quasi absente du `C++` avant la norme 2011. Alors ca peut sembler trivial mais le fait d'avoir un type sur lequel on peut itérer n'était pas du tout naturel avant. En effet si on revient un peu en arrière pour itérer sur les valeurs d'un `std::vector`, par exemple dans la version old-school de la boucle `for`, nous devions procéder de la manière suivante : 
 
 \snippet ./src/iterator_example.cpp old_loop 
 
-Mais, comme je l'ai déjà dit, le C++11 a introduit une nouvelle manière de faire les boucles en offrant la possibilité d'itérer directement sur les valeurs de la manière suivante : 
+Mais, comme je l'ai déjà dit, le `C++11` a introduit une nouvelle manière de faire les boucles en offrant la possibilité d'itérer directement sur les valeurs de la manière suivante : 
 
 \snippet ./src/iterator_example.cpp new_loop 
 
 Et bien cette magie est permise grâce aux itérateurs !! 
 
-Mais concrètement un itérateur c'est quoi ? Dans les grandes lignes un itérateur est un type particulier donc une variable que l'on va pouvoir manipuler et qui va "pointer" sur une case de notre conteneur. Tout l'intérêt est que l'on peut changer la case pointée par un itérateur en incrémentant/décrémentant ce dernier à l'aide des `++` et `--`. Nous allons donc récupérer un itérateur correspondant au début du conteneur et en incrémentant l'itérateur nous allons nous ballader à travers notre structure de données. Tout le génie de la mise en place des itérateurs dans le C++ est que tous les conteneurs proposent des itérateurs et tous fonctionnent exactement de la même manière d'un point de vue utilisateur. 
+Mais concrètement un itérateur c'est quoi ? Dans les grandes lignes un itérateur est un type particulier donc une variable que l'on va pouvoir manipuler et qui va "pointer" sur une case de notre conteneur. Tout l'intérêt est que l'on peut changer la case pointée par un itérateur en incrémentant/décrémentant ce dernier à l'aide des `++` et `--`. Nous allons donc récupérer un itérateur correspondant au début du conteneur et en incrémentant l'itérateur nous allons nous balader à travers notre structure de données. Tout le génie de la mise en place des itérateurs dans le `C++` est que tous les conteneurs proposent des itérateurs et tous fonctionnent exactement de la même manière d'un point de vue utilisateur. 
 
-Les conteneurs de la librairie standard C++ utilisent deux catégories d'itérateurs (suivant le type de conteneur) : 
+Les conteneurs de la librairie standard `C++` utilisent deux catégories d'itérateurs (suivant le type de conteneur) : 
 
-- Les itérateurs bi-directionnels : permettent de parcourir un conteneur dans un sens ou l'autre mais uniquement en faisant des pas unitaires. Par exemple c'est ce type d'itérateur qui est utilisé pour les `std::map` où les `std::list` donc pour les structures de données n'ayant pas une représentation mémoire contigüe. 
+- Les itérateurs bi-directionnels : permettent de parcourir un conteneur dans un sens ou l'autre mais uniquement en faisant des pas unitaires. Par exemple c'est ce type d'itérateur qui est utilisé pour les `std::map` où les `std::list` donc pour les structures de données n'ayant pas une représentation mémoire contiguë. 
 - Les itérateurs à accès aléatoire : permettent de parcourir un conteneur de manière aléatoire, comprendre que l'on peut accéder directement au `j`-ème élément du conteneur sans parcourir les précédents. Cet itérateur est utilisé dans les `std::vector`, `std::array`. 
 
 ## Utilisation des itérateurs 
@@ -632,7 +632,7 @@ Est en réalité interprété par le compilateur de la manière suivante :
 
 \snippet ./src/iterator_example.cpp iter 
 
-Plusieur choses à noter. Tout d'abord on voit apparaître le type `std::vector<int>::iterator`, il s'agit de l'itérateur spécifique pour les `std::vector<int>`. De manière générale pour tous les conteneurs pour créer un itérateur sur un conteneur la syntaxe est la suivante `container::iterator`. Ensuite dans la déclaration de la boucle `for` on voit que l'on initialise l'itérateur `it` avec la valeur retournée par la méthode `begin()`. Cette méthode `begin()` retourne en fait l'itérateur pointant vers la première case du conteneur. Ensuite le critère de continuation de la boucle `for` est la différence de l'itérateur avec le retour de la méthode `end()`. Cette méthode `end()` retourne un itérateur pointant vers la dernière case `+1` du conteneur (et oui ça pointe en dehors du conteneur...). Et enfin on incrémente les boucles en incrémentant l'itérateur via `it++` ce qui a pour conséquence de changer la case du conteneur vers laquelle pointe notre itérateur `it`. Enfin dans le corps de la boucle `for` pour accéder à la valeur courant de l'itérateur on utilise la syntaxe, un peu particulière, `*it`. Cette syntaxe peut vous sembler bizarre mais elle ne vient pas de nulle part, elle vient de ce que l'on a lorsqu'on manipule des pointeurs, pour le moment ça ne vous parle pas mais ça va venir ;) 
+Plusieurs choses à noter. Tout d'abord on voit apparaître le type `std::vector<int>::iterator`, il s'agit de l'itérateur spécifique pour les `std::vector<int>`. De manière générale pour tous les conteneurs, pour créer un itérateur sur un conteneur la syntaxe est la suivante: `container::iterator`. Ensuite dans la déclaration de la boucle `for` on voit que l'on initialise l'itérateur `it` avec la valeur retournée par la méthode `begin()`. Cette méthode `begin()` retourne en fait l'itérateur pointant vers la première case du conteneur. Ensuite le critère de continuation de la boucle `for` est la différence de l'itérateur avec le retour de la méthode `end()`. Cette méthode `end()` retourne un itérateur pointant vers la dernière case `+1` du conteneur (et oui ça pointe en dehors du conteneur...). Et enfin on incrémente les boucles en incrémentant l'itérateur via `it++` ce qui a pour conséquence de changer la case du conteneur vers laquelle pointe notre itérateur `it`. Enfin dans le corps de la boucle `for` pour accéder à la valeur courante de l'itérateur on utilise la syntaxe, un peu particulière, `*it`. Cette syntaxe peut vous sembler bizarre mais elle ne vient pas de nulle part, elle vient de ce que l'on a lorsqu'on manipule des pointeurs, pour le moment ça ne vous parle pas mais ça va venir ;) 
 
 Il existe en réalité quatre itérateurs différents pour chaque conteneur : 
 - `container::iterator` : l'itérateur classique permettant de parcourir un tableau du début à la fin et de modifier les valeurs au passage 
@@ -646,5 +646,4 @@ Il existe en réalité quatre itérateurs différents pour chaque conteneur :
 
 \snippet ./src/iterator_example.cpp iter_const
 
-
-Pour le moment les itérateurs peuvent vous sembler abstraits surtout avec la boucle `for` new-school qui cache tout mais vous verrez que l'on va rapidement en avoir besoin dès que l'on veut utiliser les fonctions opérants sur des conteneurs définies dans la librairies `algorithm`. 
+Pour le moment les itérateurs peuvent vous sembler abstraits surtout avec la boucle `for` new-school qui cache tout mais vous verrez que l'on va rapidement en avoir besoin dès que l'on veut utiliser les fonctions, opérants sur des conteneurs, définies dans la librairies `algorithm`. 
