@@ -246,6 +246,9 @@ On identifie donc quatre éléments :
 
 \snippet ./src/functor_example.cpp bind_composition
 
+```
+f(x) = 1.11022e-16
+```
 
 
 # Allons un peu plus loin 
@@ -274,11 +277,95 @@ Voyons un exemple:
 
 ## La limitation du c++ 
 
+\snippet ./src/template_example.cpp print_specific_int_call 
+
+\snippet ./src/template_example.cpp print_specific_int 
+
+\snippet ./src/template_example.cpp print_specific_double_call 
+
+\snippet ./src/template_example.cpp print_specific_double
+
+
 ## La notion de template 
+
+### La grande idée ! 
+
+### Définition d'une fonction template 
+
+\snippet ./src/template_example.cpp print_template
+
+\snippet ./src/template_example.cpp print_template_call
+
+\htmlonly
+<iframe width="100%" height="500px" src="https://cppinsights.io/s/040a23ff"> </iframe>
+\endhtmlonly
+
+### Les paramètre templates 
+
+\snippet ./src/template_example.cpp increment 
+
+\snippet ./src/template_example.cpp increment_call
+
+
+\snippet ./src/template_example.cpp increment_default
+\snippet ./src/template_example.cpp increment_default_call
+
+\snippet ./src/template_example.cpp increment_no_cast
+\snippet ./src/template_example.cpp increment_no_cast_call
+
+### Branchement à la compilation dans les templates (C++17)
+
+\snippet ./src/template_example.cpp fibonacci 
+
+\htmlonly
+<iframe width="100%" height="500px" src="https://cppinsights.io/lnk?code=dGVtcGxhdGU8aW50IE4+CmludCBmaWJvbmFjY2koKXsKICAgIGlmIGNvbnN0ZXhwciggTiA9PSAwKXsKICAgICAgICByZXR1cm4gMDsKICAgIH0KICAgIGVsc2UgaWYgY29uc3RleHByKCBOID09IDEpewogICAgICAgIHJldHVybiAxOwogICAgfQogICAgZWxzZXsKICAgICAgICByZXR1cm4gZmlib25hY2NpPE4tMT4oKSArIGZpYm9uYWNjaTxOLTI+KCk7CiAgICB9Cn0KCmludCBtYWluKCl7CiAgCiAgYXV0byBmNCA9IGZpYm9uYWNjaTw0PigpOwogIAogIHJldHVybiAwOyAKfQogIA==&insightsOptions=cpp2a&std=cpp2a&rev=1.0"> </iframe>
+\endhtmlonly
+
+
+
+
+
+### La notion de traits
 
 ## C++20 et les fonctions génériques 
 
+### Du template en mode super simple 
+
+\snippet ./src/template_example.cpp print_auto 
+
+### Retrouver le type ! 
+
+
 ## Mettons quelques rêgles en place ! 
 
+### La notion de concept 
+\snippet ./src/concept_example.cpp include
 
+\snippet ./src/concept_example.cpp increment_base
+
+```
+concept_example.cpp:8:16: error: invalid ‘static_cast’ from type ‘int’ to type ‘x_t’ {aka ‘const char*’}
+    8 |     return x + static_cast<x_t>(N);
+      |                ^~~~~~~~~~~~~~~~~~~
+```
+
+\snippet ./src/concept_example.cpp increment_concept
+
+
+```
+concept_example.cpp:18:23: error: no matching function for call to ‘increment(const char [7])’
+   18 |     auto z = increment("coucou");
+      |              ~~~~~~~~~^~~~~~~~~~
+concept_example.cpp:6:6: note: candidate: ‘template<int N, class auto:3>  requires  integral<auto:3> auto increment(auto:3)’
+    6 | auto increment( std::integral auto  x ){
+      |      ^~~~~~~~~
+concept_example.cpp:6:6: note:   template argument deduction/substitution failed:
+concept_example.cpp:6:6: note: constraints not satisfied
+```
+
+### Définir ses propres concepts 
+
+\snippet ./src/concept_example.cpp concept_is_iterable 
+
+\snippet ./src/concept_example.cpp print_with_concept 
 
