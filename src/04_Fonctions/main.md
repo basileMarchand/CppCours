@@ -165,20 +165,87 @@ Et sinon qu'est ce qu'on est sensé voir ? Deux choses :
 1. Vous pouvez remarquer que le code associé à la définition de la fonction `factorial` n'apparait pas dans l'onglet de droite. Cela veut tout simplement dire que la définition de la fonction n'est pas dans le code généré car le code n'en a pas besoin
 2. Vous remarquerez qu'à la ligne 4 du code assembleur il y a la valeur `3628800`. Alors ce n'est pas vraiment un hasard mais il s'agit de la valeur de factoriel 10... Et donc oui la valeur de `factorial(10)` est écrite en dur dans le code généré preuve que le résultat de la fonction a bien été calculé à la compilation et qu'à l'exécution il n'y a plus rien à faire ! 
 
+### Déduction de type 
+
+TODO : decltype 
+
+
+
 # Un mot sur les fonctions anonymes 
 
 ## Une fonction anonyme pour quoi faire ? 
 
+Maintenant que vous savez faire des fonctions classiques nous allons voir une autre manière de faire des fonctions que l'on va qualifier d'anonyme, on parle également de lambda fonctions. Pourquoi anonyme ? Tout simplement par opposition aux fonctions classiques. Concrêtement une fonction classique se définit de manière globale et est par conséquent visible et utilisable par "tout le monde dans votre code". Tandis qu'une fonction anonyme va être définie localement (au sein d'une fonction par exemple) et ne sera donc pas visible par tout le monde. Les fonctions anonymes ont donc vocations a être définies au fil de l'eau lorsqu'en on a besoin. 
+
+L'intérêt de ces fonctions va vous apparaitre de manière flagrante dans le prochain chapitre lorsque nous verrons le paradigme de la programmation fonctionnelle. 
+
 ## Définition des lambda fonctions 
 
+La définition d'une fonction anonyme se fait en suivant la syntaxe suivante : 
+
+```
+[capture](arguments) -> type_retour { corps de la fonction };
+```
+
+On identifie donc quatre éléments : 
+
+- La capture : permet de spécifier les variables du scope de définition de la lambda qui seront accessible dans le corps de la lambda. Par défaut la capture est vide ce qui signifie qu'au sein de la fonction anonyme on ne pourra accéder à **aucune** variable du scope supérieur, la fonction anonyme est isolée du reste du monde. 
+- Les arguments : il s'agit des arguments d'entrée de la fonction anonyme, les rêgles sont exactement les mêmes que pour des fonctions classiques
+- Le type de retour : comme pour une fonction classique il faut spécifier le type de la variable retournée par la fonction anonyme. Le type de retour peut ne pas être indiqué, généralement le compilateur s'en sort, mais par soucis de lisibité et pour être sympa avec le compilo il est préférable de toujours le spécifier. 
+- Le corps de la fonction : rien de nouveau c'est comme dans les fonctions standards. 
+
+### La notion de capture 
+
+\snippet ./src/lambda_example.cpp lambda_no_capture
+
+\snippet ./src/lambda_example.cpp lambda_copy_capture
+
+\snippet ./src/lambda_example.cpp lambda_ref_capture
+
+\snippet ./src/lambda_example.cpp lambda_copy_all_capture
+
+\snippet ./src/lambda_example.cpp lambda_ref_all_capture
+
+\snippet ./src/lambda_example.cpp mutable 
+
+\snippet ./src/lambda_example.cpp mutable_call 
+
+
+### Un exemple concret 
+
+\snippet ./src/lambda_example.cpp for_each_call 
 
 # Manipuler des fonctions comme des variables 
 
 ## Pourquoi pas mais dans quel but ? 
 
+\snippet ./src/functor_example.cpp newton_no_functor 
+
+\snippet ./src/functor_example.cpp newton_no_functor_call 
+
+
 ## Le foncteur moderne 
 
+\snippet ./src/functor_example.cpp include
+
+
+\snippet ./src/functor_example.cpp newton_functor 
+
+\snippet ./src/functor_example.cpp newton_functor_call_glob
+
+\snippet ./src/functor_example.cpp newton_functor_call_lambda1
+
+\snippet ./src/functor_example.cpp newton_functor_call_lambda2
+
+
 ## Imposer des valeurs de paramètres 
+
+\snippet ./src/functor_example.cpp bind_manual
+
+\snippet ./src/functor_example.cpp bind_std
+
+\snippet ./src/functor_example.cpp bind_composition
+
 
 
 # Allons un peu plus loin 
