@@ -6,7 +6,7 @@
 
 //! [increment_base]
 template<int N=1>
-auto increment( std::integral auto  x ){
+auto increment( auto  x ){
     using x_t = decltype(x);
     return x + static_cast<x_t>(N);
 }
@@ -19,6 +19,27 @@ auto incrementConstrained( std::integral auto  x ){
     return x + static_cast<x_t>(N);
 }
 //! [increment_concept]
+
+//! [increment_concept_template]
+template<typename T, int N=1>
+requires std::integral<T>
+auto incrementConstrainedTemplate( T x ){
+    using x_t = decltype(x);
+    return x + static_cast<x_t>(N);
+}
+//! [increment_concept_template]
+
+//! [increment_concept_convertible]
+template<typename T, int N=1>
+requires std::convertible_to<T, int>
+auto incrementConstrainedTemplate( T x ){
+    auto x_i = int(x);
+    return x + N;
+}
+//! [increment_concept_convertible]
+
+
+
 
 //! [concept_is_iterable]
 template<typename T>

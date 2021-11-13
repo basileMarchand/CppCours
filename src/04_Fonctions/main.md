@@ -363,9 +363,56 @@ concept_example.cpp:6:6: note:   template argument deduction/substitution failed
 concept_example.cpp:6:6: note: constraints not satisfied
 ```
 
+La notion de concept peut également s'utiliser avec les templates plus classiques en utilisant l'instruction requires. La syntaxe générale est la suivante : 
+
+```
+template<typename T>
+requires LeConcept<T>
+type_sortie nomFonction( ... ){
+
+}
+```
+
+En pratique si on reprend la fonction incrémente cela donne : 
+
+\snippet ./src/concept_example.cpp increment_concept_template 
+
+### Une librairie de concepts 
+
+Il existe un ensemble de concepts pré-définis dans la librairie standard c++ au sein de la librairie `concepts`. Pour une liste exhaustive je vous encourage fortement à faire un tour sur [https://en.cppreference.com/w/cpp/concepts](https://en.cppreference.com/w/cpp/concepts) vous trouverez l'ensemble des concepts pré-existants. 
+
+Parmi ceux dans le même esprit que ce qu'on a vu juste au-dessus il y a : 
+
+- `std::integral` : qui constaint l'argument à être de type intégrale 
+- `std::floating_point` : qui constraint l'argument à être de type flottant
+- `std::signed_integral`
+- `std::unsigned_integral` 
+
+Il existe cependant d'autre type de concepts. Par exemple 
+
+\snippet ./src/concept_example.cpp increment_concept_convertible
+
+
 ### Définir ses propres concepts 
+
+
+```
+template<typename T, ...>
+concept ConceptName = contrainte
+```
+
+```
+template<typename T, ...>
+concept ConceptName = requires(T a, ...){
+  { expression } -> return-type (optional);
+};
+```
 
 \snippet ./src/concept_example.cpp concept_is_iterable 
 
 \snippet ./src/concept_example.cpp print_with_concept 
+
+
+Pour les conteneurs il existe de nombreux concepts déjà définis dans la librairie `ranges` que l'on va voir dans le chapitre suivant ! 
+
 
