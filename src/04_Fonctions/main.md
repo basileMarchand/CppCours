@@ -19,7 +19,7 @@ D'ailleurs la librairie de `C++` vous fournit des tas de fonctions prédéfinies
 
 Vous pouvez naturellement aussi créer vos propres fonctions pour des actions non couvertes par la librairie de `C++` (ou par d'autres librairies que vous trouveriez), parce que refaire une fonction existante ce serait vraiment bête... le programmeur est paresseux: il code tout d'abord en réutilisant tout ce qu'il peut et ne fait son propre code que *contraint et forcé*.
 
-Une chose très très importante pour ne pas dire capitale ! La rêgle de base à retenir et **à appliquer** est que l'on ne doit jamais faire de copier-coller dans un code ! Dès que vous êtes tenté de faire un copié-collé dans votre code c'est que vous devez faire une fonction. Pourquoi ? Mais tout simplement parce que le copié-collé c'est la source d'erreur assurée ! Car si vous avez un bout de code que vous copiez 20 fois dans votre projet. Quelques temps plus tard vous vous appercevez qu'il y a un bug, vous le corrigez mais vous devez ensuite retrouver les 20 endroits où vous avez le même bug pour le corriger et il y a de forte chance que vous loupiez une correction ! Et là c'est le drame !
+Une chose très très importante pour ne pas dire capitale ! La règle de base à retenir et **à appliquer** est que *l'on ne doit jamais faire de copier-coller dans un code* ! Dès que vous êtes tenté de faire un copier-coller dans votre code c'est que vous devez faire une fonction. Pourquoi ? Mais tout simplement parce que le copier-coller c'est la source d'erreur assurée ! Car si vous avez un bout de code que vous copiez 20 fois dans votre projet, quelques temps plus tard vous vous apercevez qu'il y a un bug, vous le corrigez mais vous devez ensuite retrouver les 20 endroits où vous avez le même bug pour le corriger et il y a de fortes chances que vous loupiez une correction ! Et là c'est le drame !
 
 
 ## Définir des fonctions
@@ -66,11 +66,11 @@ Mais du coup si je veux faire une fonction `mean` pour un `std::vector<double>` 
 
 ## Surcharge de fonctions 
 
-Le C++ dans son génie sans limite met à disposition des développeurs le mécanisme génial de la surcharge de fonctions. Le principe est simple, pour différencier deux fonctions entre elles le C++ regarde **deux** choses : 
+Le `C++` dans son génie sans limite met à disposition des développeurs le mécanisme génial de la surcharge de fonctions. Le principe est simple, pour différencier deux fonctions entre elles le C++ regarde **deux** choses : 
 1. L'identificateur de la fonction, son petit nom donc 
 2. Le nombre et le type des arguments d'entrée de la fonction 
 
-Le nombre et le type ? Je peux définir `n` fonctions ayant le même nom tant que les arguments d'entrées sont de types différents entre toutes les versions ça marche ? Et oui ça marche et ça c'est beau !! Je ne ferai pas de comparaison avec Python içi car ce mécanisme n'existe pas en Python. Si on reprend maintenant notre problème de fonction calculant la moyenne, nous pouvons donc faire quelque chose du genre : 
+Le nombre et le type ? Je peux définir `n` fonctions ayant le même nom tant que les arguments d'entrées sont de types différents entre toutes les versions et ça marche ? Et oui ça marche et ça c'est beau !! Je ne ferai pas de comparaison avec Python ici car ce mécanisme n'existe pas en Python. Si on reprend maintenant notre problème de fonction calculant la moyenne, nous pouvons donc faire quelque chose du genre : 
 
 \snippet ./src/function_intro.cpp mean_function 
 \snippet ./src/function_intro.cpp mean_function_dbl
@@ -96,9 +96,9 @@ Si on appelle cette fonction et que l'on affiche le contenu du `std::vector` à 
 1, 2, 3,
 ```
 
-Pas vraiment ce qu'on avait en tête non ? Mais pourquoi ça ne marche pas ?! Et bien si ça marche c'est juste que vous n'avez pas su parler correctement au C++. Et du coup il fait exactement ce que vous lui avez demandé ! Il s'agit là de la grande subtilité du C++, ***le passage des arguments d'une fonction se fait toujours par copie*** ! Donc le tableau que l'on modifie dans la fonction est une copie de `v` donc en le modifiant on ne modifie pas `v` tout simplement ! 
+Pas vraiment ce qu'on avait en tête non ? Mais pourquoi ça ne marche pas ?! Et bien si ça marche c'est juste que vous n'avez pas su parler correctement au `C++`. Et du coup il fait exactement ce que vous lui avez demandé ! Il s'agit là de la grande subtilité du C++, ***le passage des arguments d'une fonction se fait toujours par copie*** ! Donc le tableau que l'on modifie dans la fonction est une copie de `v` donc en le modifiant on ne modifie pas `v` tout simplement ! 
 
-Mais ça coûte cher non ? Alors oui faire une copie des arguments quand c'est un `int` ou un `double` ça passe mais quand c'est un `std::array<double, 10000>` ça commence à se faire sentir ! C'est pour cela qu'il existe un moyen de dire au c++ de ne pas faire de copies c'est ce qu'on appelle le passage par référence ! Et le nom doit vous rappeler quelque chose non ;) car oui le principe va être d'utiliser des références plutôt que les variables elles mêmes. Pour cela c'est au moment de la déclaration de la fonction qu'il faut dire que l'on ne veut pas la variables mais une référence vers cette dernière. Et cela se fait simplement en ajoutant un esperluette `&` derrière le type de l'argument que l'on ne veut pas copier ! Par exemple : 
+Mais ça coûte cher non ? Alors oui faire une copie des arguments quand c'est un `int` ou un `double` ça passe mais quand c'est un `std::array<double, 10000>` ça commence à se faire sentir ! C'est pour cela qu'il existe un moyen de dire au `C++` de ne pas faire de copies c'est ce qu'on appelle le passage par référence ! Et le nom doit vous rappeler quelque chose non ;) car oui le principe va être d'utiliser des références plutôt que les  (les objets) elles mêmes. Pour cela c'est au moment de la déclaration de la fonction qu'il faut dire que l'on ne veut pas la variable mais une référence vers cette variable. Et cela se fait simplement en ajoutant un esperluette `&` derrière le type de l'argument que l'on ne veut pas copier ! Par exemple : 
 
 \snippet ./src/function_intro2.cpp ref_arg
 
@@ -109,7 +109,7 @@ Mais ça coûte cher non ? Alors oui faire une copie des arguments quand c'est u
 ```
 Dans ce cas on obtient donc le résultat attendu ! 
 
-Par contre attention c'est à double tranchant ! Et oui si on passe tout par référence il y a le risque que l'on modifie une variable qui ne devait pas l'être et après dans le reste de notre code c'est la catastrophe ! Heureusement il y a un moyen de prévenir cela. Par exemple si on reprend l'exemple du calcul d'une moyenne nous pourrions passer le tableau des valeur par référence pour économiser une copie mais en revanche notre fonction ne doit en aucun cas pouvoir modifier les valeurs du tableau. Pour cela le qualificateur `const` est votre ami ! En effet nous pouvons déclarer un argument d'entrée comme const ce qui assure alors qu'aucune modification de la variable ne sera faite : 
+Par contre attention c'est à double tranchant ! Et oui si on passe tout par référence il y a le risque que l'on modifie une variable qui ne devait pas l'être et après dans le reste de notre code c'est la catastrophe ! Heureusement il y a un moyen de prévenir cela. Par exemple si on reprend l'exemple du calcul d'une moyenne nous pourrions passer le tableau des valeur par référence pour économiser une copie mais en revanche notre fonction ne doit en aucun cas pouvoir modifier les valeurs du tableau. Pour cela le qualificateur `const` est votre ami ! En effet nous pouvons déclarer un argument d'entrée comme `const` ce qui assure alors qu'aucune modification de la variable ne pourra être faite dans cette fonction : 
 
 \snippet ./src/function_intro2.cpp const_ref
 
@@ -117,67 +117,66 @@ Enfin dernière mise en garde ! N'ayez surtout pas l'idée d'essayer de renvoyer
 
 \snippet ./src/function_intro2.cpp bad_idea
 
-Vous avez une petite idée de pourquoi ce code est tout sauf l'idée du siècle ? Tout simplement parce qu'une référence c'est une variable qui utilise la mémoire d'une autre variable donc en renvoyant en sortie de votre fonction la référence d'une variable locale à la fonction vous renvoyez en fait la zone mémoire de votre variable locale. Sauf que cette variable est **locale** donc quand on sort de la fonction elle est détruite et la zone mémoire associée est libérée du coup on se retrouve avec une référence vers une zone mémoire qui n'est plus réservé pour la variable initiale. Et là c'est le début de gros problème ... 
+Vous avez une petite idée de pourquoi ce code est tout sauf l'idée du siècle ? Tout simplement parce qu'une référence c'est une variable qui utilise la mémoire d'une autre variable donc, en renvoyant en sortie de votre fonction la référence d'une variable locale à la fonction, vous renvoyez en fait la zone mémoire de votre variable locale. Sauf que si cette variable est **locale** quand on sort de la fonction elle est détruite et la zone mémoire associée est libérée et du coup on se retrouve avec une référence vers une zone mémoire qui n'est plus réservée. Et là c'est le début de gros problème ... 
 
 ## Une pointe de modernité ! 
 
 ### Retourner plusieurs valeurs 
 
-Tout d'abord vous avez peut-être constaté que les fonctions C++ par défaut ne retourne soit rien soit une **et une seule** variable. Du coup se pose la question de comment je fais si j'ai une fonction qui doit me retourner deux choses ? Alors avant le C++11 c'était tout simplement impossible ! Mais il existe une parade et elle est très simple. En effet il suffit de définir un argument supplémentaire que l'on passe par référence (non constante) et qui va jouer le rôle de notre seconde variable. Par exemple faisons une fonctions qui prend en entrée un `std::vector<double>` et retourne le tableau contenant toutes les valeurs sauf celle supérieures à un seuil fourni par l'utilisateur et retourne également le nombre de valeur supprimées. Dans le monde pré-c++11 nous pourrions procéder de la manière suivante : 
+Tout d'abord vous avez peut-être constaté que les fonctions `C++` par défaut soit elles ne retournent rien soit elles retournent **une et une seule** variable. Du coup se pose la question de *Comment je fais si j'ai une fonction qui doit me retourner deux choses ?* Alors avant le `C++11` c'était tout simplement impossible ! Mais il existe quand même une parade et elle est très simple. En effet il suffit de définir un argument supplémentaire que l'on passe par référence (non constante) et qui va jouer le rôle de notre seconde variable (de retour). Par exemple faisons une fonction qui prend en entrée un `std::vector<double>` et retourne le tableau contenant toutes les valeurs sauf celles qui sont supérieures à un seuil fourni par l'utilisateur, et retourne également le nombre de valeur supprimées. Dans le monde pré-`C++11` nous pourrions procéder de la manière suivante : 
 
 \snippet ./src/function_intro2.cpp in_out
 
-A l'usage cela donnerai alors : 
+A l'usage cela donnerait alors : 
 
 \snippet ./src/function_intro2.cpp in_out_call 
 
-Cela fait le travail et donc ne soyez pas surpris si vous tombez sur des structures dans ce style car on en trouve encore énormément dans beaucoup de codes ! 
+Cela fait le travail et donc ne soyez pas surpris si vous tombez sur des structures dans ce style car on en trouve encore énormément dans de très nombreux codes ! 
 
-Cependant le C++11 (gloire à lui) a permi de faire des fonctions qui retourne vraiment plusieurs valeurs sans passer par l'astuce des références. Et vous savez déjà comment faire ça en fait ! Non ? Pas d'idée ? C'est pourtant évident si vous ne pouvez renvoyer qu'un truc, renvoyez un conteneur hétérogène `std::tuple`. Et bah oui si on dit que notre fonction retourne un `std::tuple` on peut alors mettre autant de valeur en sortie qu'on le souhaite. Par exemple sur mon exemple de seuillage cela donnerai : 
+Cependant le `C++11` (gloire à lui) a permis de faire des fonctions qui retournent vraiment plusieurs valeurs sans passer par l'astuce des références. Et vous savez déjà comment faire ça en fait ! Non ? Pas d'idée ? C'est pourtant évident: si vous ne pouvez renvoyer qu'un truc, renvoyez alors un conteneur hétérogène `std::tuple`. Et bah oui si on dit que notre fonction retourne un `std::tuple` on peut alors mettre autant de valeurs en sortie qu'on le souhaite. Par exemple sur mon exemple de seuillage cela donnerait : 
 
 \snippet ./src/function_intro2.cpp out11
 
-Cela donnerai alors à l'usage : 
+Cela donnerait alors à l'usage : 
 
 \snippet ./src/function_intro2.cpp out11_call 
 
-C'est pas mal non ? J'avoue que le fait de manipuler un `std::tuple` est un peu lourd après à cause des `std::get` ce serait sympa d'avoir un truc un peu plus conci un jour... Oh mais au fait le C++17 a résolu ce problème je vous en ai parlé dans la partie sur les conteneurs. Et oui le C++17 a introduit le truc génial du *structured binding* et ça c'est cool car ça nous permet d'écrire directement : 
+C'est pas mal non ? J'avoue que le fait de manipuler un `std::tuple` est un peu lourd après à cause des `std::get` ce serait sympa d'avoir un truc un peu plus concis un jour... Oh mais au fait le `C++17` a résolu ce problème, je vous en ai parlé dans la partie sur les conteneurs. Et oui le `C++17` a introduit le truc génial du *structured binding* et ça c'est cool car ça nous permet d'écrire directement : 
 
 \snippet ./src/function_intro2.cpp out11_call17
 
-Là je pense qu'on peut dire qu'on est content car c'est quand même vachement pratique et lisible surtout ! Donc maintenant n'hésitez plus si vos fonctions doivent renvoyer plusieurs choses qu'elles le fassent explicitemant plutôt que de faire un jeu de référence pas clair ! 
+Là je pense qu'on peut dire qu'on est content car c'est quand même vachement pratique et lisible surtout ! Donc maintenant n'hésitez plus: si vos fonctions doivent renvoyer plusieurs choses qu'elles le fassent explicitement plutôt que de faire un jeu de références peu clair ! 
 
 
 ### Fonctions constexpr 
 
-Avec le C++11 est arrivé la notion de `constexpr` nous avons déjà parlé des variables `constexpr` pour rappel il s'agit des variables connues à la compilation. Mais nous pouvons également déclarer des fonctions comme `constexpr` c'est à dire que le résultat de l'évaluation de la fonction peut se calculer à la compilation. Le concept des fonctions constexpr a été initialement introduit dans le C++11 cependant il a été largement enrichi par les norme C++14 et C++17 en faisant quelque chose de vraiment exploitable désormais. Par exemple nous pouvons définir une fonction factorielle constexpr de la manière suivante : 
+Avec le `C++11` est arrivée la notion de `constexpr` nous avons déjà parlé des variables `constexpr` pour rappel il s'agit des variables connues à la compilation. Mais nous pouvons également déclarer des fonctions comme `constexpr` c'est à dire que le résultat de l'évaluation de la fonction peut se calculer à la compilation. Le concept des fonctions `constexpr` a été initialement introduit dans le `C++11` cependant il a été largement enrichi par les normes `C++14` et `C++17` en faisant quelque chose de vraiment exploitable désormais. Par exemple nous pouvons définir une fonction factorielle `constexpr` de la manière suivante : 
 
 \snippet ./src/constexpr_example.cpp factorial 
 
-Comment être sur que je ne vous baratine pas et que la fonction est vraiment calculée à la compilation ? Facile on va faire un tour sur [godbolt.org](godbolt.org) et on regarde le code assembleur généré ;) 
+Comment être sûr que je ne vous baratine pas et que la fonction est vraiment calculée à la compilation ? Facile on va faire un tour sur [godbolt.org](godbolt.org) et on regarde le code assembleur généré ;) 
 
 \htmlonly 
 <iframe width="100%" height="300px" src="https://godbolt.org/e?readOnly=true&hideEditorToolbars=true#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:2,endLineNumber:13,positionColumn:2,positionLineNumber:13,selectionStartColumn:2,selectionStartLineNumber:13,startColumn:2,startLineNumber:13),source:'constexpr+int+factorial(const+int+n)%7B%0A++++if(n%3C1)%7B%0A++++++++return+1%3B%0A++++%7D%0A++++return+n*factorial(n-1)%3B%0A%7D%0A%0A%0Aint+main()%7B%0A%0A++++int+f10+%7Bfactorial(10)%7D%3B%0A++++return+f10%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g112,filters:(b:'0',binary:'1',commentOnly:'0',demangle:'0',directives:'0',execute:'0',intel:'0',libraryCode:'0',trim:'1'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'',selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1,tree:'1'),l:'5',n:'0',o:'x86-64+gcc+11.2+(C%2B%2B,+Editor+%231,+Compiler+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4"></iframe>
 \endhtmlonly 
 
-Et sinon qu'est ce qu'on est sensé voir ? Deux choses : 
+Et sinon qu'est ce qu'on est censé voir ? Deux choses : 
 
-1. Vous pouvez remarquer que le code associé à la définition de la fonction `factorial` n'apparait pas dans l'onglet de droite. Cela veut tout simplement dire que la définition de la fonction n'est pas dans le code généré car le code n'en a pas besoin
-2. Vous remarquerez qu'à la ligne 4 du code assembleur il y a la valeur `3628800`. Alors ce n'est pas vraiment un hasard mais il s'agit de la valeur de factoriel 10... Et donc oui la valeur de `factorial(10)` est écrite en dur dans le code généré preuve que le résultat de la fonction a bien été calculé à la compilation et qu'à l'exécution il n'y a plus rien à faire ! 
+1. Vous pouvez remarquer que le code associé à la définition de la fonction `factorial` n'apparaît pas dans l'onglet de droite. Cela veut tout simplement dire que la définition de la fonction n'est pas dans le code généré car le code n'en a pas (plus) besoin
+2. Vous remarquerez qu'à la ligne 4 du code assembleur il y a la valeur `3628800`. Alors ce n'est pas vraiment un hasard mais il s'agit de la valeur de factorielle 10... Et donc oui la valeur de `factorial(10)` est écrite en dur dans le code généré preuve que le résultat de la fonction a bien été calculé à la compilation et qu'à l'exécution il n'y a plus rien à faire ! Et c'est très beau...
 
 ### Déduction de type 
 
 TODO : decltype 
 
 
-
 # Un mot sur les fonctions anonymes 
 
 ## Une fonction anonyme pour quoi faire ? 
 
-Maintenant que vous savez faire des fonctions classiques nous allons voir une autre manière de faire des fonctions que l'on va qualifier d'anonyme, on parle également de lambda fonctions. Pourquoi anonyme ? Tout simplement par opposition aux fonctions classiques. Concrêtement une fonction classique se définit de manière globale et est par conséquent visible et utilisable par "tout le monde dans votre code". Tandis qu'une fonction anonyme va être définie localement (au sein d'une fonction par exemple) et ne sera donc pas visible par tout le monde. Les fonctions anonymes ont donc vocations a être définies au fil de l'eau lorsqu'en on a besoin. 
+Maintenant que vous savez faire des fonctions classiques nous allons voir une autre manière de faire des fonctions que l'on va qualifier d'anonymes (i.e. sans nom lors de leur définition), on parle également de lambda fonctions. Pourquoi anonyme ? Tout simplement par opposition aux fonctions classiques. Concrètement une fonction classique se définit de manière globale et est par conséquent visible et utilisable par "tout le monde dans votre code". Tandis qu'une fonction anonyme va être définie localement (au sein d'une fonction par exemple) et ne sera donc pas visible par tout le monde. Les fonctions anonymes ont donc vocation à être définies au fil de l'eau lorsqu'en on a besoin. 
 
-L'intérêt de ces fonctions va vous apparaitre de manière flagrante dans le prochain chapitre lorsque nous verrons le paradigme de la programmation fonctionnelle. 
+L'intérêt de ces fonctions va vous apparaître de manière flagrante dans le prochain chapitre lorsque nous verrons le paradigme de la programmation fonctionnelle. 
 
 ## Définition des lambda fonctions 
 
@@ -189,10 +188,10 @@ La définition d'une fonction anonyme se fait en suivant la syntaxe suivante :
 
 On identifie donc quatre éléments : 
 
-- La capture : permet de spécifier les variables du scope de définition de la lambda qui seront accessible dans le corps de la lambda. Par défaut la capture est vide ce qui signifie qu'au sein de la fonction anonyme on ne pourra accéder à **aucune** variable du scope supérieur, la fonction anonyme est isolée du reste du monde. 
-- Les arguments : il s'agit des arguments d'entrée de la fonction anonyme, les rêgles sont exactement les mêmes que pour des fonctions classiques
-- Le type de retour : comme pour une fonction classique il faut spécifier le type de la variable retournée par la fonction anonyme. Le type de retour peut ne pas être indiqué, généralement le compilateur s'en sort, mais par soucis de lisibité et pour être sympa avec le compilo il est préférable de toujours le spécifier. 
-- Le corps de la fonction : rien de nouveau c'est comme dans les fonctions standards. 
+- La capture : permet de spécifier les variables (du scope de définition de la lambda) qui seront accessibles dans le corps de la lambda. Par défaut la capture est vide ce qui signifie qu'au sein de la fonction anonyme on ne pourra accéder à **aucune** variable du scope supérieur: la fonction anonyme est isolée du reste du monde. 
+- Les arguments : il s'agit des arguments d'entrée de la fonction anonyme, les règles sont exactement les mêmes que pour les fonctions classiques
+- Le type de retour : comme pour une fonction classique il faut spécifier le type de la variable retournée par la fonction anonyme. Le type de retour peut ne pas être indiqué, généralement le compilateur s'en sort, mais par soucis de lisibilité (et pour être sympa avec le compilo) il est préférable de toujours le spécifier. 
+- Le corps de la fonction : rien de nouveau c'est comme dans les fonctions classiques. 
 
 ### La notion de capture 
 
@@ -205,6 +204,8 @@ On identifie donc quatre éléments :
 \snippet ./src/lambda_example.cpp lambda_copy_all_capture
 
 \snippet ./src/lambda_example.cpp lambda_ref_all_capture
+
+Enfin, voici une capture un peu particulière. Depuis `C++11` on peut demander qu'une variable *capturée par copie* dans une lambda puisse être modifiée. En quoi c'est différent d'une capture par référence ? parce que la modification n'est effective que dans la lambda. 
 
 \snippet ./src/lambda_example.cpp mutable 
 
@@ -257,7 +258,7 @@ Il est heureusement possible de séparer la **déclaration** des fonctions de le
 
 En effet, dans un code qui appelle une fonction, `C++`, pour faire ses habituelles vérifications de types, n'a besoin que du prototype de la fonction et pas du corps; le corps de la fonction peut être lui vérifié à un autre moment de la compilation.
 
-On va donc pouvoir **déclarer** une fonction i.e. donner son prototype en remplaçant son corps par `;` et utiliser cette fonction. Bien sûr puisque vous l'utilisez, `C++`, pour faire votre exécutable, devra trouver le corps de la fonction quelque part. Ce code sera donné avec toute la fonction: prototype+corps.
+On va donc pouvoir **déclarer** une fonction i.e. donner son prototype en remplaçant son corps par `;` et utiliser cette fonction. Bien sûr puisque vous l'utilisez, `C++`, pour faire votre exécutable, devra trouver le corps de la fonction quelque part. Ce code indiquera toute la fonction: prototype+corps.
 
 Voyons un exemple:
 
@@ -336,7 +337,7 @@ Voyons un exemple:
 ### Retrouver le type ! 
 
 
-## Mettons quelques rêgles en place ! 
+## Mettons quelques règles en place ! 
 
 ### La notion de concept 
 \snippet ./src/concept_example.cpp include
@@ -363,7 +364,7 @@ concept_example.cpp:6:6: note:   template argument deduction/substitution failed
 concept_example.cpp:6:6: note: constraints not satisfied
 ```
 
-La notion de concept peut également s'utiliser avec les templates plus classiques en utilisant l'instruction requires. La syntaxe générale est la suivante : 
+La notion de concept peut également s'utiliser avec les templates plus classiques en utilisant l'instruction `requires`. La syntaxe générale est la suivante : 
 
 ```
 template<typename T>
@@ -383,8 +384,8 @@ Il existe un ensemble de concepts pré-définis dans la librairie standard c++ a
 
 Parmi ceux dans le même esprit que ce qu'on a vu juste au-dessus il y a : 
 
-- `std::integral` : qui constaint l'argument à être de type intégrale 
-- `std::floating_point` : qui constraint l'argument à être de type flottant
+- `std::integral` : qui contraint l'argument à être de type intégral 
+- `std::floating_point` : qui contraint l'argument à être de type flottant
 - `std::signed_integral`
 - `std::unsigned_integral` 
 
