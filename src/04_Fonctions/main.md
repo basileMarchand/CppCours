@@ -167,9 +167,15 @@ Et sinon qu'est ce qu'on est sensé voir ? Deux choses :
 
 ### Déduction de type 
 
-TODO : decltype 
+Pour finir sur les fonctions de base, il existe depuis le c++11 une pratique de déduction de type assez sympatique à l'usage reposant sur `decltype`. Le principe est qu'il est possible de définir une variable du même type que le type de retour d'une fonction. Par exemple : 
 
+\snippet ./src/example_decl.cpp main
 
+Et la force de la chose est que `computeArea` n'est pas évaluée pour faire cela. Cela peut paraître bizarre comme approche mais nous verrons plus tard lorsque nous regarderons en détail la notion de template qu'il y a en réalité plein de contexte où connaître le type à la compilation ce n'est pas si simple que ça en fait ;) 
+
+Et sinon avec un petit `using` c'est toujours plus sympa à lire : 
+
+\snippet ./src/example_decl.cpp main2
 
 # Un mot sur les fonctions anonymes 
 
@@ -196,53 +202,108 @@ On identifie donc quatre éléments :
 
 ### La notion de capture 
 
+La notion de capture est l'élément qui nous permet de définir l'environnement en quelque sorte dans lequel va s'exécuter le corps de notre fonction anonyme. Par exemple dans l'exemple ci-dessou nous définissons un capture vide. 
+
 \snippet ./src/lambda_example.cpp lambda_no_capture
+
+Le corps de la fonction anaonyme ne peut donc utiliser aucune variables défini en-dehors puisque le capture est vide. Une autre façon de voir le capture est de se dire qu'il s'agit d'un moyen d'étendre le scope de notre lambda fonction. Par exemple si on définit une variable `a` en dehors du corps de la lambda. Pour utiliser cette variable `a` dans la fonction anonyme, sans passer `a` comme argument de la fonction, il faut ajouter `a` au scope de la lambda via le capture. 
 
 \snippet ./src/lambda_example.cpp lambda_copy_capture
 
+La définition du capture suit des règles similaires à celles du passage d'argument à une fonction. Par défaut lorsque dans l'exemple précédent nous avons ajouté `a` au scope de la fonction anonyme cela s'est fait en utilisant une copie de `a` en réalité. Mais évidemment il est possible de le faire via une référence !! Et là pas de grande surprise cela passe par l'utilisation du symbole `&` ! Par exemple dans l'extrait suivant nous passons `a` par référence au scope de la lambda et il est alors possible de modifier la valeur de `a` via un appel à notre fonction anonyme. 
+
 \snippet ./src/lambda_example.cpp lambda_ref_capture
+
+Il existe deux syntaxes un peu particulières pour les captures il s'agit de `[=]` et `[&]`. Le principe avec ces syntaxes est de capturer tout les variables présentes dans le scope de **définition** de la lambda, que ce soit respectivement par copie ou bien par référence. 
 
 \snippet ./src/lambda_example.cpp lambda_copy_all_capture
 
 \snippet ./src/lambda_example.cpp lambda_ref_all_capture
 
+Enfin la dernière subtilité existante sur les fonctions anonymes est la notion de `mutable`. Le principe va être de permettre de modifier une variable capturée par copie et que cette modification se répercute à l'exterieur de la lambda. Un peu comme si on faisait un référence en fait. 
+
+
 \snippet ./src/lambda_example.cpp mutable 
 
 \snippet ./src/lambda_example.cpp mutable_call 
 
+**Remarque :** le mot clé `mutable` a en réalité d'autres usages possibles et ne se limite pas uniquement aux fonctions anonymes. 
+
 
 ### Un exemple concret 
 
+Quel intérêt de faire des fonctions anonymes ? Plein !!! L'intérêt majeur est de ne pas polluer tout son code avec des fonctions accessoires qui ne servent qu'une fois. Par exemple imaginons que l'on ait une fonction `forEach` qui mange un `std::vector` et une fonction et applique la fonction à chaque élément du `std::vector`.  
+
 \snippet ./src/lambda_example.cpp for_each_call 
+
+Dans ce cas il est plus simple et plus propre de définir une fonction anonyme qui calcul le carré d'un nombre plutôt que de faire une fonction globale qui n'aurait que peu d'intérêt. 
 
 # Manipuler des fonctions comme des variables 
 
 ## Pourquoi pas mais dans quel but ? 
 
+Dans l'exemple précédent, cela vous a peut-être choqué ... ou pas (et vous noterez au passage le travail de transition entre les parties), nous avions une fonction `forEach` et j'ai donné a mangé à cette fonction une fonction anonyme... Rien qui vous choque ? Et oui nous avons donné comme argument d'entrée une fonction donc nous avons utilisé une fonction comme une variable. Et c'est super pratique car c'est ce qui va permettre de faire du code générique et ça c'est cool ! 
+
+Par exemple imaginons que, pour une raison quelconque, nous devions résoudre une équation non-linéaire via la méthode de Newton. \f$\cos(x) - x^3 = 0 \f$. Une implémentation possible serait la suivante : 
+
 \snippet ./src/functor_example.cpp newton_no_functor 
 
+Et à l'usage cela donnerai alors : 
+
 \snippet ./src/functor_example.cpp newton_no_functor_call 
+
+Mais dans ce cas notre fonction `newton` ne peut servir qu'à la résolution de cette équation et pas une autre. Alors que si on réfléchit un peu ce serait plus sympa d'avoir une fonction newton qui mange une fonction `f` l'équation à résoudre et une fonction `df` la dérivée. Car ainsi nous aurions un résolution de newton utilisable pour tout nos problèmes ! C'est ce qu'on va voir tout de suite ! 
 
 
 ## Le foncteur moderne 
 
+Le fait de manipuler une fonction comme une variable se fait à l'aide de ce qu'on appel un foncteur, comprendre pointeur de fonction. L'utilisation de foncteur a toujours été possible en C++ néanmoins, comme pour d'autres choses la norme C++11 a introduit une bonne couche de simplicité ! 
+
+Tout d'abord, comme toujours, il faut faire le bon include à savoir ici la librairie `functionnal`. 
+
 \snippet ./src/functor_example.cpp include
 
+Cette librairie défini un nouveau type le `std::function` qui va nous permettre de définir nos variables fonctions. L'utilisation du `std::function` se fait de la manière suivante : 
+
+```
+std::function<type_out(type_in1, type_in2, ...)>
+```
+Regardons alors ce que l'on peut faire avec ça pour notre fonction `newton`. 
 
 \snippet ./src/functor_example.cpp newton_functor 
 
+Vous voyez donc que l'on a définit deux arguments d'entrée qui sont des `std::function<double(double)>` et qui vont donc représenter les fonctions `f` et `df`. Nous pouvons alors utiliser `f` et `df` comme des fonctions classiques dans le corps de la fonction `newton` et ainsi avoir un algorithme générique ! 
+
+Cela donne alors à l'usage : 
+
 \snippet ./src/functor_example.cpp newton_functor_call_glob
 
+Un autre truc sympa des `std::function` est qu'ils permettent d'encapsuler indifférement des fonctions globales ou des fonctions anonymes. Ainsi nous aurions pu écrire notre problème via des fonctions anonymes : 
+
 \snippet ./src/functor_example.cpp newton_functor_call_lambda1
+
+Ou bien de manière encore plus conscise : 
 
 \snippet ./src/functor_example.cpp newton_functor_call_lambda2
 
 
 ## Imposer des valeurs de paramètres 
 
+Un autre utilitaire introduit par la librairie `functional` est la fonction `std::bind` qui va permette de fixer certains paramètres d'entrée sur des fonctions. Par exemple imaginons que mon problème que je cherche à résoudre par la méthode de newton dépende d'un paramètre : 
+
+\snippet ./src/functor_example.cpp model 
+
+Dans ce cas la signature des mes fonctions change et ma super fonction `newton` générique ne fonctionne plus ... mince ! Une solution serait de tricher un peu en utilisant des lambda par exemple : 
+
 \snippet ./src/functor_example.cpp bind_manual
 
+Cela fait le boulot mais c'est pas forcément ce qu'il y a de plus sympa ! Alors qu'il existe la fonction `std::bind` qui va vous permettre simplement de faire la même chose. Par exemple : 
+
 \snippet ./src/functor_example.cpp bind_std
+
+Ainsi les variables `f` et `df` seront des fonctions d'une seule variables. Vous voyez au passage apparaître le `std::placeholder::_1` cela permet de dire que le premier argument de `f` devra être transmis à `fnewton2`. 
+
+Un autre intérêt de `std::bind` est de permettre de faire de la composition de fonction. Par exemple pouvez vous deviner ce que fait le code ci-dessous ? 
 
 \snippet ./src/functor_example.cpp bind_composition
 
