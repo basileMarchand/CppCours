@@ -212,15 +212,30 @@ Ainsi à l'utilisation nous pourrions créer des objets points des quatre maniè
 
 \snippet ./src/constructeur_example2.cpp point_inst 
 
+## Constructeur de copie 
+
+Parmis les constructeurs possibles et imaginable il en existe un qui est un peu particulier, il s'agit du constructeur de copie. Par exemple c'est ce constructeur qui sera appelé si nous voulons faire : 
+
+\snippet ./src/copy_constructor.cpp copy 
+
+Dans ce cas nous devons définir un constructeur qui va prendre comme argument d'entrée une instance de `Point`. Attention sur comment on fournit cet argument d'entrée. Si on ne réfléchit pas nous pourrions faire quelque chose du genre 
+
+\snippet ./src/copy_constructor.cpp bad_idea 
 
 
+Mais cela ne va compiler et c'est normal !! Pourquoi ?????? Et bien simplement parce que je vous le rappel par défaut le passage d'argument se fait par copie en C++. Or si pour appeler le constructeur de copie il faut commencer par faire une copie c'est un peu bizarre non ? Donc le constructeur de copie a toujours un prototype de la forme suivante : 
+
+\snippet ./src/copy_constructor.cpp good_idea 
+
+Pourquoi le `const` ? Simplement parce que quand je fais une copie de `other` il n'y a aucune raison pour que le fait de faire une copie modifie l'objet. Au niveau de l'implémentation de ce constructeur de copie nous pouvons alors faire quelque chose du genre : 
+
+\snippet ./src/copy_constructor.cpp copy_constructor
 
 
 ## Pointeur vers une instance de classe 
 
 ## Notion de destructeur 
 
-## Constructeur de copie 
 
 # Surcharge d'opérateur 
 
