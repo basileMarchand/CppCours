@@ -2,15 +2,13 @@
 
 //! [point]
 class Point{
-    
-    Point(const double& a, const double& b, const std::string& pname );
+    public:
+        Point(const double& a, const double& b, const std::string& pname );
 
     protected:
         double x; 
         double y; 
         std::string name; 
-
-
 };
 //! [point]
 

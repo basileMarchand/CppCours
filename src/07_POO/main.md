@@ -197,6 +197,24 @@ Tandis que la second ressemble plus à ce que l'on ferait naturellement :
 
 \snippet ./src/constructeur_example.cpp construct2 
 
+Quelle différence entre ces deux approches. Conceptuellement pas tant que ça car à la fin le résultat est le même. En revanche en pratique il y a une différence notable qui est que dans le second cas les attributs de class pendant un moment ont des valeurs indéterminées tant qu'on ne leurs a pas affecté les valeurs `a`, `b` et `pname`. Tandis que dans le premier cas à la création de l'objet les valeurs des attributs ne passent pas par cet état indeterminé mais sont directement construit et initialisé avec les valeurs fournies au constructeur. 
+
+
+Si vous êtes familier du Python le constructeur c'est exactement la même chose que la méthode `__init__` d'une classe Python. Mais en réalité en C++ c'est mieux :) car il y a une fonctionnalité qui n'existe pas en Python que l'on a c'est la possibilité de définir plusieurs constructeurs. Wait wait wait !!! Comment c'est possible vu que la constructeur a forcément le même nom que la classe ? Et bien c'est possible grâce au concept de surcharge. Car je vous rappel au cas où vous auriez oublié le C++ est capable de faire la différence entre deux fonctions du même nom en regardant le nombre et le type des arguments d'entrée des fonctions. Et bien le même principe est exactement applicable aux méthodes de classe et aux constructeurs. Par exemple nous pouvons faire : 
+
+\snippet ./src/constructeur_example2.cpp point 
+
+Et les différentes implémentations serez les suivantes : 
+
+\snippet ./src/constructeur_example2.cpp construct 
+
+Ainsi à l'utilisation nous pourrions créer des objets points des quatre manières suivantes : 
+
+\snippet ./src/constructeur_example2.cpp point_inst 
+
+
+
+
 
 ## Pointeur vers une instance de classe 
 
