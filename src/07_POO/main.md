@@ -176,8 +176,27 @@ A l'usage nous pouvons donc faire :
 \snippet ./src/point_protected.cpp point_inst 
 
 
+C'est grace à ce jeu de `protected`/`public` que nous pouvons donc mettre en place le concept d'encapsulation c'est à dire ne rien exposer directement mais offrir une interface permettant au passage de vérifier que les valeurs fournies ont du sens. C'est ce qu'on appelle des `setter`. 
 
 ## Notion de constructeur 
+
+Dans l'exemple précédent pour renseigner les attributs `protected` de la classe `Point` nous sommes passé par une méthode `setValues`. Cela fonctionne cependant il serait un peu plus sympa de pouvoir renseigner ces valeurs directement à l'instanciation de l'objet en faisant quelque chose du genre : 
+
+\snippet ./src/constructeur_example.cpp point_inst 
+
+Cela est possible si on définit ce que l'on appel le constructeur de la classe. Le constructeur est une méthode de classe qui a pour nom, le nom de la classe forcément et surtout qui ne renvoie rien (par rien `void` mais rien rien) ! Par exemple pour dire que l'on ajoute un cnstructeur prenant en entrée trois argument nous pouvons faire de la manière suivante : 
+
+\snippet ./src/constructeur_example.cpp point 
+
+Et alors pour implémenter ce constructeur deux syntaxes sont envisageables. La première utilise une notation un peu particulière qui est la suivante : 
+
+\snippet ./src/constructeur_example.cpp construct1 
+
+
+Tandis que la second ressemble plus à ce que l'on ferait naturellement : 
+
+\snippet ./src/constructeur_example.cpp construct2 
+
 
 ## Pointeur vers une instance de classe 
 
