@@ -161,6 +161,19 @@ Revenons un peu sur les notions de `public` pas `public` ! Dans la définition d
 Pour le moment il n'y a donc pas de différence entre `protected` et `private` car vous ne savez pas faire d'héritage !! Mais je vous conseille néanmoins d'utiliser plutôt protected par défault lorsque vous ne voulez pas que des choses soient `public`. 
 
 
+Regardons par exemple la définition de classe suivante : 
+
+\snippet ./src/point_protected.cpp point 
+
+Nous pouvons alors constater : 
+
+- Les attributs `x`, `y` et `name` sont protected donc inaccessible depuis l'exterieur de la classe. 
+- Il y a une méthode publique `setValues` qui permet de fournir des valeurs à `x`, `y`, `name` donc depuis l'intérieur de la classe nous pouvons bien modifier nos attributs `protected`
+- Il y a une méthode `print` publique qui en interne appelle la méthode `print_protected` qui elle est `protected`. Ainsi nos offrons une interface unique qui en réalité peut cacher tout un tas de plomberie interne 
+
+A l'usage nous pouvons donc faire : 
+
+\snippet ./src/point_protected.cpp point_inst 
 
 
 
