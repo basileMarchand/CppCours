@@ -91,11 +91,64 @@ On déclare juste le fait qu'il existe dans la classe `Point` une méthode `prin
 
 Pourquoi ces deux possibilités ? Pour une raison simple. la déclaration d'une classe doit dans de nombreux cas se trouver dans un fichier d'en-tête (les .hpp) pour que la classe soit utilisable dans différents fichiers .cpp. Et donc si on ne pouvais pas séparer déclaration et définition tout le code se trouverai dans les .hpp et au moment de la compilation cela engendrerai alors des temps de compilation assez monstrueux. L'autre raison plus pragmatique est que lorsqu'on diffuse un programme binaire il faut généralement diffuser les fichiers d'en-tête pour permettre aux utilisateurs de faire des plugins, utiliser le logiciel dans d'autre programmes, ... et donc si tout le code est dans les .hpp il semble difficile de garder le code propriétaire... Mais ça c'est si on veut faire de l'argent en vendant du logiciel uniquement. 
 
+A l'usage dans les deux cas cela donne alors : 
+
+\snippet ./src/point4.cpp point_instance 
+
+Et ensuite on appelle la méthode print de la manière suivante ; 
+
+\snippet ./src/point4.cpp point_print
+
+Cela donne alors le résultat suivant : 
+
+```
+A (10, 5)
+```
 
 
+### Initialisation des attributs 
 
+Une question que vous vous posez peut-être est est-il possible d'initialiser les attributs de différentes manières ? La réponse est évidemment oui par exemple précédemment nous avons initialisé nos attribut de la manière suiviante : 
 
+\snippet ./src/point5.cpp point_A
 
+Cela donne alors à l'usage le résultat suivant : 
+
+```
+A (10, 5)
+```
+
+Depuis le C++11 il est également possible d'utiliser une liste d'initialization comme illustré ci-dessous : 
+
+\snippet ./src/point5.cpp point_B
+
+**Attention** les valeurs dans la liste d'initialization doivent être dans le même sens que celui de déclaration des attributs dans la classe !! Et à l'usage cela donne alors le bon résultat : 
+
+```
+B (10, 5)
+```
+
+Les deux approches précédentes ne sont possible uniquement parce que nous avons déclaré les attributs de notre classe comme `public` ! Or je vous rappel que ce n'est pas forcément le mieux à faire. Dans le cas où nous aurions respecté le principe d'encapsulation nous pourrions uniquement faire (pour le moment): 
+
+\snippet ./src/point5.cpp point_C
+
+Et à l'usage là c'est le drame car les attributs sont alors initialisés de manière aléatoire :  
+
+```
+ (6.9503e-310, 6.9503e-310)
+```
+
+Pour fournir des valeurs à la construction de l'objet nous le verrons dans la suite nous devront définir un constructeur de classe. Néanmoins nous pouvons déjà définir des valeurs par défaut à nos attributs. En effet depuis la norme C++11 nous pouvons dans la déclaration de la classe donner des valeurs par défaut. Par exemple :
+
+\snippet ./src/point_defulat.cpp point 
+
+Et alors à l'utilisation nous obtenons 
+
+\snippet ./src/point_default.cpp point_decl
+
+```
+O (0, 0)
+```
 
 ## Portée des membres : private, protected, public 
 
