@@ -140,7 +140,7 @@ Et à l'usage là c'est le drame car les attributs sont alors initialisés de ma
 
 Pour fournir des valeurs à la construction de l'objet nous le verrons dans la suite nous devront définir un constructeur de classe. Néanmoins nous pouvons déjà définir des valeurs par défaut à nos attributs. En effet depuis la norme C++11 nous pouvons dans la déclaration de la classe donner des valeurs par défaut. Par exemple :
 
-\snippet ./src/point_defulat.cpp point 
+\snippet ./src/point_default.cpp point 
 
 Et alors à l'utilisation nous obtenons 
 
