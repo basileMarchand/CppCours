@@ -152,6 +152,18 @@ O (0, 0)
 
 ## Portée des membres : private, protected, public 
 
+Revenons un peu sur les notions de `public` pas `public` ! Dans la définition de nos classes nous pouvons donner trois status différentes aux atributs et méthodes : 
+
+* `public` : l'attribut/méthode est visible depuis l'intérieur et l'extérieur de l'objet 
+* `protected` : l'attribut/méthode est visible depuis l'intérieur de l'objet, depuis l'intérieur de tout sous-objet qui hériterait de objet mais n'est pas accessible de l'exterieur
+* `private` : l'attribut/méthode est visible depuis l'intérieur de l'objet lui-même et c'est tout. 
+
+Pour le moment il n'y a donc pas de différence entre `protected` et `private` car vous ne savez pas faire d'héritage !! Mais je vous conseille néanmoins d'utiliser plutôt protected par défault lorsque vous ne voulez pas que des choses soient `public`. 
+
+
+
+
+
 ## Notion de constructeur 
 
 ## Pointeur vers une instance de classe 
