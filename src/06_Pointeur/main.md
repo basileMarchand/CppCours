@@ -109,7 +109,7 @@ Bien évidemment nous pourrions tout à fait initialiser directement le pointeur
 
 Maintenant que nous savons créer un pointeur et le faire pointer vers une zone mémoire il serait pratique de pouvoir accéder à la valeur contenue dans la zone mémoire pointée n'est ce pas ? Et bien c'est possible sans grande difficulté. Il suffit pour cela de déréférencer le pointeur, c'est à dire demandé gentiement à interprété le contenu de la zone mémoire comme le type correspondant au pointeur. Cela se fait en préfixant le pointeur du symbole `*`. Par exemple : 
 
-\snippet ./src/ptr_example.cpp dereferencement
+\snippet ./src/ptr_init.cpp dereferencement
 
 
 ## Attention au segfault 
