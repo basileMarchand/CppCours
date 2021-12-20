@@ -151,11 +151,19 @@ Erreur de segmentation (core dumped)
 \snippet ./src/array.cpp deallocate
 
 
-
-
 # Version moderne, post c++11
 
 ## La différence 
+
+A présent nous allons voir ce que le C++ moderne nous propose comme alternative aux pointeurs classiques. Tout d'abord nous pouvons nous poser la question de pourquoi proposer une alternative ? Qu'est ce qu'il peut bien manquer aux pointeurs qui nécessiterait une autre manière de faire. C'est très simple les pointeurs classiques fonctionnent très bien mais ont le gros défaut qu'il est nécessaire une fois qu'on a fait une allocation mémoire avec un `new` de bien penser à faire le `delete` associé sinon on a des fuites mémoires. Or parfois il peut s'avérer compliqué de bien identifier à quel moment il faut faire le `delete` pour libérer la mémoire sans courrir le risque de provoquer un `segfault`.... 
+
+La norme c++11 offre donc une surcouche aux pointeurs qui permet de ne plus se préoccuper des `delete`, c'est génial je sais ! Le principe est extrèmement simple en réalité, il suffit d'avoir en interne pour chaque zone mémoire un compteur permettant de savoir à chaque instant le nombre de pointeur pointant vers une zone et lorsque ce compteur tombe à 0 et bien là le `delete` est fait automatiquement ! 
+
+En pratique le standard c++11 offre deux encapsulation des pointeurs : 
+
+- Le `std::unique_ptr` 
+- Le `std::shared_ptr` 
+
 
 ## Utilisation des shared_ptr 
 
