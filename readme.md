@@ -17,6 +17,7 @@ Apprentissage de la programmation C++     {#mainpage}
 * [Programmation Orientée Objet](@ref pooSection)
 * [Notion de template](@ref templateSection)
 * [Exercices](@ref TPSection)
+* [Annexes](@ref AnnexeSection)
 
 ## Utiliser le support de cours 
 

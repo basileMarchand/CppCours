@@ -1,6 +1,6 @@
 #include <iostream>
 
-//#define CONST  
+#define CONST  
 #ifndef CONST 
 //! [print_no_const]
 class Point{
