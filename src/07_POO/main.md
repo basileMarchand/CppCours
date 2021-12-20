@@ -212,7 +212,7 @@ Ainsi à l'utilisation nous pourrions créer des objets points des quatre maniè
 
 \snippet ./src/constructeur_example2.cpp point_inst 
 
-## Constructeur de copie 
+### Constructeur de copie 
 
 Parmis les constructeurs possibles et imaginable il en existe un qui est un peu particulier, il s'agit du constructeur de copie. Par exemple c'est ce constructeur qui sera appelé si nous voulons faire : 
 
@@ -230,6 +230,20 @@ Mais cela ne va compiler et c'est normal !! Pourquoi ?????? Et bien simplement p
 Pourquoi le `const` ? Simplement parce que quand je fais une copie de `other` il n'y a aucune raison pour que le fait de faire une copie modifie l'objet. Au niveau de l'implémentation de ce constructeur de copie nous pouvons alors faire quelque chose du genre : 
 
 \snippet ./src/copy_constructor.cpp copy_constructor
+
+### Laisser faire ou le compilateur ou lui imposer des choses ! 
+
+Au niveau des constructeurs nous avons vu lorsque nous avons fait la première version de notre classe `Point` que le compilateur nous génère le constructeur par défaut si besoin ainsi que le constructeur de copie et l'opérateur d'affectation. Cependant cela est vrai tant qu'on ne définit aucun constructeur. A partir du moment ou vous avez défini un constucteur quelqu'il soit le compilateur ne fait plus rien pour nous.... On peut cependant lui demander gentiment de quand même générer ses constructeurs par défaut en utilisant le mot-clé `default`. 
+
+\snippet ./src/default_delete_example.cpp default 
+
+
+Dans un esprit similaire nous pouvons demander explicitement qu'un constructeur par défaut ne soit pas défini, par exemple si on souhaite empêcher la copie de nos objet il nous suffit de dire au compilateur que le constructeur de copie ne doit jamais être défini. Cela se fait à l'aide du mot-clé `delete`. 
+
+
+\snippet ./src/default_delete_example.cpp delete
+
+
 
 
 ## Déclarer des méthodes const
