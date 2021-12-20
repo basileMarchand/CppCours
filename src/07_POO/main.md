@@ -232,6 +232,35 @@ Pourquoi le `const` ? Simplement parce que quand je fais une copie de `other` il
 \snippet ./src/copy_constructor.cpp copy_constructor
 
 
+## Déclarer des méthodes const
+
+Pour finir ce premier tour d'horizon de la définition des classes nous allons regarder un comportement un peu particulier lié au fait que l'on peut être amené à déclarer des instances de nos classes comme étant `const`. Par exemple imaginons que j'ai une fonction `callPrint` qui prend en argument une instance de `Point` et appelle la méthode `print` de cette instance. Par réflexe, j'espère en tout cas que vous avez acquis ce réflexe, le prototype de la fonction `callPrint` serait de la forme suivante : 
+
+\snippet ./src/const_method.cpp const_arg
+
+On passe l'instance de Point par référence constante car on n'a aucune raison de modifier l'instance. Vous êtes d'accord ? Du coup si je prends la définition suivante pour la classe `Point` tout le monde est content. 
+
+\snippet ./src/const_method.cpp print_no_const 
+
+Et bien dans les faits cela vous convient peut-être mais le compilateur lui n'est pas d'accord (et c'est toujours lui qui a le dernier mot....). En effet à la compilation on obtient l'erreur suivante : 
+
+```
+const_method.cpp: Dans la fonction « void callPointPrint(const Point&) »:
+const_method.cpp:55:13: erreur: le passage de « const Point » comme argument « this » abandonne les qualificatifs [-fpermissive]
+   55 |     p.print();
+      |             ^
+const_method.cpp:21:6: note:   dans l'appel de « void Point::print() »
+   21 | void Point::print(){
+      |      ^~~~~
+```
+
+Ce que le compilateur essaye de vous dire c'est que vous considérez l'instance de `Point` comme `const` dans la fonction `callPointPrint` **mais** ensuite vous appelez sur cette instance la méthode `print` or a aucun moment vous n'avez dit au compilateur que le fait d'appeler `print` ne modifie rien dans l'instance. Et donc il part du principe que par défaut chaque méthode risque de modifier l'instance donc l'instance ne peut pas être `const`. Pour expliquer au compilateur que promis la méthode ne change rien à l'instance il suffit d'ajouter le qualificateur `const` derrière la déclaration **et** la définition de la méthode. Cela donne par exemple dans notre cas : 
+
+\snippet ./src/const_method.cpp print_const 
+
+Et ainsi la compilation devient valide puisque nous avons bien précisé maintenant que la méthode `print` ne modifie pas l'instance donc nous pouvons appeler `print` sur une instance de `Point` `const`. 
+
+
 ## Pointeur vers une instance de classe 
 
 ## Notion de destructeur 
@@ -257,6 +286,10 @@ Pourquoi le `const` ? Simplement parce que quand je fais une copie de `other` il
 # Polymorphisme 
 
 ## Un mot compliqué pour un truc simple 
+
+## Le polymorphisme un coût en plus ? 
+
+## Faire du polymorphisme sans héritage c'est possible ! 
 
 
 # Pour le fun : type litterals 
