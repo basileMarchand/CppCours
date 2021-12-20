@@ -111,10 +111,46 @@ Maintenant que nous savons créer un pointeur et le faire pointer vers une zone 
 
 \snippet ./src/ptr_init.cpp dereferencement
 
+A l'usage cela donne : 
+
+```
+ptrInt: 0x7fff8707567c
+*ptrInt: 42
+```
 
 ## Attention au segfault 
 
+Lorsque l'on commence a jouer avec les pointeurs il faut faire attention à une chose, le segfault. Segfault est la contraction de `Segmentation Fault`. C'est l'erreur qui apparaît lorsque qu'un programme essaye d'accéder à de la mémoire qui ne lui est pas allouée. Lorsqu'on commence à mettre des pointeurs partout on joue donc avec la mémoire et si on est pas un petit peu rigoureux on se retrouve très très rapidement dans le cas où un segfault peut pointer le bout de son nez. 
+
+Considérons par exemple le code suivant : 
+
+\snippet ./src/segfault.cpp main 
+
+A votre avis l'exécution de ce code se passe bien ou pas ? Naturellement non ça se passe mal : 
+
+```
+Erreur de segmentation (core dumped)
+```
+
+
+
 ## Allocation mémoire 
+
+### Les mots-clé new et delete 
+
+\snippet ./src/alloc.cpp main 
+
+### On peut aussi allouer des tableaux mais c'est old-school 
+
+\snippet ./src/array.cpp allocate
+
+\snippet ./src/array.cpp fill
+
+\snippet ./src/array.cpp iterate
+
+\snippet ./src/array.cpp deallocate
+
+
 
 
 # Version moderne, post c++11
