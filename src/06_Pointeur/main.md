@@ -164,9 +164,71 @@ En pratique le standard c++11 offre deux encapsulation des pointeurs :
 - Le `std::unique_ptr` 
 - Le `std::shared_ptr` 
 
+La distinction entre les deux est très simple, comme indiqué dans le nom le `unique_ptr` va servir a encapsuler un pointeur qui pointe vers une zone mémoire qui ne peut pas être partagée. Tandis que le `shared_ptr` lui correspond à un pointeur vers une zone mémoire partagée entre plusieurs `shared_ptr`. Pour utiliser ces deux types spécifiques il faut tout d'abord l'include de la librairie `memory` 
 
-## Utilisation des shared_ptr 
+```
+#include <memory>
+```
 
 ## Utilisation des unique_ptr 
 
+La déclaration d'un `std::unique_ptr` se fait simplement en suivant la syntaxe suivante : 
+
+```
+std::unique_ptr<type> ptr_name; 
+```
+
+Par exemple pour déclarer un pointeur de type entier il suffit de procéder de la manière suivante : 
+
+\snippet ./src/unique_ptr.cpp decl 
+
+Le premier intérêt du `unique_ptr` par rapport a un pointeur nu est que même si on ne l'initialize pas au moment de sa déclaration, le c++ moderne fait le travail pour nous car notre pointeur est initialisé automatique à `nullptr`. Par exemple : 
+
+\snippet ./src/unique_ptr.cpp well_initialized
+
+Pour le moment nous avons donc un `std::unique_ptr` mais il ne pointe vers rien donc ne nous sert pas à grand chose. Si nous voulons allouer de la mémoire à ce pointeur nous pourrions comme avec les pointeurs historique utiliser le mot clé `new` cependant le c++ moderne nous offre un autre outils la fonction `std::make_unique` qui cache en réalité l'allocation mémoire via un `new` et l'encapsule directement dans un `std::unique_ptr`. Par exemple pour allouer de la mémoire à notre pointeur d'entier nous pouvons procéder de la manière suivante : 
+
+\snippet ./src/unique_ptr.cpp make_unique
+
+Evidemment nous pouvons faire l'allocation au moment de la déclaration du `std::unique_ptr` pour cela il suffit de faire : 
+
+\snippet ./src/unique_ptr.cpp decl_alloc 
+
+La fonction `std::make_unique` peut prendre des arguments en entrée suivant le contexte. Par exemple `std::unique_ptr` peut nous servir à encapsuler un tableau alloué dynamiquement. Dans ce cas au moment de l'allocation il faut fournir à la fonction `std::make_unique` la taille du tableau à allouer. Par exemple pour créer un tableau de 10 entiers : 
+
+\snippet ./src/unique_ptr.cpp array  
+
+**Remarque :** personellement je ne recommande pas d'utiliser des tableaux de ce genre je vous invite plutôt à utiliser des `std::vector` qui sont beaucoup plus sympatique à utiliser. 
+
+Maintenant entrons dans le vif du sujet avec **la** subtilité des `std::unique_ptr` à savoir le fait qu'ils soient unique. Cela implique une petite bizarrerie dans le fonctionnement qui est que je ne peux pas écrire le code suivant : 
+
+\snippet ./src/unique_ptr.cpp error
+
+En effet l'opération d'affectation d'un `std::unique_ptr` par un autre `std::unique_ptr` est bloquée. Pourquoi ? Et bien simplement pour être sur que l'on a pas deux `std::unique_ptr` pointant vers la même zone mémoire. Bon ok mais c'est pas très grave vous vous dites. Alors en réalité si car le code suivant n'est pas plus valide : 
+
+\snippet ./src/unique_ptr.cpp error2
+
+Avec la fonction `do_something` : 
+
+\snippet ./src/unique_ptr.cpp func 
+
+Et bien là ca commence à devenir génant un peu non ? En tout moi je trouve que oui car avoir un pointeur que je ne peux pas passer dans un autre scope je ne vois pas bien l'intérêt. Mais pas de panique !! Il y a bien évidemment un moyen de faire ce qu'on veut. Ce moyen c'est de dire explicitement que l'on tranfère la propriété de la mémoire pointée à un autre pointeur. Cela se fait en utilisant la fonction `std::move`. Par exemple : 
+
+\snippet ./src/unique_ptr.cpp move_unique 
+
+En utilisant le `std::move` ici nous avons explicitement spécifié que la mémoire pointée par `ptrInt` devient la propriété de `ptr2`. De ce fait le pointeur `ptrInt` est alors automatiquement invalidé et pointe alors vers `nullptr`. 
+
+\snippet ./src/unique_ptr.cpp released
+
+Et c'est exactement le même principe si on veut appeler la fonction `do_something` : 
+
+\snippet ./src/unique_ptr.cpp move_func 
+
+
+## Utilisation des shared_ptr 
+
+
+
+
+## Attention à ne pas mélanger avec des pointeurs nus. 
 
