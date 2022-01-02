@@ -277,8 +277,66 @@ Et ainsi la compilation devient valide puisque nous avons bien précisé mainten
 
 ## Pointeur vers une instance de classe 
 
+Nous allons à présent voir le premier lien qu'il existe entre classes et pointeurs. Car depuis un moment déjà je vous dit que les pointeurs nous servirons pour les classes et c'est le moment. Pour un rappel sur les notions de base des pointeurs voir [Notion de pointeur](@ref pointeurSection). Alors pourquoi a-t-on besoin de pointeur avec les classes ? Pour plusieurs raisons mais en voici une très concrète. Imaginons que je veuille faire une liste chaînée pour stocker des entiers. Pour cela il me suffit de faire une classe `Node` qui représentera un élément de la liste. 
+
+Cette classe `Node` doit avoir pour attibus de classe : 
+
+- Un entier : la valeur à stocker 
+- L'élément suivant dans la liste. 
+
+Une solution que nous pourrions envisagée est la suivante : 
+
+\snippet ./src/bad_list.cpp node 
+
+Cette solution présente deux problèmes : 
+
+- Tout d'abord elle ne compile pas, oui c'est un problème, car on ne peut pas dans une classe `A` définir comme attribut une instance de la même classe.
+- Même si le code compilait, à l'instanciation d'une instance de Node nous aurions un léger problème. En effet la création d'un `Node` entrainerait la création de son attribut `Node` qui lui-même créerait son attribut `Node` et ainsi de suite ... 
+
+Donc si on veut pouvoir stocker en attribut le lien vers l'élément suivant de la liste pas le choix il nous faut en pratique avoir un pointeur vers l'élément suivant. 
+
+\snippet ./src/good_list.cpp node 
+
+Nous pourrons alors dynamiquement ajouter des éléments dans la liste en allouant des instances de `Node` et en les attachants au noeud précédent. Cela pourrait donner par exemple : 
+
+\snippet ./src/good_list.cpp node2 
+
+La méthode `append` va donc allouer un nouvel objet `Node` et faire pointer `next_` vers ce nouvel élément. Cependant cela ne fonctionnera ici que pour une liste de deux éléments. Afin de faire une vraie liste chaînée il est impératif que la méthode `append` soit récursive. Pour cela il faut appeler la méthode `append` de `next_` si ce dernier n'est pas le pointeur nul `nullptr`. 
+
+Mais au fait comment j'appelle une méthode de classe lorsque je n'ai qu'un pointeur vers mon instance de classe ? Une première solution serait de déréférencer le pointeur en utilisant `*` par exemple : 
+
+```
+(*next_).append(x)
+```
+
+Mais le C++ nous offre une manière un peu plus simple de faire cela via l'opérateur `->`. Cela donne par exemple : 
+
+```
+next_->append(x)
+```
+
+Si nous revenons alors à notre fonction append une implémentation plus correcte serait : 
+
+\snippet ./src/good_list.cpp node3 
+
+\snippet ./src/good_list.cpp usage1 
+
+Si maintenant nous voulons afficher le contenu de la liste. Nous pourrions définir un méthode `print` comme il suit : 
+
+\snippet ./src/good_list.cpp node4
+
+\snippet ./src/good_list.cpp usage2 
+
+
+```
+1, 2, 3,
+```
+
+Vous commencez donc à voir un peu plus l'intérêt des pointeurs, je l'espère en tout cas. Nous verrons un peu plus loin qu'il y a un autre intérêt lié à l'héritage et au polymorphisme ! Mais en attendant ... Je vous encourage à faire un tour sur cet [exercice](@ref TPList) et [celui ci](@ref TPList2)
+
 ## Notion de destructeur 
 
+Nous allons à présent aborder une autre notion essentielle des classes en C++ il s'agit du destructeur. Le destructeur porte bien son nom puisqu'il s'agit de la méthode qui est appelée lorsqu'un objet est détruit. 
 
 # Surcharge d'opérateur 
 

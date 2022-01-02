@@ -63,3 +63,31 @@ Que se passe-t-il quand votre programme va rencontrer l'entrée `3 5 x` ?
    * il rencontre `x` (il sait que c'est la multiplication binaire dont il possède déjà les deux opérandes; il sait aussi qu'il n'aura plus besoin des deux opérandes mais du résultat du calcul ici `15`)
    * il n'y a plus rien après, l'expression est terminée, le résultat doit être affiché `15`
 
+
+
+# Liste chaînée {#TPList}
+
+## Objectif de l'exercice
+
+L'objectif de cet exercice est que vous fassiez votre propre implémentation de la liste chaînée. Les fonctionnalitées attendues sont les suivantes : 
+
+- Insertion à la fin 
+- Insertion à un indice quelconque 
+- Récupérer la taille de la liste 
+- Supprimer un élément à un indice quelconque
+- Afficher le contenu de la liste 
+
+# Liste doublement chaînée {#TPList2}
+
+## Objectif de l'exercice
+
+L'objectif de cet exercice est que vous fassiez votre propre implémentation de la liste doublement chaînée. Les fonctionnalitées attendues sont les suivantes : 
+
+- Insertion à la fin 
+- Insertion à un indice quelconque 
+- Récupérer la taille de la liste 
+- Supprimer un élément à un indice quelconque
+- Afficher le contenu de la liste 
+
+
+
