@@ -274,6 +274,18 @@ in do_something, ptr.use_count() = 3
 
 En effet nous avions déjà `ptr` et `ptr2` qui pointaient vers la zone mémoire, or le passage d'argument se faisant ici par copie nous avons donc dans le scope local de la fonction `do_something` un troisième pointeur qui sera automatiquement détruit à la sortie de la fonction, mais la zone mémoire associée est préservée puisque le compteur de pointage n'arrive pas à 0. 
 
-
 ## Attention à ne pas mélanger avec des pointeurs nus. 
 
+Pour finir ce premier apercu des pointeurs, pas d'inquiétude nous reviendrons dessus dans le chapitre suivant sur les classes car c'est là que les pointeurs vont avoir un réel intérêt, nous allons juste mettre un petit warning pour la suite. Nous venons de voir qu'il existe deux approches pour manipuler les pointeurs 
+
+- La version historique, old-school, où l'on manipule ce qu'on appelle des pointeurs nus. Et où la gestion de la mémoire doit se faire intégralement à la main du `new` jusqu'au `delete` ! 
+- La version post C++ 11 qui se base sur les `std::unique_ptr` et `std::shared_ptr`. 
+
+La rêgle que vous devez retenir et appliquer est qu'une fois que vous avez choisi une des deux façons de faire il faut vous y tenir et ne surtout pas mélanger les deux ! Perso je vous conseillerais plutôt d'utiliser la syntaxe moderne à base de `std::unique_ptr` ou `std::shared_ptr`. 
+
+Dans les faits nous pouvons très bien mélanger les deux approches car il est possible depuis un `std::shared_ptr` de récupérer le pointeur nu encaspulé à l'aide de la méthode `get` et inversement il est possible de créer un `std::shared_ptr` à partir d'un pointeur nu. Ci-dessous deux exemples de mélange des genres qui provoquent tous les deux une erreur à l'exécution de type `double free`, c'est à dire qu'une même zone de la mémoire est désallouée deux fois !
+
+\snippet ./src/conclusion.cpp bad_idea1
+
+
+\snippet ./src/conclusion.cpp bad_idea2
