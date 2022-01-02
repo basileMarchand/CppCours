@@ -227,7 +227,52 @@ Et c'est exactement le même principe si on veut appeler la fonction `do_somethi
 
 ## Utilisation des shared_ptr 
 
+Nous allons maintenant voir les `std::shared_ptr` à la différence des `std::unique_ptr` ils n'imposent aucune restriction sur le nombre de pointeurs pour une même zone mémoire. En ce sens les `std::shared_ptr` sont similaires aux pointeurs nus classiques du c++ old-school. 
 
+Pour déclarer un `std::shared_ptr` la démarche est similaire à celle que l'on vient de voir pour les `std::unique_ptr` à savoir 
+
+```
+std::shared_ptr<type> ptr_name; 
+```
+
+Par exemple pour créer un pointeur partagé vers un entier : 
+
+\snippet ./src/shared_ptr.cpp decl 
+
+Comme pour le `std::unique_ptr`, à la déclaration le pointeur est initialisé à `nullptr` pour prévenir tout usage dangereux. Pour allouer une zone mémoire à notre pointeur nous pourrions là encore utiliser le mot-clé `new` mais le c++ moderne nous met à disposition la fonction `std::make_shared` exactement sur le même principe que la fonction `std::make_unique`. Par exemple : 
+
+\snippet ./src/shared_ptr.cpp make_shared
+
+Là où il existe les différences entre `std::shared_ptr` et `std::unique_ptr` commencent c'est tout d'abord dans la fonction `use_count` disponible dans le `std::shared_ptr`. L'intérêt de cette fonction est de nous retourner le nombre de pointeurs pointant actuellement vers la zone mémoire pointée. Par exemple : 
+
+\snippet ./src/shared_ptr.cpp count1
+
+Pour le moment nous n'avons qu'un pointeur vers la zone mémoire de `ptr`, donc `ptr`. Maintenant nous allons déclarer un second pointeur qui va faire référence à la même zone mémoire, pour cela on utilise simplement l'opérateur d'affectation `=`. 
+
+\snippet ./src/shared_ptr.cpp assignement
+
+Si nous regardons alors les valeurs retournées par la fonction `use_count` sur `ptr` et `ptr2` nous obtenons : 
+
+\snippet ./src/shared_ptr.cpp count2
+
+```
+ptr.use_count() = 2
+ptr2.use_count() = 2
+```
+
+Nous avons maintenant deux pointeurs `ptr` et `ptr2` qui pointent vers la zone mémoire. Si maintenant nous passons l'un de nos pointeur comme argument de la fonction suivante par exemple : 
+
+\snippet ./src/shared_ptr.cpp func
+
+\snippet ./src/shared_ptr.cpp call_func
+
+Nous obtenons alors la sortie suivante : 
+
+```
+in do_something, ptr.use_count() = 3
+```
+
+En effet nous avions déjà `ptr` et `ptr2` qui pointaient vers la zone mémoire, or le passage d'argument se faisant ici par copie nous avons donc dans le scope local de la fonction `do_something` un troisième pointeur qui sera automatiquement détruit à la sortie de la fonction, mais la zone mémoire associée est préservée puisque le compteur de pointage n'arrive pas à 0. 
 
 
 ## Attention à ne pas mélanger avec des pointeurs nus. 
