@@ -426,9 +426,31 @@ En conclusion :
 
 ## Opérateur d'affectation 
 
+\snippet ./src/point_overload.cpp assignement 
+
+\snippet ./src/point_overload.cpp assignement_impl 
+
 ## Opérateurs mathématiques 
 
+\snippet ./src/point_overload.cpp equality 
+
+\snippet ./src/point_overload.cpp equality_impl
+
+\snippet ./src/point_overload.cpp comparison
+
+\snippet ./src/point_overload.cpp comparison_impl
+
+
+\snippet ./src/point_overload.cpp operations
+
+\snippet ./src/point_overload.cpp operations_impl
+
 ## Opérateurs d'accès 
+
+\snippet ./src/point_overload.cpp access
+
+\snippet ./src/point_overload.cpp access_impl
+
 
 
 # Héritage 
