@@ -336,7 +336,91 @@ Vous commencez donc à voir un peu plus l'intérêt des pointeurs, je l'espère 
 
 ## Notion de destructeur 
 
-Nous allons à présent aborder une autre notion essentielle des classes en C++ il s'agit du destructeur. Le destructeur porte bien son nom puisqu'il s'agit de la méthode qui est appelée lorsqu'un objet est détruit. 
+Nous allons à présent aborder une autre notion essentielle des classes en C++ il s'agit du destructeur. Le destructeur porte bien son nom puisqu'il s'agit de la méthode qui est appelée lorsqu'un objet est détruit. La définition du destructeur d'une classe se fait, de manière similaire au constructeur, en définissant une méthode de classe qui ne renvoie rien et s'appelle forcément comme la classe mais préfixée par un `~`. 
+
+Par exemple pour notre classe `Point` la définition du destructeur se fait de la manière suivante : 
+
+\snippet ./src/destructor_example.cpp point
+
+Ici le desctucteur ne fait qu'afficher un message lorsqu'il est appelé. Regardons par exemple ce que cela donne dans le code simpliste suivant : 
+
+\snippet ./src/destructor_example.cpp usage
+
+A l'exécution nous obtenons alors la sortie suivante : 
+
+```
+start new scope
+Dans le destructeur de Point
+stop new scope
+```
+
+Nous pouvons donc constater que le destructeur est appelé automatique à la fin du scope d'existance de `pa`. 
+
+**Remarque :** le destructeur, contrairement aux constructeurs, ne peut prendre aucun argument en entrée ! Il n'y a donc qu'un seul et unique destructeur par classe. 
+
+Mais quel est l'intérêt du constructeur ? Alors oui afficher un message ne semble pas être un intérêt très pertinent. Alors pour la class `Point` telle que nous l'avons faites jusqu'à maintenant il n'y a aucun intérêt à définir un destructeur. Ok mais alors dans quel cas on doit faire un destructeur ? La rêgle est d'une simplicité absolue ! Il faut se préocuper du destructeur d'une classe dès que cette dernière fait des allocations dynamiques de mémoire et donc manipule des pointeurs.  
+
+Considérons par exemple les deux classes `Jedi` et `LightSaber`. La classe jedi a un attribut pointeur vers un sabre laser. Les plus attentifs remarqueront que j'utilise ici des pointeurs nus, c'est fait exprès. Dans le constructeur de la classe `Jedi` je fais une allocation dynamique, à l'aide d'un `new`, pour créer le sabre laser associé. Considérons maintenant le cas où je ne fais rien de particulier pour les destructeurs : 
+
+\snippet ./src/bad_destructor.cpp example
+
+Si j'exécute le code suivant 
+
+\snippet ./src/bad_destructor.cpp usage
+
+Voici la sortie : 
+
+```
+Jedi with light saber blue constructor 
+LightSaber blue constructor
+Jedi with light saber green constructor 
+LightSaber green constructor
+Jedi destructor
+Jedi destructor
+```
+
+Est-ce qu'il n'y aurait pas un léger problème ? Non ? Et bien si ! Car on voit bien le message suite à l'appel du destructeur de `Jedi` en revanche aucun message disant qu'on aurait bien appelé le destructeur de `LightSaber`. Et c'est normal car on ne l'a pas fait et le C++ ne le fera pas pour nous. Tout ce que fait le C++ c'est détruire le pointeur `weapon_` mais il ne détruit pas la mémoire associée. On a donc ce qu'on appelle une fuite mémoire ! Du coup si on veut faire les choses proprement il faut dans le destructeur de `Jedi` appelé le destructeur de l'instance de `LightSaber` pointée par `weapon_`. Cela se fait simplement avec le mot clé `delete` : 
+
+\snippet ./src/good_destructor.cpp example
+
+\snippet ./src/good_destructor.cpp usage
+
+```
+Jedi with light saber blue constructor 
+LightSaber blue constructor
+Jedi with light saber green constructor 
+LightSaber green constructor
+Jedi destructor
+LightSaber green destructor
+Jedi destructor
+LightSaber blue destructor
+```
+
+Nous sommes maintenant dans une situation plus propre car on constate bien que l'on appelle les destructeurs des sabres lasers ainsi toute la mémoire allouée dynamiquement est détruite et nous n'avons plus de fuite mémoire. Mais il existe une solution plus simple... Et oui il s'agit pour cela d'utiliser les choses modernes du C++ à savoir les `std::unique_ptr` et `std::shared_ptr`. En effet ces pointeurs intelligents ont l'extrème gentillesse de savoir quand détruire la mémoire qui leurs est associée. Si l'on refait la classe `Jedi` en utilisant un `std::unique_ptr<LightSaber>` par exemple : 
+
+\snippet ./src/ptr_destructor.cpp example
+
+Et bien nous n'avons plus besoin de nous préoccuper du destructeur. Et à l'usage : 
+
+\snippet ./src/ptr_destructor.cpp usage
+
+on obtient la sortie correspondant au comportement souhaité : 
+
+```
+Jedi with light saber blue constructor 
+LightSaber blue constructor
+Jedi with light saber green constructor 
+LightSaber green constructor
+Jedi destructor
+LightSaber green destructor
+Jedi destructor
+LightSaber blue destructor
+```
+
+En conclusion : 
+- Il faut commencer à se préoccuper du destructeur d'une classe uniquement lorsqu'il y a des allocations dynamiques au sein de cette dernière 
+- De préférence il vaut mieux utiliser les `std::unique_ptr` et `std::shared_ptr` qui vous permettront de supprimer les fuites mémoires sans avoir besoin de vous préoccuper trop des constructeurs. 
+
 
 # Surcharge d'opérateur 
 
