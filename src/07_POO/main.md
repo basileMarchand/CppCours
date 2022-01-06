@@ -11,7 +11,7 @@ Programmation Orientée Objet     {#pooSection}
 
 La notion de Programmation Orientée Objet, communément appelée POO, est un paradigme de programmation au même titre que la programmation fonctionnelle. C'est à dire qu'il s'agit d'un style de programmation définissant un certain nombre de règles à suivre pour développer. Le principe du paradigme POO est de considérer qu'un programme informatique est un assemblage de briques, les fameux objets, et ces briques vont interagir entres elles ce qui va alors définir le comportement de notre programme. Pour information la notion de programmation orientée objet a été conceptualisée par [Alan Kay](https://fr.wikipedia.org/wiki/Alan_Kay) vers la fin des années 70 mais sa mise en oeuvre a plutôt explosé dans les années 90. 
 
-Mais concrètement un objet c'est quoi ? Et bien dans les faits c'est ce que vous voulez il peut s'agir d'un concept ou une entité du monde physique. Dans tous les cas cet objet sera caractérisée par : 
+Mais concrètement un objet c'est quoi ? Et bien dans les faits c'est ce que vous voulez il peut s'agir d'un concept ou une entité du monde physique. Dans tous les cas cet objet sera caractérisé par : 
 
 * Une structure interne, définissant les quantités contenues dans cet objet
 * Un comportement, définissant comment cet objet interagit avec le monde extérieur 
@@ -23,7 +23,7 @@ Pour qu'un langage de programmation puisse s'inscrire dans le paradigme orienté
 
 ### La définition d'objet 
 
-Ça peut paraître évident mais pour faire de la programmation orientée objet il faut pouvoir définir des objets ... C'est à dire des structures de données possédant un état et étant capable d'interagir avec le monde extérieur. Les données qui composent la structure interne d'un objet sont appelés **attributs** tandis que les "fonctions" qui vont définir son comportement sont appelées **méthodes**, on parle également de l'interface de l'objet ou API car c'est via ces méthodes que l'on va pouvoir interagir avec l'objet. 
+Ça peut paraître évident mais pour faire de la programmation orientée objet il faut pouvoir définir des objets ... C'est à dire des structures de données possédant un état et étant capable d'interagir avec le monde extérieur. Les données qui composent la structure interne d'un objet sont appelées **attributs** tandis que les "fonctions" qui vont définir son comportement sont appelées **méthodes**, on parle également de l'interface de l'objet ou API car c'est via ces méthodes que l'on va pouvoir interagir avec l'objet. 
 
 Ces attributs et méthodes peuvent être de différentes natures dans le sens où ils peuvent être cachés au monde extérieur, c'est à dire visible uniquement en interne,  on parle alors du principe d'encapsulation. Mais ils peuvent aussi être publics et dans ce cas visibles et utilisables depuis l'extérieur de l'objet. 
 
@@ -39,13 +39,13 @@ Enfin pour que nos objets puissent interagir entre eux et avec le monde extérie
 
 ## Le C++ un langage historiquement pour la POO 
 
-Historiquement rappelons le, le `C++` s'appelait le *C With Class* et donc il avait notamment vocation d'étendre le `C` au paradigme orientée objet. De ce fait le `C++` dispose de tous les éléments nécessaires à la programmation objet. Dans les années 90 c'était même **le** langage orienté objet à la mode, en effet il était assez courant de voir des personnes se vanter d'avoir un code `C++` orienté objet à cette époque c'était la classe (sans mauvais jeu de mots). 
+Historiquement rappelons le, le `C++` s'appelait le *C With Class* et donc il avait notamment vocation d'étendre le `C` au paradigme orienté objet. De ce fait le `C++` dispose de tous les éléments nécessaires à la programmation objet. Dans les années 90 c'était même **le** langage orienté objet à la mode, en effet il était assez courant de voir des personnes se vanter d'avoir un code `C++` orienté objet à cette époque c'était la classe (sans mauvais jeu de mots). 
 
 # Définition de classes 
 
 ## Attributs et méthodes
 
-Le premier ingrédient dans la programmation orientée objet est la définition d'objet. En `C++` cela passe par la définition de classes. Une classe va donc nous permettre de définir un nouveau type qui aura sa structures interne et une logique de fonctionnement. Donc une classe **=** un objet ! 
+Le premier ingrédient dans la programmation orientée objet est la définition d'objet. En `C++` cela passe par la définition de classes. Une classe va donc nous permettre de définir un nouveau type qui aura sa structure interne et une logique de fonctionnement. Donc une classe `=` un objet ! 
 
 La définition d'une classe se fait en utilisant le mot clé `class`, pas très très original je sais. Avec la syntaxe suivante : 
 
@@ -122,7 +122,7 @@ Depuis le `C++11` il est également possible d'utiliser une liste d'initializati
 
 \snippet ./src/point5.cpp point_B
 
-**Attention** les valeurs dans la liste d'initialization doivent être dans le même ordre que celui de déclaration des attributs dans la classe !! Et à l'usage cela donne alors le bon résultat : 
+**Attention** les valeurs dans la liste d'initialisation doivent être dans le même ordre que l'ordre de déclaration des attributs dans la classe !! Et à l'usage cela donne alors le bon résultat : 
 
 ```
 B (10, 5)
@@ -158,7 +158,7 @@ Revenons un peu sur les notions de `public` pas `public` ! Dans la définition d
 * `protected` : l'attribut/méthode est visible depuis l'intérieur de l'objet, depuis l'intérieur de tout sous-objet qui hériterait de objet mais n'est pas accessible de l'extérieur
 * `private` : l'attribut/méthode est visible depuis l'intérieur de l'objet lui-même et c'est tout. 
 
-Pour le moment il n'y a donc pas de différence entre `protected` et `private` car vous ne savez pas faire d'héritage !! Mais je vous conseille néanmoins d'utiliser plutôt protected par défaut lorsque vous ne voulez pas que des choses soient `public`. 
+Pour le moment il n'y a donc pas de différence entre `protected` et `private` car vous ne savez pas faire d'héritage !! Mais je vous conseille néanmoins d'utiliser plutôt `protected` par défaut lorsque vous ne voulez pas que des choses soient `public`. 
 
 
 Regardons par exemple la définition de classe suivante : 
@@ -184,7 +184,7 @@ Dans l'exemple précédent, pour renseigner les attributs `protected` de la clas
 
 \snippet ./src/constructeur_example.cpp point_inst 
 
-Cela est possible si on définit ce que l'on appelle le constructeur de la classe. Le constructeur est une méthode de classe qui a pour nom forcément le nom de la classe et surtout qui ne renvoie rien (par rien `void` mais rien rien) ! Par exemple pour dire que l'on ajoute un constructeur prenant en entrée trois argument nous pouvons faire de la manière suivante : 
+Cela est possible si on définit ce que l'on appelle le constructeur de la classe. Le constructeur est une méthode de classe qui a pour nom forcément le nom de la classe et surtout qui ne renvoie rien (par rien `void` mais rien rien) ! Par exemple pour dire que l'on ajoute un constructeur prenant en entrée trois arguments nous pouvons faire de la manière suivante : 
 
 \snippet ./src/constructeur_example.cpp point 
 
@@ -197,7 +197,7 @@ Tandis que la seconde ressemble plus à ce que l'on ferait naturellement :
 
 \snippet ./src/constructeur_example.cpp construct2 
 
-Quelle est la différence entre ces deux approches ? Conceptuellement pas tant que ça car à la fin le résultat est le même. En revanche en pratique il y a une différence notable qui est que dans le second cas les attributs de `class`, pendant un moment, ont des valeurs indéterminées (tant qu'on ne leurs a pas affecté les valeurs `a`, `b` et `pname`). Tandis que dans le premier cas, à la création de l'objet, les valeurs des attributs ne passent pas par cet état indéterminé mais sont directement construites et initialisées avec les valeurs fournies au constructeur. 
+Quelle est la différence entre ces deux approches ? Conceptuellement pas tant que ça car à la fin le résultat est le même. En revanche en pratique il y a une différence notable qui est que dans le second cas les attributs de `class`, pendant un moment, ont des valeurs indéterminées (tant qu'on ne leur a pas affecté les valeurs `a`, `b` et `pname`). Tandis que dans le premier cas, à la création de l'objet, les valeurs des attributs ne passent pas par cet état indéterminé mais sont directement construites et initialisées avec les valeurs fournies au constructeur. 
 
 
 Si vous êtes familier du Python le constructeur c'est exactement la même chose que la méthode `__init__` d'une classe Python. Mais en réalité en `C++` c'est mieux :) car il y a une fonctionnalité qui n'existe pas en `Python`: c'est la possibilité de définir plusieurs constructeurs. Wait wait wait !!! Comment c'est possible vu que la constructeur a forcément le même nom que la classe ? Et bien c'est possible grâce au concept de surcharge. Car je vous rappelle, au cas où vous auriez oublié, que le `C++` est capable de faire la différence entre deux fonctions de même nom en regardant le nombre et le type des arguments d'entrée des deux fonctions. Et bien le même principe est exactement applicable aux méthodes de classes et aux constructeurs. Par exemple nous pouvons faire : 
@@ -208,9 +208,18 @@ Et les différentes implémentations seront les suivantes :
 
 \snippet ./src/constructeur_example2.cpp construct 
 
-Ainsi à l'utilisation nous pourrions créer des objets `` des quatre manières suivantes : 
+Ainsi à l'utilisation nous pourrions créer des objets: des quatre manières suivantes : 
 
 \snippet ./src/constructeur_example2.cpp point_inst 
+
+Notons enfin que les arguments du constructeur peuvent prendre des valeurs par défaut, nous pouvons ainsi réunir plusieurs (4) constructeurs en un seul, notons que les noms des arguments et des attributs peuvent être les mêmes (cela simplifie la recherche des noms...) 
+
+\snippet ./src/constructeur_example3.cpp point_
+
+Et à l'utilisation, on a bien quatre constructeurs.
+
+\snippet ./src/constructeur_example3.cpp point_default
+
 
 ### Constructeur de copie 
 
@@ -268,7 +277,7 @@ const_method.cpp:21:6: note:   dans l'appel de « void Point::print() »
       |      ^~~~~
 ```
 
-Ce que le compilateur essaye de vous dire c'est que vous considérez l'instance de `Point` comme `const` dans la fonction `callPointPrint` **mais** ensuite vous appelez, sur cette instance, la méthode `print` or a aucun moment vous n'avez dit au compilateur que le fait d'appeler `print` ne modifie rien dans l'instance. Et donc il part du principe que par défaut chaque méthode risque de modifier l'instance donc l'instance ne peut pas être `const`. Pour expliquer au compilateur que promis la méthode ne change rien à l'instance il suffit d'ajouter le qualificateur `const` derrière la déclaration **et** la définition de la méthode. Cela donne par exemple dans notre cas : 
+Ce que le compilateur essaye de vous dire c'est que vous considérez l'instance de `Point` comme `const` dans la fonction `callPointPrint` **mais** ensuite vous appelez, sur cette instance, la méthode `print` or à aucun moment vous n'avez dit au compilateur que le fait d'appeler `print` ne modifie rien dans l'instance de l'objet. Et donc il part du principe que par défaut chaque méthode risque de modifier l'instance donc l'instance ne peut pas être `const`. Pour expliquer au compilateur que promis la méthode ne change rien à l'instance il suffit d'ajouter le qualificateur `const` derrière la déclaration **et** la définition de la méthode. Cela donne par exemple dans notre cas : 
 
 \snippet ./src/const_method.cpp print_const 
 
@@ -297,7 +306,7 @@ Donc si on veut pouvoir stocker en attribut le lien vers l'élément suivant de 
 
 \snippet ./src/good_list.cpp node 
 
-Nous pourrons alors dynamiquement ajouter des éléments dans la liste en allouant des instances de `Node` et en les attachants au noeud précédent. Cela pourrait donner par exemple : 
+Nous pourrons alors dynamiquement ajouter des éléments dans la liste en allouant des instances de `Node` et en les attachant au noeud précédent. Cela pourrait donner par exemple : 
 
 \snippet ./src/good_list.cpp node2 
 
@@ -354,13 +363,13 @@ Dans le destructeur de Point
 stop new scope
 ```
 
-Nous pouvons donc constater que le destructeur est appelé automatique à la fin du scope d'existence de `pa`. 
+Nous pouvons donc constater que le destructeur est appelé automatiquement à la fin du scope d'existence de `pa`. 
 
 **Remarque :** le destructeur, contrairement aux constructeurs, ne peut prendre aucun argument en entrée ! Il n'y a donc qu'un seul et unique destructeur par classe. 
 
-Mais quel est l'intérêt du constructeur ? Alors oui afficher un message ne semble pas être un intérêt très pertinent. Pour la class `Point` telle que nous l'avons faite jusqu'à maintenant il n'y a aucun intérêt à définir un destructeur. Ok mais alors dans quels cas on doit faire un destructeur ? La règle est d'une simplicité absolue ! Il faut se préoccuper du destructeur d'une classe dès que cette dernière fait des allocations dynamiques de mémoire et donc manipule des pointeurs (bon c'est vrai, il peut exister d'autres opérations faites dans un constructeur qui demandent à être correctement défaites comme ouverture d'un fichier...).  
+Mais quel est l'intérêt du constructeur ? Alors oui afficher un message ne semble pas être un intérêt très pertinent. Pour la class `Point` telle que nous l'avons faite jusqu'à maintenant il n'y a aucun intérêt à définir un destructeur et nous ne devons surtout pas faire des choses inutiles. Ok mais alors dans quels cas on doit faire un destructeur ? La règle est d'une simplicité absolue ! Il faut se préoccuper du destructeur d'une classe dès que cette dernière fait des allocations dynamiques de mémoire et donc manipule des pointeurs (bon c'est vrai, il peut exister d'autres opérations faites dans un constructeur qui demandent à être correctement défaites comme l ouverture d'un fichier... mais restons sur l'exemple de l'allocation dynamique).  
 
-Considérons par exemple les deux classes `Jedi` et `LightSaber`. La classe `Jedi` a un attribut pointeur vers un sabre laser. Les plus attentifs remarqueront que j'utilise ici des pointeurs nus, c'est fait exprès. Dans le constructeur de la classe `Jedi` je fais une allocation dynamique, à l'aide d'un `new`, pour créer le sabre laser associé. Considérons maintenant le cas où je ne fais rien de particulier pour les destructeurs : 
+Considérons les deux classes `Jedi` et `LightSaber`. La classe `Jedi` a un attribut pointeur vers un sabre laser. Les plus attentifs remarqueront que j'utilise ici des pointeurs nus, c'est fait exprès. Dans le constructeur de la classe `Jedi` je fais une allocation dynamique, à l'aide d'un `new`, pour créer le sabre laser associé. Considérons maintenant le cas où je ne fais rien de particulier pour les destructeurs : 
 
 \snippet ./src/bad_destructor.cpp example
 
@@ -420,7 +429,6 @@ LightSaber blue destructor
 En conclusion : 
 - Il faut commencer à se préoccuper du destructeur d'une classe uniquement lorsqu'il y a des allocations dynamiques au sein de cette dernière 
 - De préférence il vaut mieux utiliser les `std::unique_ptr` et `std::shared_ptr` qui vous permettront de supprimer les fuites mémoires sans avoir besoin de vous préoccuper trop des destructeurs. 
-
 
 # Surcharge d'opérateur 
 
