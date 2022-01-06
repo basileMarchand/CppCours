@@ -9,7 +9,7 @@ int main(){
     //! [base]
 
     //! [address]
-    std::cout << "addresse de monDouble: " << &monDouble << std::endl;
+    std::cout << "adresse de monDouble: " << &monDouble << std::endl;
     //! [address]
 
     return EXIT_SUCCESS;
