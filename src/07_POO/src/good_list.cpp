@@ -74,7 +74,7 @@ class Node{
             }
         }
 
-        void print(){
+        void print() const {
             std::cout << this->value_ << ", "; 
             if( this->next_){
                 this->next_->print();
