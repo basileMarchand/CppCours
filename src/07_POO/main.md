@@ -452,22 +452,142 @@ En conclusion :
 \snippet ./src/point_overload.cpp access_impl
 
 
+## Surcharge par l'exterieur (friend) 
+
+### Flux 
+\snippet ./src/point_overload.cpp flux_impl
+
+
+\snippet ./src/point_overload.cpp flux
+
+### Opération mathématique 
+
+\snippet ./src/point_overload.cpp math2
+
+
+\snippet ./src/point_overload.cpp math2_impl
+
 
 # Héritage 
 
 ## Classe mère, classe fille 
 
-## Méthodes virtuelle 
+Nous allons à présent rentrer dans le coeur du sujet de la programmation orientée objet avec la notion d'heritage. Le principe de l'héritage est très simple est consiste a créer des hiérarchies de classes qui ont des liens logiques. Autrement dit l'idée va être de créer une classe de base générique, que l'on appelera par la suite classe mère, et à partir de cette classe mère de faire différentes classes filles qui correspondent chacune à une spécialisation. 
 
-## Destructeur virtuel 
+Pour définir une classe fille à partir d'une classe mère la syntaxe est la suivante : 
+
+```
+class Fille: public Mere{
+
+};
+```
+
+
+Par exemple si je reprend l'exemple de la classe `Jedi` que j'ai utilisé plus haut. Je peux très bien me dire que la classe Jedi est une classe générique et je vais la spécialisée en créant trois classes filles : 
+
+- `Padawan` : les apprentis Jedi 
+- `Knight` : les chevaliers Jedi 
+- `Master` : les maitres Jedi 
+
+Ces trois classes filles ont comme lien le fait qu'il s'agit dans les trois cas de Jedi. Et donc par exemple les padawan, chevalier ou maitres ont tous un sabre laser. 
+
+Considérons par exemple l'implémentation suivante de la classe `Jedi`
+\snippet ./src/jedi_base.cpp jedi 
+
+Nous pouvons à partir de `Jedi` définir la classe fille `Padawan` de la manière suivante : 
+
+\snippet ./src/jedi_base.cpp padawan
+
+Et également les classes `Knight` et `Master`. 
+
+\snippet ./src/jedi_base.cpp knight
+
+\snippet ./src/jedi_base.cpp master
+
+
+Tout l'intérêt de l'héritage est alors que l'on peut définir pour chaque classe fille un comportement particulier par exemple implémentons une méthode `info` dans la classe de base `Jedi` 
+
+
 
 # Polymorphisme 
 
 ## Un mot compliqué pour un truc simple 
 
-## Le polymorphisme un coût en plus ? 
+## Méthodes virtuelle
+
+## Destructeur virtuel 
 
 ## Faire du polymorphisme sans héritage c'est possible ! 
+
+Maintenant que nous avons vu les grands classiques du C++ avec l'héritage, le polymorphisme et les fonctions virtuelles prenons un peu de temps pour nous intéresser à un truc qui sort du cadre standard !! Considérons trois classes `A`, `B`, `C` qui n'ont entre elles aucun lien, pas d'héritage, mais qui auraient le bon goût d'offrir la même interface à savoir dans notre cas une méthode `print`. 
+
+\snippet variant_example.cpp classes
+
+Dans ce cas, une possibilité depuis la norme 2017 du C++ est d'utiliser le type `std::variant`, disponible dans la librairie `<variant>`, qui permet d'encapsuler plusieurs types. L'utilisation se fait de la manière suivante 
+
+```
+std::variant<type1, type2, ...> variable_name; 
+```
+
+Par exemple dans le cas de nos trois classes `A`, `B` et `C` nous pouvons l'utiliser de la manière suivante : 
+
+\snippet variant_example.cpp variant
+
+Ainsi nous pouvons créer une variable `ptr` qui va contenir un pointeur vers une instance de `A` ou une instance de `B` ou une instance de `C`. On obtient donc le même résultat qu'avec de l'héritage "standard". Là où la distinction est plus marquée c'est sur l'appel des méthodes. Par exemple pour appeler la méthode `print` nous ne pouvons pas faire `ptr->print()` comme nous le ferions avec un pointeur. Il faut passer par l'utilisation de la fonction `std::visit` qui va prendre en entrée une fonction (la plupart du temps anonyme) et le `std::variant`. Par exemple cela donne : 
+
+\snippet variant_example.cpp visitor 
+
+Vous remarquerez l'usage du `auto` qui traduit le fait qu'on utilise ici une fonction générique et surtout de la syntaxe `auto&&`. Le `&&` signifie que l'on passe l'argument comme une `rvalue`, c'est-à-dire que l'argument d'entrée peut-être un objet temporaire. Pour plus de détail sur le principe des r-value je vous invite à jeter un oeil sur [https://en.cppreference.com/w/cpp/language/reference](https://en.cppreference.com/w/cpp/language/reference). 
+
+Une fois notre `std::variant` déclarer nous pouvons à tout moment lui affecter un nouveau contenu correspond à l'un des types autorisé : 
+
+\snippet variant_example.cpp again 
+
+
+## Le polymorphisme un coût en plus ? 
+
+Nous venons donc de voir qu'avec l'héritage et les fonctions virtuelles il est possible d'élaborer des architectures relativement complexes mais que visiblement il est également possible de le faire sans en utilisant les `std::variant`. La question que l'on peut alors se poser est si les deux approches sont équivalentes ou pas ? En terme d'usage nous avons bien vu que non, personnellement j'aurai tendance à dire que l'approche par héritage avec des fonctions virtuelles est plus simple. Mais est-ce qu'au niveau des performances c'est la même chose ? Et bien la réponse est non pas tout à fait. Car, attention grosse révélation, le polymorphisme c'est vachement pratique et permet de faire des choses très souples mais ça à un coût ! Vraiment ? Oui vraiment car le principe du polymorphisme est le suivant : 
+
+Pour chaque classe dérivée, il existe en interne une structure de données qui s'appelle la `vtable` pour virtual table. L'objectif de la vtable est de contenir le pointeur vers les fonctions `virtual`. A chaque appel d'une fonction virtuelle, le C++ doit donc : 
+
+1. charger la vtable de l'objet considéré, 
+2. trouver dans la vtable le pointeur vers la fonction virtuelle que l'on appelle 
+3. charger la fonction virtuelle dans le cache d'instruction 
+4. exécuter la fonction 
+
+C'est totalement transparent pour nous évidemment, mais toutes ces opérations ont un coût. Tandis qu'avec une approche à base de std::variant la mise en oeuvre peut nécessiter un peu plus de travail de la part du développeur mais le surcoût est moindre car pas de jeu de pointeur. 
+
+Pour vous en assurer, voici ci-dessous un benchmark comparant l'approche héritage classique, de l'approche `std::variant`. 
+
+
+
+
+
+**Attention :** l'objectif n'est pas de dire qu'il faut faire du std::variant tout le temps et jamais d'héritage ! Comme pour beaucoup de chose ça dépend de votre problématique ! Mais dans la plupart des cas vous avez certainement plein d'autre piste d'optimisation à explorer avant de ne vous lancer dans la suppression de l'héritage ;) 
+
+
+# Subtilitée : convertir this en shared_ptr 
+
+Alors juste une petite subtilité du C++ moderne, j'en parle car on peut vite y arriver... Nous avons vu jusqu'à maintenant que le C++ depuis la norme 2011 offre tout un tas d'outils super sympa, notamment les `std::shared_ptr`. Or il se peut que vous soyer amené assez rapidement a essayer de faire quelque chose du genre : 
+
+\snippet ./src/astuce.cpp main 
+
+Cela peut sembler une bonne idée, cependant à l'exécution on obtient le message, peu sympatique suivant : 
+
+```
+double free or corruption (out)
+Aborted (core dumped)
+```
+
+Néanmoins pas d'inquiétude il existe bien évidemment un moyen de faire cela. Il faut cependant faire un petit effort pour que cela fonctionne. En effet la librairie `<memory>` met à disposition une classe, qui porte très bien son nom, `std::enable_shared_from_this`. Difficile de faire plus explicite comme nom. Pour que vous puissiez convertir votre pointeur nu `this` comme un `std::shared_ptr` il faut que votre classe hérite de la classe `enable_shared_from_this`. Alors attention à l'usage !! Dans notre exemple cela donne quelque chose du genre :  
+
+\snippet ./src/astuce_work.cpp main 
+
+Donc vous voyez deux choses : 
+
+* Pour convertir `this` en `std::shared_ptr<A>` on appelle la méthode `shared_from_this()` dont on hérite de la classe `std::enable_shared_from_this`. 
+* Au niveau de l'héritage vous voyez la syntaxe bizarre `class A: public std::enable_shared_from_this<A>`. On peut traduire cela en la classe `A` hérite de la classe `std::enable_shared_from_this` qui est templatée par `A`.... c'est louche non ? Alors oui un peu mais c'est un pattern plutôt standard, c'est ce qu'on appelle un CRTP (Curiously Recuring Template Parameter) nous verrons dans le chapitre suivant sur les templates qu'il y a beaucoup de possibilité offerte par ce pattern.  
+
 
 
 # Pour le fun : type litterals 

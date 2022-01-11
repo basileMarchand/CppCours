@@ -6,7 +6,7 @@
 class Point{
     public:
     Point() = default;
-    Point(Point&) = default; 
+    Point(const Point&) = default; 
     Point(const double& x, const double& y, const std::string& name);
 
     //! [assignement]
@@ -37,6 +37,14 @@ class Point{
     double operator[](const std::string& item) const;
     double& operator[](const std::string& item);
     //! [access]
+
+    //! [flux]
+    friend std::ostream& operator<<(std::ostream& os, const Point& p);
+    //! [flux]
+
+    //! [math2]
+    friend Point operator*(const double& c, const Point& p);
+    //! [math2]
 
     void print() const ;
 
@@ -166,15 +174,33 @@ double& Point::operator[](const std::string& item) {
 //! [access_impl]
 
 
+//! [flux_impl]
+std::ostream& operator<<(std::ostream& os, const Point& p){
+    os << p.name_ << ": (" << p.x_ << ", " << p.y_ << ")";
+    return os; 
+}
+//! [flux_impl]
+
+//! [math2_impl]
+Point operator*(const double& c, const Point& p){
+    Point ret(p);
+    ret.x_ *= c;
+    ret.y_ *= c;
+    return ret; 
+}
+//! [math2_impl]
+
 int main(){
 
     Point pa(10,20,"pA");
+    Point pb(1,2,"pB");
 
-    Point pb = pa; 
-    Point pc;
+    Point pc = 2*pa; 
 
-    pc = pb = pa;
 
+    std::cout << pa + pb << std::endl; 
+    std::cout << pa - pb << std::endl; 
+    std::cout << pc << std::endl;
 
     return EXIT_SUCCESS;
 }
