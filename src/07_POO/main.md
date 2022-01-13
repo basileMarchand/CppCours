@@ -559,7 +559,138 @@ I am a Jedi Master with a green light saber
 
 ## Un mot compliqué pour un truc simple 
 
+Nous allons maintenant abordé un point particulier de la programmation orientée objet en C++, la notion de Polymorphisme. Qu'est ce que ça veut dire ??? Le principe est simple en réalité, mais le mot compliqué peut faire bien dans une conversation ;), l'idée du polymorphisme est d'avoir un mécanisme qui va nous permettre de faire passer une classe fille pour sa mère ! Ok mais pourquoi on a besoin de ça ? La réponse est simple, c'est pour ne pas devoir ré-implémenter 20 fois les mêmes fonctions pour des arguments d'entrée différents. Par exemple reprenons nos classes `Jedi`, `LightSaber` et compagnie 
+
+\snippet ./src/polymorphism_example.cpp classes
+
+Nous pouvons voir que nos trois classes filles ont toutes en communs une méthode `info()` qui suivant l'objet considéré affichera un certain message. 
+
+Maintenant imaginons que l'on veuille faire une fonction `callInfo` qui prend en argument une instance d'une classe fille de Jedi. Comment feriez vous cela ? Une solution pourrait être d'utiliser la surcharge de fonction et donc de définir trois versions de `callInfo` : (i) `callInfo(Padawan&)` ; (ii) `callInfo(Knight&)` ; (iii) `callInfo(Master&)`. Ca marche mais ça manque un peu d'élégance non ? Il existe une autre solution qui est de définir : 
+
+\snippet ./src/polymorphism_example.cpp call_info 
+
+Et ensuite à l'usage cela donne : 
+
+\snippet ./src/polymorphism_example.cpp call_info 
+
+Wait, wait !!! On a le droit d'appeler `callInfo(Jedi&)` avec autre chose qu'un `Jedi` ? Eh bien oui on a le droit car on n'appelle pas la fonction sur n'importe quoi non plus ! Nos arguments sont des `Padawan`, `Knight` et `Master` qui héritent tous les trois de `Jedi`. Donc pour le compilateur, loué soit-il, un `Padawan` est un `Jedi` donc ça marche ! Enfin ça marche ... presque car si on regarde le résultat du code précédent on obtient : 
+
+```
+I am a Padawan with a blue light saber
+In callInfo: I am a Jedi with a blue light saber
+I am a Jedi Knight with a blue light saber
+In callInfo: I am a Jedi with a blue light saber
+I am a Jedi Master with a green light saber
+In callInfo: I am a Jedi with a green light saber
+```
+
+C'est pas tout a fait ce qu'on attendait ... Car vous voyez dans `callInfo(Jedi& j)` l'appel à `j.info()` appelle la version de la méthode `info()` définie dans la classe de base `Jedi` et pas les versions re-définies dans les classes filles. C'est pas vraiment ce qu'on veut ! Mais pas d'inquiétude ! Il y a bien évidemment une combine magique pour que ça marche il s'agit des méthodes virtuelles. 
+
 ## Méthodes virtuelle
+
+Nous venons de le voir grace au polymorphisme nous pouvons dire qu'un `Padawan` est un `Jedi` par exemple mais en faisant cela on perd en quelque sorte l'information que la variable que l'on manipule est un `Padawan`. Par exemple 
+
+\snippet ./src/polymorphism_example.cpp call_info 
+
+Ce qui nous donne comme résultat : 
+
+```
+I am a Padawan with a blue light saber
+I am a Jedi with a blue light saber
+```
+
+C'est vraiment pas ce qu'on veut. Ce que l'on veut en réalité c'est qu'il y est un mécanisme de vérification dynamique, donc à l'exécution et pas à la compilation, qui au moment de l'appel à la méthode info regarde un peu plus en détail le contexte dans lequel cette méthode est appelé pour si besoin aller chercher la bonne version dans une des classes filles. Et bien surprise cce mécanisme existe il suffit pour cela de déclarer la méthode considéré comme virtuelle et cela se fait simplement avec le mot clé virtual devans la déclaration de la méthode dans la classe mère. Par exemple dans notre cas : 
+
+\snippet ./src/polymorphism_example2.cpp classes
+
+Au passage vous remarquez que j'ai dans mon exemple déclarer comme `virtual` la méthode `info` dans `Jedi` mais également dans les classes filles `Padawan`, `Knight`, `Master`. En réalité ce n'est pas nécessaire, il suffit uniquement de le déclarer dans la classe mère. Mais dans les faits je vous invite, par souci de clarté du code, à remettre les virtual dans les classes filles. 
+
+Et alors le simple fait d'ajouter le `virtual` devant `info` fait que le code suivant : 
+
+\snippet ./src/polymorphism_example2.cpp reference
+
+Nous donne le bon résultat à savoir : 
+
+```
+I am a Padawan with a blue light saber
+I am a Padawan with a blue light saber
+```
+
+De la même manière si on utilise maintenant la fonction `callInfo(Jedi&)` : 
+
+\snippet ./src/polymorphism_example2.cpp usage 
+
+on obtient le résultat escompté : 
+
+```
+I am a Padawan with a blue light saber
+In callInfo: I am a Padawan with a blue light saber
+I am a Jedi Knight with a blue light saber
+In callInfo: I am a Jedi Knight with a blue light saber
+I am a Jedi Master with a green light saber
+In callInfo: I am a Jedi Master with a green light saber
+```
+### Qualificateur override et final 
+
+Depuis la norme 2011 du C++ il existe pour les méthodes virtuelles deux mots clé additionnels : (i) `override` ; (ii) `final` qui permettent d'expliciter certaines chose et ainsi limiter les erreurs de programmation. Par exemple reprenons notre classe `Jedi` avec la méthode `info` déclarée comme `virtual`. 
+
+\snippet ./src/polymorphism_example3.cpp jedi 
+
+Implémentons maintenant notre classe `Padawan`, attention il y a une erreur ;)  
+
+\snippet ./src/polymorphism_example3.cpp padawan
+
+Et si maintenant j'utilise tout ça 
+
+\snippet ./src/polymorphism_example3.cpp reference
+
+```
+I am a Padawan with a blue light saber
+I am a Jedi with a blue light saber
+```
+
+C'est le drame ça ne fonctionne plus comme il faut !!!! Pourtant j'ai bien mis `info` comme méthode virtuelle ! Que se passe-t-il ? Pas d'idée ? Et bien c'est simple dans `Jedi` j'ai défini la méthode `virtual void info() const` tandis que dans `Padawan` j'ai défini `virtual void info()`. Il manque le `const` dans ma classe fille et du coup pour le c++ la méthode `info` de la classe mère n'est pas redéfinit dans la classe fille donc il prend celle de la classe mère ! Certains diraient que le diable est dans les détails. 
+
+C'est pour éviter de tomber dans ce cas qu'il existe le mot-clé `override` le principe est que si dans la déclaration d'une fonction virtuelle dans une classe **fille** j'ajoute le qualificateur `override` alors la méthode que je suis en train de définir doit forcément exister dans la classe mère. Ce qui n'était pas le cas dans mon exemple. Donc si je reprend ma classe `Padawan` en ajoutant le `override` qui va bien 
+
+\snippet ./src/polymorphism_example3.cpp padawan2
+
+j'obtiens l'erreur de compilation suivante : 
+
+```
+polymorphism_example3.cpp:48:22: error: ‘virtual void Padawan::info()’ marked ‘override’, but does not override
+   48 |         virtual void info() override {
+```
+
+Alors que si je remets le `const` qui va bien dans `Padawan` le `override` ne provoque plus d'erreur de compilation et tout refonctionne comme avant : 
+
+
+\snippet ./src/polymorphism_example3.cpp padawan2
+
+
+L'autre qualificateur spécifique aux méthodes virtuelles est le `final`. Lui a porte rôle de mettre fin à la possibilité de surcharger une fonction virtuelle dans une classe fille. Par exemple imaginons que je déclare la méthode `info` comme `final` dans la classe `Knight` et bien si je définis une classe fille à `Knight` par exemple `KnightAtJediCouncil` qui représenterai un chevalier qui siègerait au conseil des Jedi (chose très rare). Dans ce cas je ne pourrai plus redéfinir la méthode `info` dans `KnightAtJediCouncil`. 
+
+\snippet ./src/polymorphism_example3.cpp knight
+
+\snippet ./src/polymorphism_example3.cpp knight_at_council
+
+Ce code engendre alors l'erreur de compilation suivante : 
+
+```
+polymorphism_example3.cpp:78:22: error: virtual function ‘virtual void KnightAtJediCouncil::info() const’ overriding final function
+   78 |         virtual void info() const {
+      |                      ^~~~
+polymorphism_example3.cpp:69:22: note: overridden function is ‘virtual void Knight::info() const’
+   69 |         virtual void info() const override final {
+      |                      ^~~~
+```
+
+
+### Classe abstraite 
+
+
+
+
 
 ## Destructeur virtuel 
 
