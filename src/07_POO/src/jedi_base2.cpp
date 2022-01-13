@@ -31,7 +31,10 @@ class Jedi{
 //! [padawan]
 class Padawan: public Jedi {
     public:
-        Padawan(const std::string& color): Jedi(color){}
+        Padawan(const std::string& color): Jedi(color){} 
+        void info() const {
+            std::cout << "I am a Padawan with a " << this->weapon_->color() << " light saber" << std::endl;
+        }
 };
 //! [padawan]
 
@@ -39,6 +42,9 @@ class Padawan: public Jedi {
 class Knight: public Jedi {
     public:
         Knight(const std::string& color): Jedi(color){}
+        void info() const {
+            std::cout << "I am a Jedi Knight with a " << this->weapon_->color() << " light saber" << std::endl;
+        }
 };
 //! [knight]
 
@@ -47,6 +53,9 @@ class Knight: public Jedi {
 class Master: public Jedi {
     public:
         Master(const std::string& color): Jedi(color){}
+        void info() const {
+            std::cout << "I am a Jedi Master with a " << this->weapon_->color() << " light saber" << std::endl;
+        }
 };
 //! [master]
 

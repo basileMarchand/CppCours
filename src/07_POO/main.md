@@ -432,13 +432,21 @@ En conclusion :
 
 # Surcharge d'opérateur 
 
+Maintenant que l'on sait définir des classes nous allons voir comment rendre ces classes plus facilement utilisable en définissant un certain nombre d'opérations "standards". Pour cela nous allons voir le concept de surcharge d'opérateur. Le principe est très simple, tout est dans le nom, il s'agit de redéfinir le comportement d'opérateur spécifiquement pour nos objet. Il est possible en c++ de surcharger différents types d'opérateurs : 
+
+- Opérateurs mathématiques : `+`, `-`, `*`, `/`
+- Opérateurs booléen : `==`, `>=`, `>`, `<=`, `<`
+- Opérateur d'affectation : `=`
+- Opérateur d'accès : `(...)`, `[]`
+
+
 ## Opérateur d'affectation 
 
 \snippet ./src/point_overload.cpp assignement 
 
 \snippet ./src/point_overload.cpp assignement_impl 
 
-## Opérateurs mathématiques 
+## Opérateurs booléen
 
 \snippet ./src/point_overload.cpp equality 
 
@@ -448,7 +456,7 @@ En conclusion :
 
 \snippet ./src/point_overload.cpp comparison_impl
 
-
+## Opérateurs mathématiques 
 \snippet ./src/point_overload.cpp operations
 
 \snippet ./src/point_overload.cpp operations_impl
@@ -462,16 +470,23 @@ En conclusion :
 
 ## Surcharge par l'exterieur (friend) 
 
+La grande question que l'on peut se poser maintenant est comment faire si je dois surcharger un opérateur en dehors de la classe ? Et bien c'est tout à fait possible mais il faut cependant faire attention au fait que si on définit un opérateur en dehors de la classe alors au sein de la définition de l'opérateur nous n'avons plus accès aux attributs/méthodes protected ou private de la classe ! Il existe néanmoins un moyen de contourner cela en utilisant l'instruction `friend`. Cette instruction permet de déclarer dans une classe qu'une fonction est "amie" et donc qu'au sein de cette fonction nous avons le droit d'accéder aux éléments protected/private de la classe. 
+
 ### Flux 
+
+Par exemple un cas où nous sommes obligé de définir l'opérateur en dehors de la classe c'est pour la surcharge de l'opérateur de flux `<<` qui nous permet en autre de faire du `std::cout` sur notre objet. 
+
 \snippet ./src/point_overload.cpp flux_impl
 
+Pour que l'implémentation que l'on propose ici fonctionne il est nécessaire içi que l'on puisse accéder aux éléments protected de la classe `Point` et donc que la surcharge de l'opérateur soit déclarée comme `friend` dans la classe `Point` : 
 
 \snippet ./src/point_overload.cpp flux
 
 ### Opération mathématique 
 
-\snippet ./src/point_overload.cpp math2
+Il est également possible de surcharger les opérateurs mathématiques en dehors de la classe. C'est même obligatoire dans l'exemple suivant par exemple où on veut définir l'opération `*` entre un `double` et un `Point`, ce qui n'est pas la même chose qu'entre un `Point` et un `double`. Là encore nous devons définir notre opérateur comme `friend` dans la classe `Point`. 
 
+\snippet ./src/point_overload.cpp math2
 
 \snippet ./src/point_overload.cpp math2_impl
 
@@ -512,10 +527,33 @@ Et également les classes `Knight` et `Master`.
 
 \snippet ./src/jedi_base.cpp master
 
+Le premier intérêt de l'héritage est que l'on dispose dans les classes filles des méthodes et attributs définis au niveau de la classe mère. Par exemple nous pouvons utiliser sur un `Padawan`, `Knight` ou `Master` la méthode `info()` : 
 
-Tout l'intérêt de l'héritage est alors que l'on peut définir pour chaque classe fille un comportement particulier par exemple implémentons une méthode `info` dans la classe de base `Jedi` 
+\snippet ./src/jedi_base.cpp usage
 
+```
+I am a Jedi with a blue light saber
+I am a Jedi with a blue light saber
+I am a Jedi with a green light saber
+```
 
+Le second intérêt de l'héritage est alors que l'on peut redéfinir pour chaque classe fille un comportement particulier. Par exemple nous pouvons spécifier la méthode `info` pour chacune des classes  filles. 
+
+\snippet ./src/jedi_base2.cpp padawan
+
+\snippet ./src/jedi_base2.cpp knight
+
+\snippet ./src/jedi_base2.cpp master
+
+Ainsi nous avons pour chacune de nos classes filles définit un comportement particulier pour `info()` 
+
+\snippet ./src/jedi_base2.cpp usage
+
+```
+I am a Padawan with a blue light saber
+I am a Jedi Knight with a blue light saber
+I am a Jedi Master with a green light saber
+```
 
 # Polymorphisme 
 
@@ -567,8 +605,9 @@ C'est totalement transparent pour nous évidemment, mais toutes ces opérations 
 
 Pour vous en assurer, voici ci-dessous un benchmark comparant l'approche héritage classique, de l'approche `std::variant`. 
 
-
-
+\htmlonly
+<iframe width="100%" height="800px" src="https://quick-bench.com/q/wybWwNqbHOIodMDunQO8DFplua0"></iframe>
+\endhtmlonly
 
 
 **Attention :** l'objectif n'est pas de dire qu'il faut faire du std::variant tout le temps et jamais d'héritage ! Comme pour beaucoup de chose ça dépend de votre problématique ! Mais dans la plupart des cas vous avez certainement plein d'autre piste d'optimisation à explorer avant de ne vous lancer dans la suppression de l'héritage ;) 
