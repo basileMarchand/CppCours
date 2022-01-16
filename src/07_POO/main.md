@@ -688,7 +688,7 @@ polymorphism_example3.cpp:69:22: note: overridden function is ‘virtual void Kn
 
 ### Classe abstraite 
 
-
+Il existe une autre notion associée aux méthodes virtuelles, qui elle existait avant la norme C++11, il s'agit des méthodes virtuelles pures et des classes abstraites. 
 
 
 

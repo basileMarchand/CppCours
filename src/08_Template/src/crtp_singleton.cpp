@@ -1,6 +1,7 @@
 #include <memory>
 #include <iostream>
 
+//! [singleton]
 template <typename Base> 
 class Singleton {
     public:
@@ -23,8 +24,9 @@ class Singleton {
 template<typename Base>
 std::shared_ptr<Base> Singleton<Base>::internal_ {nullptr};
 
+//! [singleton]
 
-
+//! [class]
 class A : public Singleton<A> {
   // Rest of functionality for class A
   public: 
@@ -36,6 +38,9 @@ class A : public Singleton<A> {
     protected:
 };
 
+//! [class]
+
+//! [usage]
 int main(){
 
     auto& a = A::GetInstance();
@@ -43,4 +48,6 @@ int main(){
     auto& b = A::GetInstance();
     b.print();
 
+    return EXIT_SUCCESS;
 }
+//! [usage]

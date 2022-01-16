@@ -1,17 +1,17 @@
 #include <memory>
 #include <iostream>
 
-
+//! [base]
 template<typename Derived>
 class Base{
     public:
         void doSomething(){
             static_cast<Derived*>(this)->doSomethingSpecial();
         }
-
-
 };
+//! [base]
 
+//! [derived]
 class DerivedA: public Base<DerivedA>{
 
     public:
@@ -26,7 +26,9 @@ class DerivedB: public Base<DerivedB>{
             std::cout << "In DerivedB::doSomethingSpecial" << std::endl;
         }
 };
+//! [derived]
 
+//! [usage]
 int main(){
 
     DerivedA a;
@@ -36,3 +38,4 @@ int main(){
     b.doSomething();
     return EXIT_SUCCESS;
 }
+//! [usage]

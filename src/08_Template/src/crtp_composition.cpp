@@ -1,5 +1,6 @@
 #include <iostream>
 
+//! [logger]
 template<typename Format>
 class Logger: public Format{
 public: 
@@ -8,8 +9,9 @@ public:
     }
 
 };
+//! [logger]
 
-
+//! [format]
 class Color {
     protected:
         std::string prefix(){
@@ -31,7 +33,10 @@ class Italic {
             return "\e[0m";
         }
 };
+//! [format]
 
+
+//! [usage]
 int main(){
 
     Logger<Color> log_color;
@@ -39,4 +44,7 @@ int main(){
 
      Logger<Italic> log_italic;
     log_italic.message("coucou");
+
+    return EXIT_SUCCESS;
 }
+//! [usage]
