@@ -1,42 +1,45 @@
-#include <array>
-#include <vector>
+#include <iostream>
 
-
+//! [number]
 template<typename T>
-class Matrix{
-    
-
-
-protected:
-    std::vector<T> values_; 
-
-};
-
-
-template<typename T, int NbRow, int NbCol>
-class MatrixStorage{
-    std::array<T, NbRow*NbCol> values_;
-    int nbRow_ {NbRow};
-    int nbCol_ {NbCol};
-
-
-};
-
-template<typename T>
-class MatrixStorage<T, -1, -1>{
-    std::vector<T> values_; 
-    int nbRow_ {0};
-    int nbCol_ {0};
-};
-
-template<typename T, int NbRow, int NbCol>
-class MatrixOptim: public MatrixStorage<T, NbRow, NbCol>{
+class Number{
     public:
-        T& operator()(const int& i, const int& j){
-            return this->values_[i*this->nbCol_ + j];
+        Number(const T& x): value_{x}{}
+
+        T operator()() const {
+            return this->value_;
         }
 
-        T operator()(const int& i, const int& j) const {
-            return this->values_[i*this->nbCol_ + j];
+        T& operator()(){
+            return this->value_;
         }
+
+        Number<T> operator+(const Number<T>& other){
+            Number<T> ret( this->value_ + other() );
+            return ret;
+        }
+
+        template<typename U>
+        Number<T> operator+(const Number<U>& other){
+            return Number<T>( this->value_ + static_cast<T>(other()));
+        }
+
+    protected:
+        T value_;
 };
+//! [number]
+
+int main(){
+
+//! [number_usage]
+    Number<double> a(1.1);
+    Number<double> b(2.2);
+    Number<int> c(42);
+
+    std::cout << "a+b = " << (a+b)() << std::endl;
+    std::cout << "a+c = " << (a+c)() << std::endl;
+    std::cout << "c+a = " << (c+a)() << std::endl;
+//! [number_usage]
+
+
+}

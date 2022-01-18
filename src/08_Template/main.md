@@ -59,9 +59,34 @@ Dans ce cas la fonction template que l'on a faite ne va pas bien fonctionner....
 
 Nous venons de le voir nous pouvons templater des fonctions. Bon et bien par extension il paraît plutôt évident que l'on peut templater des méthodes de classe, car fondamentalement il s'agit de fonctions. Et bien oui je vous confirme on peut faire ça ! 
 
-Par example : 
+Par exemple : 
+
+\snippet ./src/method_template.cpp printer 
+
+\snippet ./src/method_template.cpp printer_usage
+
+```
+[Printer] - 2.34
+[Printer] - coucou
+```
+
+\snippet ./src/method_template.cpp data 
+
+\snippet ./src/method_template.cpp data_usage
+
+```
+1.27
+42
+```
 
 ## Classe template 
+
+### Généralités
+
+\snippet ./src/class_template.cpp number
+
+\snippet ./src/class_template.cpp number_usage
+
 
 
 ### Une classe Matrice
