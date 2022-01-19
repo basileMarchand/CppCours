@@ -90,4 +90,32 @@ L'objectif de cet exercice est que vous fassiez votre propre implémentation de 
 - Afficher le contenu de la liste 
 
 
+# Evaluateur expression 
+
+## Objectif de l'exercice 
+
+L'objectif de cette exercice est de mettre en place un système d'évaluation d'expression mathématique. Par exemple le code attendu pour l'évaluation de l'expression y*(10+x) est le suivant : 
+
+
+```
+int main(){
+
+   std::unique_ptr<Node> left = std::make_unique<ConstantNode>(10.);
+   std::unique_ptr<Node> right = std::make_unique<VarNode>("x");
+   std::unique_ptr<Node> toto =  std::make_unique<VarNode>("y");
+
+   std::unique_ptr<Node> tmp =  std::make_unique<BinaryNode>("+", left, right, ope_add);
+   std::unique_ptr<Node> root=  std::make_unique<BinaryNode>("*", toto, tmp, [](const double&a, const double&b ){return a*b;});
+
+   root->print();
+
+   std::map<std::string, double> vars = {{"x", 10.}, {"y", 10.}};
+
+   std::cout << "Value of toy example : " << root->eval( vars ) << std::endl;
+
+   return EXIT_SUCCESS;
+}
+```
+
+Pour cela il vous faut définir une hiérarchie de classes avec les bonnes interfaces. Enjoy ;) 
 
