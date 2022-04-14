@@ -119,3 +119,12 @@ int main(){
 
 Pour cela il vous faut définir une hiérarchie de classes avec les bonnes interfaces. Enjoy ;) 
 
+# Calcul matriciel et multi-threading 
+
+Dans cet exercice on vous propose de mettre en place une fonction pour réaliser un produit matrice vecteur. On vous fourni le squelette de code suivant : 
+
+\snippet ./src/thread_matvecmul_skeleton.cpp all 
+
+
+L'objectif est de faire la version parallèle en utilisant des `std::thread` ou de l'OpenMP.
+
