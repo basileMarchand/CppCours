@@ -159,7 +159,7 @@ L'étape la plus délicate potentiellement est l'installation d'un compilateur. 
 Dans ce cas c'est super simple, oui parfois c'est plus simple sous Linux. C'est simple car le gestionnaire de paquet de votre système d'exploitation vous propose forcément un paquet `GCC`. Pour installer le compilateur ``C++`` il vous suffit alors, si vous êtes sous Debian/Ubuntu, de taper la commande suivante dans un terminal 
 
 ```bash 
-sudo apt-get install build-essentials gcc 
+sudo apt-get install build-essential gcc 
 ```
 
 ### Si vous êtes utilisateur Mac OS
@@ -178,8 +178,12 @@ Enfin si vous utilisez windows, c'est mal, pour installer un environnement ``C++
 
 Nous vous laissons libre d'utiliser votre éditeur préféré. Mais pour celles et ceux qui n'auraient pas (encore) de croyances à ce sujet nous vous recommandons très fortement d'utiliser `Visual Studio Code`. 
 
-Pour les **utilisateurs Windows** il faut que vous installiez l'extension `WSL` de `VSCode` pour avoir un environnement de travail agréable. 
+Pour les **utilisateurs Windows** il faut que vous installiez l'extension `Remote Development` de `VSCode` pour avoir un environnement de travail agréable. 
 
+Extension à installer pour tous :
+
+- C/C++ par Microsoft  
+- CMake Tools par Microsoft
 
 ## Quelques outils annexes 
 
@@ -190,6 +194,9 @@ Avoir un compilateur et un éditeur c'est le minimum syndical. Pour la suite du 
 * `valgrind` : un inspecteur des allocations mémoires des programmes ``C++`` 
 * `doxygen` : un outil de génération de documentation (le `sphynx` de ``C++``) qui est, entre autre, utilisé pour générer ces supports de cours 
 
+```bash 
+sudo apt-get install cmake gdb valgrind doxygen
+```
 
 ## Vérifier que tout fonctionne 
 
