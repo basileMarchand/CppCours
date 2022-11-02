@@ -10,6 +10,85 @@ Vous pouvez tous lire la section **Quelques remarques**.
 
 [TOC]
 
+
+# Exercice manipulation des types et gestion des inputs utilisateur 
+
+## Exercice 1 : basique 
+
+Écrire un programme qui affiche le message suivant à l'execution 
+
+```
+$ ./a.out 
+Hello World from 60 boulmich 
+``` 
+
+## Exercice 2 : input 
+
+Écrire un programme qui demande à l'utilisateur de saisir deux dimensions longueur et largeur et affiche en retour l'air et le périmètre du rectangle. 
+
+Par exemple : 
+
+``` 
+$ ./a.out 
+Saisir la longueur (m) : 10.05
+Saisir la largeur (m): 3.42 
+La surface est 34.371 m2 
+Le périmètre est 26.94 m 
+```
+
+## Exercice 3 
+
+Écrire un programme qui demande à l'utilisateur de saisir 5 entiers et qui en calcul la moyenne. Vous ne devez définir que deux variables `int` dans votre programme. 
+
+
+## Exercice 4 
+
+Ecrire un programme qui demande à l'utilisateur de renseigner le prix HT d'un produit, le nombre de produit acheté et la TVA applicable et qui affiche en retour le montant TTC total à payer. 
+
+
+**Variante**: Refaire le même programme mais où les trois valeurs d'entrée sont fournies à la ligne de commande au lancement du programme. 
+
+# Exercices structures de contrôle 
+
+## Exercice 1 
+
+Écrire un programme qui demande à l'utilisateur de saisir `N` entiers, `N` étant fourni par l'utilisateur et qui affiche la somme de ces `N` entiers. 
+
+## Exercice 2 
+
+Écrire un programme qui demande à l'utilisateur de saisir `N` entiers positifs, `N` étant fourni par l'utilisateur et qui affiche la somme de ces `N` entiers. Si l'utilisateur fourni un nombre négatif alors le programme doit afficher un message d'erreur et offrir la possibilité à l'utilisateur de saisir une nouvelle valeur. 
+
+## Exercice 3 
+
+Écrire un programme qui demande à l'utilisateur de saisir un entier N et qui affiche la figure suivante.
+
+```
+N=1
+*
+N=2
+**
+ *
+N=3
+***
+ **
+  *
+```
+
+## Exercice 4 : suite hongroise 
+
+On considère la suite hongroise : `u(0)=a` (a entier)
+si `u(n)` pair alors `u(n+1)=u(n)/2` sinon `u(n+1)=3*u(n)+1`
+
+Pour toutes les valeurs `a`, il existe un entier `N` tel que `u(N)=1`.
+
+**Partie 1** Écrire un programme qui demande à l'utilisateur de taper `a` et qui affiche toutes les valeurs de `u(n)` de n=1 à n=N.
+
+
+**Partie 2** Écrire un programme qui demande à l'utilisateur de taper un entier M puis qui cherche la valeur de a comprise entre 2 et M qui maximise la valeur de N. On appelle A cette valeur. La programme doit afficher la valeur A et la valeur N correspondante.
+
+
+
+
 # TP sur la calculatrice en notation polonaise inversée {#TPpolonaiseInversee}
 
 ## Objectif de l'exercice
