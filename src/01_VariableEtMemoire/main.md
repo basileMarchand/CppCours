@@ -442,7 +442,41 @@ Par exemple nous pouvons écrire le programme suivant :
 
 L'utilisation de `std::cin` peut sembler un peu particulière avec cette notation `std::cin >> variable` mais en fait c'est assez naturel car on injecte le flux de `std::cin`, c'est-à-dire ce qui a été saisi par l'utilisateur dans le terminal dans la variable `variable`. 
 
-**Attention** la variable dans laquelle on injecte la saisie utilisateur doit forcément être une chaîne de caractère. 
+**Attention** du type de la variable réceptionnant le résultat du `std::cin >>` va dépendre la conversion implicite qui sera fait et donc potentillement le comportement bizarre de votre programme. Par exemple considérons le bout de code suivant : 
+
+\snippet ./src/example_cin_cast.cpp all 
+
+Voici différentes exécution 
+
+```
+(base) ➜  src git:(master) ✗ ./a.out                 
+Saisir un nombre: -10
+x = -10
+(base) ➜  src git:(master) ✗ ./a.out 
+Saisir un nombre: 0.12345
+x = 0.12345
+(base) ➜  src git:(master) ✗ ./a.out
+Saisir un nombre: 10,10
+x = 10
+(base) ➜  src git:(master) ✗ ./a.out
+Saisir un nombre: 10;45
+x = 10
+(base) ➜  src git:(master) ✗ ./a.out
+Saisir un nombre: coucou
+x = 0
+``` 
+
+Et donc vous voyez que le fait que l'on stocke le résultat de `std::cin >>` dans un `double` entraine implicitement une conversion et suivant le bon ou mauivais formatage de la chaine de caractère fournie par l'utilisateur le résultat attendu et plus ou moins cohérent... Les 5 exemples ci-dessous fonctionnent tous sans aucune erreur à l'exécution. Il est possible d'attraper pour le dernier cas l'information  que quelquechose s'est mal passé. Pour cela on peut utiliser la fonction `std::cin.fail()` par exemple : 
+
+\snippet ./src/example_cin_fail.cpp all 
+
+A l'exécution on obtient alors : 
+
+```
+(base) ➜  src git:(master) ✗ ./a.out                 
+Saisir un nombre: coucou
+La valeur saisie est incorrect
+```
 
 **Remarque** : de manière générale le `std::cin` n'est pas énormément utilisé car, bien que cela puisse sembler sympathique au premier abord de demander des saisies par l'utilisateur dans un programme, c'est en pratique assez pénible. En effet si on place des `std::cin` dans un programme cela implique qu'il y aura forcément quelqu'un derrière son terminal pour donner les informations nécessaires au moment où le programme les demande. Alors que si on fait tout en passant les infos à la ligne de commande comme nous l'avons montré précédemment et bien c'est beaucoup plus commode car on lance le programme avec toutes les infos dont il a besoin et on va prendre un café pendant que ça calcule ! 
 
