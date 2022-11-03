@@ -1,6 +1,8 @@
 # Use: `doxygen -g test.txt` to generate all possible settings for this file
 
-## MARKDOWN_SUPPORT = yes 
+MARKDOWN_SUPPORT = YES 
+AUTOLINK_SUPPORT = NO
+
 TOC_INCLUDE_HEADINGS = 10
 LAYOUT_FILE = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/DoxygenLayout.xml
 
@@ -75,12 +77,12 @@ PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/logo_mpt.png
 # If the REFERENCED_BY_RELATION tag is set to YES then for each documented
 # function all documented functions referencing it will be listed.
 # The default value is: NO.
-REFERENCED_BY_RELATION = YES
+REFERENCED_BY_RELATION = NO
 
 # If the REFERENCES_RELATION tag is set to YES then for each documented function
 # all documented entities called/used by that function will be listed.
 # The default value is: NO.
-REFERENCES_RELATION    = YES
+REFERENCES_RELATION    = NO
 
 # This is nice to have - callgraphs of functions
 HAVE_DOT               = NO
